@@ -20,6 +20,8 @@ MAKE SURE THAT GITHUB FILE NAME IS THE NAME (first arg)
 OR IT WONT WORK
 --]]
 
+pika:add("cbro", 301549746)
+
 function pika:detect()
   if pika.games[tostring(game.PlaceId)] then
     print("detected game")
