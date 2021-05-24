@@ -1,3 +1,10 @@
+local lplr = game.Players.LocalPlayer
+local camera = game:GetService("Workspace").CurrentCamera
+local CurrentCamera = workspace.CurrentCamera
+local worldToViewportPoint = CurrentCamera.worldToViewportPoint
+local mouse = game.Players.LocalPlayer:GetMouse()
+local UserInput = game:GetService("UserInputService")
+
 getgenv().PikaESPSettings = {
     Box = false,
     Name = false,
