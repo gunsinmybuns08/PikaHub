@@ -17,7 +17,7 @@ if syn then
    syn.protect_gui(loader)
 end
 
-TextLabel.Parent = decodeisgay
+TextLabel.Parent = loader
 TextLabel.AnchorPoint = Vector2.new(0.5, 0.5)
 TextLabel.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
 TextLabel.BorderColor3 = Color3.fromRGB(68, 68, 68)
