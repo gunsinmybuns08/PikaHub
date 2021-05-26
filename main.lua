@@ -7,12 +7,15 @@
 ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝    ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ 
 --]]
 
-local decodeisgay = Instance.new("ScreenGui")
+local loader = Instance.new("ScreenGui")
 local TextLabel = Instance.new("TextLabel")
 
-decodeisgay.Name = "decode is gay"
-decodeisgay.Parent = game.CoreGui
-decodeisgay.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+loader.Name = "loader"
+loader.Parent = game.CoreGui
+loader.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+if syn then
+   syn.protect_gui(loader)
+end
 
 TextLabel.Parent = decodeisgay
 TextLabel.AnchorPoint = Vector2.new(0.5, 0.5)
