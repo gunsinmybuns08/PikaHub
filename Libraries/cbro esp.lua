@@ -90,13 +90,13 @@ local function PikaESP(v)
                 
             if PikaESPSettings.Chams and v.Character.Head:FindFirstChild("Body") == nil then
                 if v:IsA("MeshPart") or v.Name == "Head" then
-					Chams(v, "Back")
-				    Chams(v, "Front")
-				    Chams(v, "Top")
-				    Chams(v, "Bottom")
-				    Chams(v, "Right")
-				    Chams(v, "Left")
-				end
+			AttachChams(v, "Back")
+			AttachChams(v, "Front")
+			AttachChams(v, "Top")
+			AttachChams(v, "Bottom")
+			AttachChams(v, "Right")
+			AttachChams(v, "Left")
+		 end
              end
 
             if onScreen then
