@@ -66,7 +66,7 @@ pcall(function()
     wait(1)
     game:GetService("TweenService"):Create(Username, TweenInfo.new(1), {BackgroundTransparency = 0}):Play()
     wait(1)
-    Username.PlaceholderText = "Since you're new user, please enter your username."
+    Username.PlaceholderText = "Since you're a new user, please enter your username."
     wait(.2)
     Username.FocusLost:Connect(function(enterPressed)
         if enterPressed then
@@ -144,7 +144,7 @@ else
     wait(1)
     game:GetService("TweenService"):Create(Username, TweenInfo.new(1), {TextColor3 = Color3.fromRGB(0,250,154)}):Play()
     wait(.5)
-    Username.Text = "Hi " .. GetName .. ", welcome back to pikasense"
+    Username.Text = "Hi " .. GetName .. ", welcome back to pika hub."
     wait(1)
     game:GetService("TweenService"):Create(Username, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
     Username.Text = ""
@@ -183,7 +183,7 @@ TextLabel:TweenSize(UDim2.new(0, 5000, 0, 20), Enum.EasingDirection.Out, Enum.Ea
 wait(1.5)
 TextLabel.Text = "checking exploit environment..."
 if not Drawing then
-   TextLabel.Text = "your exploti doesn't support drawing ;-;"
+   TextLabel.Text = "your exploit doesn't support drawing.."
    return
 end
 wait(0.6)
