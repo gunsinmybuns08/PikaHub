@@ -7,6 +7,8 @@
 ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝    ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ 
 --]]
 
+getgenv().start_tick = tick()
+
 local loader = Instance.new("ScreenGui")
 local TextLabel = Instance.new("TextLabel")
 
@@ -87,7 +89,7 @@ spawn(function()
   end
 end)
 
-TextLabel.Text = "loaded in " .. math.floor((tick() - getgenv().tick) * 10) / 10 .. " seconds."
+TextLabel.Text = "loaded in " .. math.floor((tick() - getgenv().start_tick) * 10) / 10 .. " seconds."
 wait(2)
 TextLabel.Text = ""
 TextLabel:TweenSize(UDim2.new(0, 5000, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Elastic, 1, false)
