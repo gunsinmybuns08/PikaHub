@@ -5,10 +5,25 @@ local worldToViewportPoint = CurrentCamera.worldToViewportPoint
 local mouse = game.Players.LocalPlayer:GetMouse()
 local UserInput = game:GetService("UserInputService")
 
+function AttachChams(parent, face)
+	local SurfaceGui = Instance.new("SurfaceGui",parent) 
+	SurfaceGui.Parent = parent
+	SurfaceGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	SurfaceGui.Face = Enum.NormalId[face]
+	SurfaceGui.LightInfluence = 0
+	SurfaceGui.ResetOnSpawn = false
+	SurfaceGui.Name = "Body"
+	SurfaceGui.AlwaysOnTop = true
+	local Frame = Instance.new("Frame",SurfaceGui)
+	Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Frame.Size = UDim2.new(1,0,1,0)
+end
+
 getgenv().PikaESPSettings = {
     Box = false,
     Name = false,
-    Tracers = false
+    Tracers = false,
+    Chams = false
 }
 
 local function PikaESP(v)
@@ -72,6 +87,17 @@ local function PikaESP(v)
             local RootPosition, RootVis = worldToViewportPoint(CurrentCamera, RootPart.Position)
             local HeadPosition = worldToViewportPoint(CurrentCamera, Head.Position + Vector3.new(0,0.5,0))
             local LegPosition = worldToViewportPoint(CurrentCamera, RootPart.Position - Vector3.new(0,3,0))
+                
+            if PikaESPSettings.Chams and v.Character.Head:FindFirstChild("Body") == nil then
+                if v:IsA("MeshPart") or v.Name == "Head" then
+					Chams(v, "Back")
+				    Chams(v, "Front")
+				    Chams(v, "Top")
+				    Chams(v, "Bottom")
+				    Chams(v, "Right")
+				    Chams(v, "Left")
+				end
+             end
 
             if onScreen then
                 if PikaESPSettings.Box then
