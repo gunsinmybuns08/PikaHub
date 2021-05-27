@@ -33,7 +33,7 @@ TextLabel.TextStrokeTransparency = 0.000
 TextLabel:TweenSize(UDim2.new(0, 5000, 0, 20), Enum.EasingDirection.Out, Enum.EasingStyle.Bounce, 1, false)
 wait(1.5)
 TextLabel.Text = "checking exploit environment..."
-if not drawing or Drawing then
+if not Drawing then
    TextLabel.Text = "your exploti doesn't support drawing ;-;"
    return
 end
