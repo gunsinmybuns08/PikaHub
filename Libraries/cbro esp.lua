@@ -88,15 +88,17 @@ local function PikaESP(v)
             local HeadPosition = worldToViewportPoint(CurrentCamera, Head.Position + Vector3.new(0,0.5,0))
             local LegPosition = worldToViewportPoint(CurrentCamera, RootPart.Position - Vector3.new(0,3,0))
                 
-            if PikaESPSettings.Chams and v.Character.Head:FindFirstChild("Body") == nil then
-                if v:IsA("MeshPart") or v.Name == "Head" then
-			AttachChams(v, "Back")
-			AttachChams(v, "Front")
-			AttachChams(v, "Top")
-			AttachChams(v, "Bottom")
-			AttachChams(v, "Right")
-			AttachChams(v, "Left")
-		 end
+            if PikaESPSettings.Chams and v.Character.Head:FindFirstChild("Body") == nil and v.Team ~= game.Players.LocalPlayer.Team then
+                for i,v in pairs(v.Character:GetChildren()) do
+                    if v:IsA("MeshPart") or v.Name == "Head" then
+    					AttachChams(v, "Back")
+    				    AttachChams(v, "Front")
+    				    AttachChams(v, "Top")
+    				    AttachChams(v, "Bottom")
+    				    AttachChams(v, "Right")
+    				    AttachChams(v, "Left")
+                    end
+			    end
              end
 
             if onScreen then
