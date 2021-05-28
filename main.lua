@@ -216,6 +216,7 @@ OR IT WONT WORK
 --]]
 
 pika:add("cbro", 301549746)
+pika:add("cbro", 1480424328)
 
 function pika:detect()
   if pika.games[tostring(game.PlaceId)] then
