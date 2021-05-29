@@ -30,10 +30,6 @@ getgenv().PikaESPSettings = {
     UnlockTracers = false
 }
 
-local function IsVisible(pos, ignoreList)
-	return #workspace.CurrentCamera:GetPartsObscuringTarget({game.Players.LocalPlayer.Character.Head.Position, pos}, ignoreList) == 0 and true or false
-end
-
 local function PikaESP(v)
     local BoxOutline = Drawing.new("Square")
     BoxOutline.Visible = false
@@ -86,7 +82,7 @@ local function PikaESP(v)
     Gun.Outline = true
 
     game:GetService("RunService").RenderStepped:Connect(function()
-        if v.Character ~= nil and v.Character:FindFirstChild("Humanoid") ~= nil and v.Character:FindFirstChild("HumanoidRootPart") ~= nil and v ~= lplr and v.Character.Humanoid.Health > 0 and (not PikaESPSettings.VisibleOnly or IsVisible(v.Character.Head.Position, {v.Character, game.Players.LocalPlayer.Character, workspace.CurrentCamera, game:GetService("Workspace").Map.Ignore, game:GetService("Workspace").Map.Clips}) == true) then
+        if v.Character ~= nil and v.Character:FindFirstChild("Humanoid") ~= nil and v.Character:FindFirstChild("HumanoidRootPart") ~= nil and v ~= lplr and v.Character.Humanoid.Health > 0 then
             local Vector, onScreen = camera:worldToViewportPoint(v.Character.HumanoidRootPart.Position)
             local Distance = (CurrentCamera.CFrame.p - v.Character.HumanoidRootPart.Position).Magnitude
             local RootPart = v.Character.HumanoidRootPart
