@@ -27,7 +27,8 @@ getgenv().PikaESPSettings = {
     Font = 3,
     Teammates = false,
     VisibleOnly = false,
-    UnlockTracers = false
+    UnlockTracers = false,
+    TextSize = 14,
 }
 
 local function PikaESP(v)
@@ -68,7 +69,6 @@ local function PikaESP(v)
     Name.Transparency = 1
     Name.Visible = false
     Name.Color = Color3.new(1,1,1)
-    Name.Size = 12
     Name.Center = true
     Name.Outline = true
     
@@ -77,7 +77,6 @@ local function PikaESP(v)
     Gun.Transparency = 1
     Gun.Visible = false
     Gun.Color = Color3.new(1,1,1)
-    Gun.Size = 12
     Gun.Center = true
     Gun.Outline = true
 
@@ -154,6 +153,7 @@ local function PikaESP(v)
                     Name.Text = tostring(v.Name)
                     Name.Position = Vector2.new(workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).X, workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).Y - 30)
                     Name.Visible = true
+		    Name.Size = TextSize
                     if PikaESPSettings.Font == "UI" then
                         Name.Font = 0
                         Gun.Font = 0
@@ -171,6 +171,7 @@ local function PikaESP(v)
                     Gun.Text = tostring(v.Character.EquippedTool.Value)
                     Gun.Position = Vector2.new(LegPosition.X, LegPosition.Y + 10)
                     Gun.Visible = true
+		    Gun.Size = TextSize
                         
                     if (not PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team) then
                         Name.Visible = false
