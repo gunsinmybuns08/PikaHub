@@ -26,7 +26,8 @@ getgenv().PikaESPSettings = {
     Chams = false,
     Font = 3,
     Teammates = false,
-    VisibleOnly = false
+    VisibleOnly = false,
+    UnlockTracers = false
 }
 
 local function IsVisible(pos, ignoreList)
@@ -85,7 +86,7 @@ local function PikaESP(v)
     Gun.Outline = true
 
     game:GetService("RunService").RenderStepped:Connect(function()
-        if v.Character ~= nil and v.Character:FindFirstChild("Humanoid") ~= nil and v.Character:FindFirstChild("HumanoidRootPart") ~= nil and v ~= lplr and v.Character.Humanoid.Health > 0 and not (PikaESPSettings.VisibleOnly and IsVisible(v.Character.Head.Position, {v.Character, game.Players.LocalPlayer.Character, workspace.CurrentCamera, game:GetService("Workspace").Map.Ignore, game:GetService("Workspace").Map.Clips}) == true) then
+        if v.Character ~= nil and v.Character:FindFirstChild("Humanoid") ~= nil and v.Character:FindFirstChild("HumanoidRootPart") ~= nil and v ~= lplr and v.Character.Humanoid.Health > 0 and (not PikaESPSettings.VisibleOnly or IsVisible(v.Character.Head.Position, {v.Character, game.Players.LocalPlayer.Character, workspace.CurrentCamera, game:GetService("Workspace").Map.Ignore, game:GetService("Workspace").Map.Clips}) == true) then
             local Vector, onScreen = camera:worldToViewportPoint(v.Character.HumanoidRootPart.Position)
             local Distance = (CurrentCamera.CFrame.p - v.Character.HumanoidRootPart.Position).Magnitude
             local RootPart = v.Character.HumanoidRootPart
@@ -139,7 +140,11 @@ local function PikaESP(v)
                     HealthBar.Visible = false
                 end
                 if PikaESPSettings.Tracers then
-                    Tracer.From = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 1)
+                    if PikaESPSettings.UnlockTracers then
+                        Tracer.From = Vector2.new(mouse.X, mouse.Y)
+                    else
+                        Tracer.From = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 1)
+                    end
                     Tracer.To = Vector2.new(Vector.X, Vector.Y)
                     Tracer.Visible = true
                         
