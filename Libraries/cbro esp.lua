@@ -27,7 +27,7 @@ getgenv().PikaESPSettings = {
     Font = 3,
     Teammates = false,
     VisibleOnly = false,
-    UnlockTracers = false.
+    UnlockTracers = false,
     TextSize = 16
 }
 
