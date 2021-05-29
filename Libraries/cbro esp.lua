@@ -91,7 +91,7 @@ local function PikaESP(v)
             local HeadPosition = worldToViewportPoint(CurrentCamera, Head.Position + Vector3.new(0,0.5,0))
             local LegPosition = worldToViewportPoint(CurrentCamera, RootPart.Position - Vector3.new(0,3,0))
                 
-            if PikaESPSettings.Chams and v.Character.Head:FindFirstChild("Body") == nil and (PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team) then
+            if PikaESPSettings.Chams and v.Character.Head:FindFirstChild("Body") == nil and (not PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team) then
                 for i,v in pairs(v.Character:GetChildren()) do
                     if v:IsA("MeshPart") or v.Name == "Head" then
     					AttachChams(v, "Back")
@@ -123,7 +123,7 @@ local function PikaESP(v)
                     HealthBar.Color = Color3.fromRGB(255 - 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 0)
                     HealthBar.Visible = true
                         
-                    if not (PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team) then
+                    if (not PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team) then
                         HealthBarOutline.Visible = false
                         BoxOutline.Visible = false
                         Box.Visible = false
@@ -144,7 +144,7 @@ local function PikaESP(v)
                     Tracer.To = Vector2.new(Vector.X, Vector.Y)
                     Tracer.Visible = true
                         
-                    if not (PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team) then
+                    if (not PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team) then
                         Tracer.Visible = false
                     end
                 else
@@ -172,7 +172,7 @@ local function PikaESP(v)
                     Gun.Position = Vector2.new(LegPosition.X, LegPosition.Y + 10)
                     Gun.Visible = true
                         
-                    if not (PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team) then
+                    if (not PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team) then
                         Name.Visible = false
                         Gun.Visible = false
                     end
