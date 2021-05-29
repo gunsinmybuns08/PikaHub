@@ -27,7 +27,7 @@ getgenv().PikaESPSettings = {
     Font = 3,
     Teammates = false,
     VisibleOnly = false,
-    UnlockTracers = false,
+    UnlockTracers = false.
     TextSize = 16
 }
 
@@ -124,7 +124,7 @@ local function PikaESP(v)
                     HealthBar.Color = Color3.fromRGB(255 - 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 0)
                     HealthBar.Visible = true
                         
-                    if v.Team ~= game.Players.LocalPlayer.Team then
+                    if v.Team == game.Players.LocalPlayer.Team then
                         HealthBarOutline.Visible = false
                         BoxOutline.Visible = false
                         Box.Visible = false
@@ -145,7 +145,7 @@ local function PikaESP(v)
                     Tracer.To = Vector2.new(Vector.X, Vector.Y)
                     Tracer.Visible = true
                     
-                    if v.Team ~= game.Players.LocalPlayer.Team then
+                    if v.Team == game.Players.LocalPlayer.Team then
                         Tracer.Visible = false
                     end
                 else
@@ -174,7 +174,7 @@ local function PikaESP(v)
                     Gun.Position = Vector2.new(LegPosition.X, LegPosition.Y + 10)
                     Gun.Visible = true
                         
-                    if v.Team ~= game.Players.LocalPlayer.Team then
+                    if v.Team == game.Players.LocalPlayer.Team then
                         Name.Visible = false
                         Gun.Visible = false
                     end
