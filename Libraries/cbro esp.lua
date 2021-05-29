@@ -27,8 +27,7 @@ getgenv().PikaESPSettings = {
     Font = 3,
     Teammates = false,
     VisibleOnly = false,
-    UnlockTracers = false,
-    TextSize = 14,
+    UnlockTracers = false
 }
 
 local function PikaESP(v)
@@ -69,6 +68,7 @@ local function PikaESP(v)
     Name.Transparency = 1
     Name.Visible = false
     Name.Color = Color3.new(1,1,1)
+    Name.Size = 12
     Name.Center = true
     Name.Outline = true
     
@@ -77,6 +77,7 @@ local function PikaESP(v)
     Gun.Transparency = 1
     Gun.Visible = false
     Gun.Color = Color3.new(1,1,1)
+    Gun.Size = 12
     Gun.Center = true
     Gun.Outline = true
 
@@ -90,18 +91,29 @@ local function PikaESP(v)
             local HeadPosition = worldToViewportPoint(CurrentCamera, Head.Position + Vector3.new(0,0.5,0))
             local LegPosition = worldToViewportPoint(CurrentCamera, RootPart.Position - Vector3.new(0,3,0))
                 
-            if PikaESPSettings.Chams and v.Character.Head:FindFirstChild("Body") == nil and (not PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team) then
-                for i,v in pairs(v.Character:GetChildren()) do
-                    if v:IsA("MeshPart") or v.Name == "Head" then
-    					AttachChams(v, "Back")
-    				    AttachChams(v, "Front")
-    				    AttachChams(v, "Top")
-    				    AttachChams(v, "Bottom")
-    				    AttachChams(v, "Right")
-    				    AttachChams(v, "Left")
+            if PikaESPSettings.Chams and v.Character.Head:FindFirstChild("Body") == nil then
+                if PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team then
+                    for i,v in pairs(v.Character:GetChildren()) do
+                        if v:IsA("MeshPart") or v.Name == "Head" then
+                            AttachChams(v, "Back")
+                            AttachChams(v, "Front")
+                            AttachChams(v, "Top")
+                            AttachChams(v, "Bottom")
+                            AttachChams(v, "Right")
+                            AttachChams(v, "Left")
+                        end
                     end
-			    end
-             end
+                else
+                    if v:IsA("MeshPart") or v.Name == "Head" then
+                        AttachChams(v, "Back")
+                        AttachChams(v, "Front")
+                        AttachChams(v, "Top")
+                        AttachChams(v, "Bottom")
+                        AttachChams(v, "Right")
+                        AttachChams(v, "Left")
+                    end
+                end
+            end
 
             if onScreen then
                 if PikaESPSettings.Box then
@@ -122,7 +134,12 @@ local function PikaESP(v)
                     HealthBar.Color = Color3.fromRGB(255 - 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 255 / (v.Character.Humanoid.MaxHealth / v.Character.Humanoid.Health), 0)
                     HealthBar.Visible = true
                         
-                    if (not PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team) then
+                    if PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team then
+                        HealthBarOutline.Visible = true
+                        BoxOutline.Visible = true
+                        Box.Visible = true
+                        HealthBar.Visible = true
+                    else
                         HealthBarOutline.Visible = false
                         BoxOutline.Visible = false
                         Box.Visible = false
@@ -142,8 +159,10 @@ local function PikaESP(v)
                     end
                     Tracer.To = Vector2.new(Vector.X, Vector.Y)
                     Tracer.Visible = true
-                        
-                    if (not PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team) then
+                    
+                    if PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team then
+                        Tracer.Visible = true
+                    else
                         Tracer.Visible = false
                     end
                 else
@@ -153,7 +172,6 @@ local function PikaESP(v)
                     Name.Text = tostring(v.Name)
                     Name.Position = Vector2.new(workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).X, workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).Y - 30)
                     Name.Visible = true
-		    Name.Size = TextSize
                     if PikaESPSettings.Font == "UI" then
                         Name.Font = 0
                         Gun.Font = 0
@@ -171,9 +189,11 @@ local function PikaESP(v)
                     Gun.Text = tostring(v.Character.EquippedTool.Value)
                     Gun.Position = Vector2.new(LegPosition.X, LegPosition.Y + 10)
                     Gun.Visible = true
-		    Gun.Size = TextSize
                         
-                    if (not PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team) then
+                    if PikaESPSettings.Teammates and v.Team == game.Players.LocalPlayer.Team then
+                        Name.Visible = true
+                        Gun.Visible = true
+                    else
                         Name.Visible = false
                         Gun.Visible = false
                     end
