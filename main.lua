@@ -217,6 +217,7 @@ OR IT WONT WORK
 
 pika:add("cbro", 301549746)
 pika:add("cbro unrank", 1480424328)
+pika:add("mortem", 4169490976)
 
 function pika:detect()
   if pika.games[tostring(game.PlaceId)] then
