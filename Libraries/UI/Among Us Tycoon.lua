@@ -306,9 +306,6 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 button.text = text or ""
                 button.callback = callback or function() end
 
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
-
                 button.Main = Instance.new("TextButton", sector.Items)
                 button.Main.BorderSizePixel = 0
                 button.Main.Text = ""
@@ -370,14 +367,14 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     button.BlackOutline.BackgroundTransparency = 0
                 end)
 
+                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
+
                 return button
             end
 
             function sector:AddLabel(text)
                 local label = { }
-
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
 
                 label.Main = Instance.new("TextLabel", sector.Items)
                 label.Main.Name = "Label"
@@ -396,6 +393,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     label.Main.Text = value
                 end
 
+                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
+
                 return label
             end
             
@@ -406,9 +406,6 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 toggle.callback = callback or function(value) end
                 
                 toggle.value = toggle.default
-
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
 
                 toggle.Main = Instance.new("TextButton", sector.Items)
                 toggle.Main.Name = "toggle"
@@ -780,6 +777,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 toggle.BlackOutline.MouseEnter:Connect(MouseEnter)
                 toggle.BlackOutline.MouseLeave:Connect(MouseLeave)
 
+                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
+
                 return toggle
             end
             
@@ -788,9 +788,6 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 textbox.text = text or ""
                 textbox.callback = callback or function() end
                 textbox.default = default
-
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
 
                 textbox.Holder = Instance.new("Frame", sector.Items)
                 textbox.Holder.Name = "holder"
@@ -858,6 +855,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     textbox:Set(textbox.default)
                 end
 
+                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
+
                 return textbox
             end
 
@@ -872,9 +872,6 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
 
                 slider.value = slider.default
                 local dragging = false
-
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
 
                 slider.BackLabel = Instance.new("Frame", sector.Items)
                 slider.BackLabel.Name = "backlabel"
@@ -998,14 +995,14 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
 					end
 				end)
 
+                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
+
                 return slider
             end
 
             function sector:AddColorpicker(text, default, callback)
                 local colorpicker = { }
-
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
 
                 colorpicker.text = text or ""
                 colorpicker.callback = callback or function() end
@@ -1226,6 +1223,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 colorpicker.Outline.InputBegan:Connect(inputBegan)
                 colorpicker.BlackOutline.InputBegan:Connect(inputBegan)
 
+                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
+
                 return colorpicker
             end
 
@@ -1238,9 +1238,6 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 keybind.newkeycallback = newkeycallback or function(key) end
 
                 keybind.value = keybind.default
-
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
 
                 keybind.Main = Instance.new("TextLabel", sector.Items)
                 keybind.Main.BackgroundTransparency = 1
@@ -1294,6 +1291,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     end
                 end)
 
+                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
+
                 return keybind
             end
 
@@ -1305,9 +1305,6 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 dropdown.default = default
                 dropdown.callback = callback or function() end
                 dropdown.value = dropdown.default
-
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
 
                 dropdown.BackLabel = Instance.new("Frame", sector.Items)
                 dropdown.BackLabel.Name = "backlabel"
@@ -1516,6 +1513,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     dropdown.Outline.BackgroundTransparency = 0
                     dropdown.BlackOutline.BackgroundTransparency = 0
                 end)
+
+                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
 
                 return dropdown
             end
