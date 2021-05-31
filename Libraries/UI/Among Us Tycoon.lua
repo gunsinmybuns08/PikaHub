@@ -82,7 +82,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
 
     window.TopBar = Instance.new("Frame", window.Frame)
     window.TopBar.Name = "top"
-    window.TopBar.Size = UDim2.fromOffset(window.size.X.Offset, 24)
+    window.TopBar.Size = UDim2.fromOffset(window.size.X.Offset, 20)
     window.TopBar.BorderSizePixel = 0
     window.TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     window.TopBar.InputBegan:Connect(dragstart)
@@ -132,7 +132,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
     window.BlackLine.BorderSizePixel = 0
     window.BlackLine.ZIndex = 9
     window.BlackLine.BackgroundColor3 = Color3.new(0, 0, 0)
-    window.BlackLine.Position = UDim2.fromOffset(0, window.TabList.Position.Y.Offset) + UDim2.fromOffset(0, window.TabList.Size.Y.Offset - 1)
+    window.BlackLine.Position = UDim2.fromOffset(0, window.TabList.Position.Y.Offset) + UDim2.fromOffset(0, window.TabList.AbsoluteSize.Y - 1)
 
     if window.backimage then
         window.BackgroundImage = Instance.new("ImageButton", window.Frame)
