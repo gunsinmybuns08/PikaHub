@@ -1,4 +1,3 @@
---by spoopoo
 local library = { }
 
 local player = game:GetService("Players").LocalPlayer
@@ -19,52 +18,6 @@ UserInputService.InputChanged:Connect(function(input)
 end)
 
 function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY,backimage,hidebutton)
-    local ScreenGui = Instance.new("ScreenGui")
-    local Main = Instance.new("Frame")
-    local TopBar = Instance.new("Frame")
-    
-    ScreenGui.Parent = game.CoreGui
-    
-    Main.Name = "Main"
-    Main.Parent = ScreenGui
-    Main.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
-    Main.BorderColor3 = Color3.fromRGB(80, 80, 80)
-    Main.BorderSizePixel = 2
-    Main.Position = UDim2.new(0.0559123, -89, 0.01, 0)
-    Main.Size = UDim2.new(0, 0, 0, 25)
-    Main.ClipsDescendants=true
-    
-    TopBar.Name = "TopBar"
-    TopBar.Parent = Main
-    TopBar.BackgroundColor3 = accentcolor
-    TopBar.BorderSizePixel = 0
-    TopBar.Size = UDim2.new(0, 0, 0, 2)
-    
-    Main.MouseEnter:Connect(function()
-        game.TweenService:Create(Main, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            BackgroundTransparency = 1
-        }):Play()
-        game.TweenService:Create(TopBar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            BackgroundTransparency = 1
-        }):Play()
-        game.TweenService:Create(FPSLabel, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            TextTransparency = 1
-        }):Play()
-    end)
-    
-    Main.MouseLeave:Connect(function()
-        game.TweenService:Create(Main, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            BackgroundTransparency = 0
-        }):Play()
-        game.TweenService:Create(TopBar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            BackgroundTransparency = 0
-        }):Play()
-        game.TweenService:Create(FPSLabel, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            TextTransparency = 0
-        }):Play()
-    end)
-    
-
     local window = { }
     
     window.name = name or "New Window"
