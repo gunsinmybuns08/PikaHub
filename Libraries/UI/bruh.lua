@@ -1,3 +1,4 @@
+--by spoopoo
 local library = { }
 
 local player = game:GetService("Players").LocalPlayer
@@ -18,8 +19,54 @@ UserInputService.InputChanged:Connect(function(input)
 end)
 
 function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY,backimage,hidebutton)
+    local ScreenGui = Instance.new("ScreenGui")
+    local Main = Instance.new("Frame")
+    local TopBar = Instance.new("Frame")
+
+    ScreenGui.Parent = game.CoreGui
+
+    Main.Name = "Main"
+    Main.Parent = ScreenGui
+    Main.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+    Main.BorderColor3 = Color3.fromRGB(80, 80, 80)
+    Main.BorderSizePixel = 2
+    Main.Position = UDim2.new(0.0559123, -89, 0.01, 0)
+    Main.Size = UDim2.new(0, 0, 0, 25)
+    Main.ClipsDescendants=true
+
+    TopBar.Name = "TopBar"
+    TopBar.Parent = Main
+    TopBar.BackgroundColor3 = accentcolor
+    TopBar.BorderSizePixel = 0
+    TopBar.Size = UDim2.new(0, 0, 0, 2)
+
+    Main.MouseEnter:Connect(function()
+        game.TweenService:Create(Main, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
+            BackgroundTransparency = 1
+        }):Play()
+        game.TweenService:Create(TopBar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
+            BackgroundTransparency = 1
+        }):Play()
+        game.TweenService:Create(FPSLabel, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
+            TextTransparency = 1
+        }):Play()
+    end)
+
+    Main.MouseLeave:Connect(function()
+        game.TweenService:Create(Main, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
+            BackgroundTransparency = 0
+        }):Play()
+        game.TweenService:Create(TopBar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
+            BackgroundTransparency = 0
+        }):Play()
+        game.TweenService:Create(FPSLabel, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
+            TextTransparency = 0
+        }):Play()
+    end)
+
+
     local window = { }
-    
+
     window.name = name or "New Window"
     window.textsize = textsize or 12
     window.accentcolor = accentcolor or Color3.fromRGB(28, 56, 139)
@@ -27,7 +74,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
     window.size = UDim2.fromOffset(sizeX, sizeY) or UDim2.fromOffset(400, 477)
     window.backimage = backimage
     window.hidebutton = hidebutton or Enum.KeyCode.RightShift
-    
+
 
     window.SelectedTab = nil
 
@@ -49,7 +96,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
             dragging = true
             dragStart = input.Position
             startPos = gui.Position
-            
+
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
                     dragging = false
@@ -212,7 +259,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
             wait(0.2)
             block = false
         end
-    
+
 
         tab.TabButton.MouseButton1Down:Connect(function()
             tab:SelectTab()
@@ -229,7 +276,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
             local sector = { }
             sector.name = name or ""
             sector.side = side or "left"
-            
+
             sector.Main = Instance.new("Frame", tab.TabPage) 
             sector.Main.Name = sector.name:gsub(" ", "") .. "Sector"
             sector.Main.BorderColor3 = Color3.fromRGB(60, 60, 60)
@@ -393,19 +440,19 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     label.Main.Text = value
                 end
 
-                
+
                 sector.Main.Size = UDim2.new(0, window.size.X.Offset / 2 - 17, 0, sector.ListLayout.AbsoluteContentSize.Y + 18)
                 tab.TabPage.CanvasSize = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
 
                 return label
             end
-            
+
             function sector:AddToggle(text,default, callback)
                 local toggle = { }
                 toggle.text = text or ""
                 toggle.default = default or false
                 toggle.callback = callback or function(value) end
-                
+
                 toggle.value = toggle.default
 
                 toggle.Main = Instance.new("TextButton", sector.Items)
@@ -436,7 +483,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 toggle.BlackOutline.BorderSizePixel = 0
                 toggle.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
                 toggle.BlackOutline.Position = UDim2.fromOffset(-2, -2)
-                
+
                 toggle.Gradient = Instance.new("UIGradient", toggle.Main)
                 toggle.Gradient.Rotation = (22.5 * 13)
                 toggle.Gradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(30, 30, 30)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(45, 45, 45))}
@@ -566,7 +613,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     colorpicker.Outline.BorderSizePixel = 0
                     colorpicker.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
                     colorpicker.Outline.Position = UDim2.fromOffset(-1, -1)
-    
+
                     colorpicker.BlackOutline = Instance.new("Frame", colorpicker.Main)
                     colorpicker.BlackOutline.Name = "blackline"
                     colorpicker.BlackOutline.ZIndex = 4
@@ -608,7 +655,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     colorpicker.Outline2.BorderSizePixel = 0
                     colorpicker.Outline2.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
                     colorpicker.Outline2.Position = UDim2.fromOffset(-1, -1)
-    
+
                     colorpicker.BlackOutline2 = Instance.new("Frame", colorpicker.MainPicker)
                     colorpicker.BlackOutline2.Name = "blackline"
                     colorpicker.BlackOutline2.ZIndex = 98
@@ -641,7 +688,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     colorpicker.selector.BackgroundColor3 = Color3.fromRGB(255,255,255)
                     colorpicker.selector.BorderColor3 = Color3.new(0, 0, 0)
                     colorpicker.selector.Text = ""
-        
+
                     colorpicker.gradient = Instance.new("UIGradient", colorpicker.selector)
                     colorpicker.gradient.Color = ColorSequence.new({
                         ColorSequenceKeypoint.new(0, Color3.new(1,0,0)),
@@ -688,7 +735,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                             colorpicker:RefreshSelector()
                         end
                     end)
-    
+
                     colorpicker.selector.InputEnded:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseButton1 then
                             dragging_selector = false
@@ -702,14 +749,14 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                             colorpicker:RefreshHue()
                         end
                     end)
-    
+
                     colorpicker.hue.InputEnded:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseButton1 then
                             dragging_hue = false
                             colorpicker:RefreshHue()
                         end
                     end)
-    
+
                     game:GetService("UserInputService").InputChanged:Connect(function(input)
                         if dragging_selector and input.UserInputType == Enum.UserInputType.MouseMovement then
                             colorpicker:RefreshSelector()
@@ -783,7 +830,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
 
                 return toggle
             end
-            
+
             function sector:AddTextbox(text,default,callback)
                 local textbox = { }
                 textbox.text = text or ""
@@ -1117,7 +1164,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 colorpicker.selector.BackgroundColor3 = Color3.fromRGB(255,255,255)
                 colorpicker.selector.BorderColor3 = Color3.new(0, 0, 0)
                 colorpicker.selector.Text = ""
-    
+
                 colorpicker.gradient = Instance.new("UIGradient", colorpicker.selector)
                 colorpicker.gradient.Color = ColorSequence.new({
                     ColorSequenceKeypoint.new(0, Color3.new(1,0,0)),
