@@ -867,28 +867,29 @@ function library:CreateWindow(name, size, hidebutton)
                 slider.value = slider.default
                 local dragging = false
 
-                slider.BackLabel = Instance.new("Frame", sector.Items)
-                slider.BackLabel.Name = "backlabel"
-                slider.BackLabel.ZIndex = 3
-                slider.BackLabel.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 10)
-                slider.BackLabel.BorderSizePixel = 0
-                slider.BackLabel.BackgroundTransparency = 1
+                slider.MainBack = Instance.new("Frame", sector.Items)
+                slider.MainBack.Name = "MainBack"
+                slider.MainBack.ZIndex = 7
+                slider.MainBack.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 25)
+                slider.MainBack.BorderSizePixel = 0
+                slider.MainBack.BackgroundTransparency = 1
 
-                slider.Label = Instance.new("TextLabel", slider.BackLabel)
+                slider.Label = Instance.new("TextLabel", slider.MainBack)
                 slider.Label.BackgroundTransparency = 1
-                slider.Label.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 10)
+                slider.Label.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 6)
                 slider.Label.Font = window.theme.font
                 slider.Label.Text = slider.text .. ": " .. tostring(slider.default)
                 slider.Label.TextColor3 = window.theme.itemscolor
-                slider.Label.Position = UDim2.fromOffset(0, 3)
+                slider.Label.Position = UDim2.fromOffset(0, 0)
                 slider.Label.TextSize = 13
                 slider.Label.ZIndex = 2
                 slider.Label.TextStrokeTransparency = 1
                 slider.Label.TextXAlignment = Enum.TextXAlignment.Left
 
-                slider.Main = Instance.new("TextButton", sector.Items)
+                slider.Main = Instance.new("TextButton", slider.MainBack)
                 slider.Main.Name = "slider"
                 slider.Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                slider.Main.Position = UDim2.fromOffset(0, 15)
                 slider.Main.BorderSizePixel = 0
                 slider.Main.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 10)
                 slider.Main.AutoButtonColor = false
@@ -1293,18 +1294,17 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.callback = callback or function() end
                 dropdown.value = dropdown.default
 
-                dropdown.BackLabel = Instance.new("Frame", sector.Items)
-                dropdown.BackLabel.Name = "backlabel"
-                dropdown.BackLabel.ZIndex = 3
-                dropdown.BackLabel.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 10)
-                dropdown.BackLabel.BorderSizePixel = 0
-                dropdown.BackLabel.BackgroundTransparency = 1
-
-                dropdown.Label = Instance.new("TextLabel", dropdown.BackLabel)
+                dropdown.MainBack = Instance.new("Frame", sector.Items)
+                dropdown.MainBack.Name = "backlabel"
+                dropdown.MainBack.ZIndex = 7
+                dropdown.MainBack.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 34)
+                dropdown.MainBack.BorderSizePixel = 0
+                dropdown.MainBack.BackgroundTransparency = 1
+                dropdown.Label = Instance.new("TextLabel", dropdown.MainBack)
                 dropdown.Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 dropdown.Label.BackgroundTransparency = 1
                 dropdown.Label.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 10)
-                dropdown.Label.Position = UDim2.fromOffset(0, 3)
+                dropdown.Label.Position = UDim2.fromOffset(0, 0)
                 dropdown.Label.Font = window.theme.font
                 dropdown.Label.Text = dropdown.text
                 dropdown.Label.ZIndex = 4
@@ -1313,11 +1313,12 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.Label.TextStrokeTransparency = 1
                 dropdown.Label.TextXAlignment = Enum.TextXAlignment.Left
 
-                dropdown.Main = Instance.new("TextButton", sector.Items)
+                dropdown.Main = Instance.new("TextButton", dropdown.MainBack)
                 dropdown.Main.Name = "dropdown"
                 dropdown.Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 dropdown.Main.BorderSizePixel = 0
                 dropdown.Main.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 16)
+                dropdown.Main.Position = UDim2.fromOffset(0, 17)
                 dropdown.Main.ZIndex = 4
                 dropdown.Main.AutoButtonColor = false
                 dropdown.Main.Font = window.theme.font
