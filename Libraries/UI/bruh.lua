@@ -1,4 +1,3 @@
---by spoopoo
 local library = { }
 
 local player = game:GetService("Players").LocalPlayer
@@ -18,63 +17,33 @@ UserInputService.InputChanged:Connect(function(input)
 	end
 end)
 
-function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY,backimage,hidebutton)
-    local ScreenGui = Instance.new("ScreenGui")
-    local Main = Instance.new("Frame")
-    local TopBar = Instance.new("Frame")
+library.theme = {
+    fontsize = 15,
+    font = Enum.Font.Code,
+    background = "rbxassetid://6880496154",
+    backgroundcolor = Color3.fromRGB(20, 20, 20),
+    tabstextcolor = Color3.fromRGB(230, 230, 230),
+    bordercolor = Color3.fromRGB(60, 60, 60),
+    accentcolor = Color3.fromRGB(28, 56, 139),
+    accentcolor2 = Color3.fromRGB(16, 31, 78),
+    outlinecolor = Color3.fromRGB(60, 60, 60),
+    outlinecolor2 = Color3.fromRGB(0, 0, 0),
+    sectorcolor = Color3.fromRGB(30, 30, 30),
+    toptextcolor = Color3.fromRGB(255, 255, 255),
+    topcolor = Color3.fromRGB(30, 30, 30),
+    topcolor2 = Color3.fromRGB(12, 12, 12),
+    buttoncolor = Color3.fromRGB(49, 49, 49),
+    buttoncolor2 = Color3.fromRGB(39, 39, 39),
+    itemscolor = Color3.fromRGB(200, 200, 200)
+}
 
-    ScreenGui.Parent = game.CoreGui
-
-    Main.Name = "Main"
-    Main.Parent = ScreenGui
-    Main.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
-    Main.BorderColor3 = Color3.fromRGB(80, 80, 80)
-    Main.BorderSizePixel = 2
-    Main.Position = UDim2.new(0.0559123, -89, 0.01, 0)
-    Main.Size = UDim2.new(0, 0, 0, 25)
-    Main.ClipsDescendants=true
-
-    TopBar.Name = "TopBar"
-    TopBar.Parent = Main
-    TopBar.BackgroundColor3 = accentcolor
-    TopBar.BorderSizePixel = 0
-    TopBar.Size = UDim2.new(0, 0, 0, 2)
-
-    Main.MouseEnter:Connect(function()
-        game.TweenService:Create(Main, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            BackgroundTransparency = 1
-        }):Play()
-        game.TweenService:Create(TopBar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            BackgroundTransparency = 1
-        }):Play()
-        game.TweenService:Create(FPSLabel, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            TextTransparency = 1
-        }):Play()
-    end)
-
-    Main.MouseLeave:Connect(function()
-        game.TweenService:Create(Main, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            BackgroundTransparency = 0
-        }):Play()
-        game.TweenService:Create(TopBar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            BackgroundTransparency = 0
-        }):Play()
-        game.TweenService:Create(FPSLabel, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            TextTransparency = 0
-        }):Play()
-    end)
-
-
+function library:CreateWindow(name, size, hidebutton)
     local window = { }
-
+    
     window.name = name or "New Window"
-    window.textsize = textsize or 12
-    window.accentcolor = accentcolor or Color3.fromRGB(28, 56, 139)
-    window.accentcolor2 = accentcolor2 or Color3.fromRGB(16, 31, 78)
-    window.size = UDim2.fromOffset(sizeX, sizeY) or UDim2.fromOffset(400, 477)
-    window.backimage = backimage
+    window.size = UDim2.fromOffset(size.X, size.Y) or UDim2.fromOffset(492, 598)
     window.hidebutton = hidebutton or Enum.KeyCode.RightShift
-
+    window.theme = library.theme
 
     window.SelectedTab = nil
 
@@ -96,7 +65,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
             dragging = true
             dragStart = input.Position
             startPos = gui.Position
-
+            
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
                     dragging = false
@@ -114,9 +83,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
     window.Frame = Instance.new("Frame", window.Main)
     window.Frame.Name = "main"
     window.Frame.Position = UDim2.fromScale(0.5, 0.5)
-    window.Frame.BorderColor3 = Color3.fromRGB(60, 60, 60)
+    window.Frame.BorderColor3 = window.theme.bordercolor
     window.Frame.Size = window.size
-    window.Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    window.Frame.BackgroundColor3 = window.theme.backgroundcolor
     window.Frame.AnchorPoint = Vector2.new(0.5, 0.5)
 
     window.BlackOutline = Instance.new("Frame", window.Frame)
@@ -124,12 +93,12 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
     window.BlackOutline.ZIndex = 0
     window.BlackOutline.Size = window.size + UDim2.fromOffset(4, 4)
     window.BlackOutline.BorderSizePixel = 0
-    window.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+    window.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
     window.BlackOutline.Position = UDim2.fromOffset(-2, -2)
 
     window.TopBar = Instance.new("Frame", window.Frame)
     window.TopBar.Name = "top"
-    window.TopBar.Size = UDim2.fromOffset(window.size.X.Offset, 24)
+    window.TopBar.Size = UDim2.fromOffset(window.size.X.Offset, 20)
     window.TopBar.BorderSizePixel = 0
     window.TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     window.TopBar.InputBegan:Connect(dragstart)
@@ -137,29 +106,25 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
 
     window.TopGradient = Instance.new("UIGradient", window.TopBar)
     window.TopGradient.Rotation = 90
-    window.TopGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(29, 29, 29)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(12, 12, 12))}
+    window.TopGradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, window.theme.topcolor), ColorSequenceKeypoint.new(1.00, window.theme.topcolor2) })
 
     window.NameLabel = Instance.new("TextLabel", window.TopBar)
-    window.NameLabel.TextColor3 = Color3.new(1,1,1)
+    window.NameLabel.TextColor3 = window.theme.toptextcolor
     window.NameLabel.Text = window.name
     window.NameLabel.TextXAlignment = Enum.TextXAlignment.Left
-    window.NameLabel.Font = Enum.Font.Code
+    window.NameLabel.Font = window.theme.font
     window.NameLabel.Name = "title"
     window.NameLabel.Position = UDim2.fromOffset(6, 0)
     window.NameLabel.BackgroundTransparency = 1
     window.NameLabel.Size = UDim2.fromOffset(194, 19)
-    window.NameLabel.TextSize = window.textsize
+    window.NameLabel.TextSize = window.theme.fontsize
 
     window.Line2 = Instance.new("Frame", window.Frame)
     window.Line2.Name = "line"
     window.Line2.Position = UDim2.fromOffset(0, 20)
     window.Line2.Size = UDim2.fromOffset(window.size.X.Offset, 1)
     window.Line2.BorderSizePixel = 0
-    game:GetService("RunService").RenderStepped:Connect(function()
-        if window.Line2.BackgroundColor3 ~= window.accentcolor then
-            window.Line2.BackgroundColor3 = window.accentcolor
-        end
-    end)
+    window.Line2.BackgroundColor3 = window.theme.accentcolor
 
     window.TabList = Instance.new("Frame", window.Frame)
     window.TabList.Name = "tablist"
@@ -178,10 +143,10 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
     window.BlackLine.Size = UDim2.fromOffset(window.size.X.Offset, 1)
     window.BlackLine.BorderSizePixel = 0
     window.BlackLine.ZIndex = 9
-    window.BlackLine.BackgroundColor3 = Color3.new(0, 0, 0)
-    window.BlackLine.Position = UDim2.fromOffset(0, window.TabList.Position.Y.Offset) + UDim2.fromOffset(0, window.TabList.Size.Y.Offset - 1)
+    window.BlackLine.BackgroundColor3 = window.theme.outlinecolor2
+    window.BlackLine.Position = UDim2.fromOffset(0, window.TabList.Position.Y.Offset) + UDim2.fromOffset(0, window.TabList.AbsoluteSize.Y - 1)
 
-    if window.backimage then
+    if window.theme.background then
         window.BackgroundImage = Instance.new("ImageButton", window.Frame)
         window.BackgroundImage.Name = "navigation"
         window.BackgroundImage.BackgroundTransparency = 1
@@ -189,9 +154,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
         window.BackgroundImage.ScaleType = Enum.ScaleType.Stretch
         window.BackgroundImage.Position = window.BlackLine.Position + UDim2.fromOffset(0, 1)
         window.BackgroundImage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - 40)
-        game:GetService("RunService").RenderStepped:Connect(function()
-            window.BackgroundImage.Image = window.backimage
-        end)
+        window.BackgroundImage.Image = window.theme.background
     end
 
     window.Line = Instance.new("Frame", window.Frame)
@@ -199,11 +162,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
     window.Line.Position = UDim2.fromOffset(0, 0)
     window.Line.Size = UDim2.fromOffset(60, 1)
     window.Line.BorderSizePixel = 0
-    game:GetService("RunService").RenderStepped:Connect(function()
-        if window.Line.BackgroundColor3 ~= window.accentcolor then
-            window.Line.BackgroundColor3 = window.accentcolor
-        end
-    end)
+    window.Line.BackgroundColor3 = window.theme.accentcolor
 
     window.ListLayout = Instance.new("UIListLayout", window.TabList)
     window.ListLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -216,17 +175,17 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
         tab.name = name or ""
 
         local textservice = game:GetService("TextService")
-        local size = textservice:GetTextSize(tab.name, window.textsize, Enum.Font.Code, Vector2.new(200,300))
+        local size = textservice:GetTextSize(tab.name, window.theme.fontsize, window.theme.font, Vector2.new(200,300))
 
         tab.TabButton = Instance.new("TextButton", window.TabList)
-        tab.TabButton.TextColor3 = Color3.fromRGB(230, 230, 230)
+        tab.TabButton.TextColor3 = window.theme.tabstextcolor
         tab.TabButton.Text = tab.name
         tab.TabButton.AutoButtonColor = false
-        tab.TabButton.Font = Enum.Font.Code
+        tab.TabButton.Font = window.theme.font
         tab.TabButton.BackgroundTransparency = 1
         tab.TabButton.Size = UDim2.fromOffset(size.X + 15, 16)
         tab.TabButton.Name = tab.name
-        tab.TabButton.TextSize = window.textsize
+        tab.TabButton.TextSize = window.theme.fontsize
 
         tab.TabPage = Instance.new("ScrollingFrame", window.Frame)
         tab.TabPage.Name = tab.name:gsub(" ", "") .. "page"
@@ -239,11 +198,11 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
 
         game:GetService("RunService").RenderStepped:Connect(function()
             tab.TabPage.Visible = (window.SelectedTab == tab.TabButton)
-            if window.SelectedTab ~= tab.TabButton and tab.TabButton.TextColor3 == window.accentcolor then
+            if window.SelectedTab ~= tab.TabButton and tab.TabButton.TextColor3 == window.theme.accentcolor then
                 tab.TabButton.TextColor3 = Color3.fromRGB(230, 230, 230)
             end
-            if window.SelectedTab and window.SelectedTab.TextColor3 ~= window.accentcolor then
-                window.SelectedTab.TextColor3 = window.accentcolor
+            if window.SelectedTab and window.SelectedTab.TextColor3 ~= window.theme.accentcolor then
+                window.SelectedTab.TextColor3 = window.theme.accentcolor
             end
         end)
 
@@ -259,7 +218,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
             wait(0.2)
             block = false
         end
-
+    
 
         tab.TabButton.MouseButton1Down:Connect(function()
             tab:SelectTab()
@@ -276,13 +235,13 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
             local sector = { }
             sector.name = name or ""
             sector.side = side or "left"
-
+            
             sector.Main = Instance.new("Frame", tab.TabPage) 
             sector.Main.Name = sector.name:gsub(" ", "") .. "Sector"
-            sector.Main.BorderColor3 = Color3.fromRGB(60, 60, 60)
+            sector.Main.BorderColor3 = window.theme.outlinecolor
             sector.Main.ZIndex = 2
             sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, 20)
-            sector.Main.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            sector.Main.BackgroundColor3 = window.theme.sectorcolor
 
             sector.Line = Instance.new("Frame", sector.Main)
             sector.Line.Name = "line"
@@ -290,36 +249,31 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
             sector.Line.Size = UDim2.fromOffset(sector.Main.Size.X.Offset + 2, 1)
             sector.Line.BorderSizePixel = 0
             sector.Line.Position = UDim2.fromOffset(-1, -1)
-            game:GetService("RunService").RenderStepped:Connect(function()
-                if sector.Line.BackgroundColor3 ~= window.accentcolor then
-                    sector.Line.BackgroundColor3 = window.accentcolor
-                end
-            end)
-
+            sector.Line.BackgroundColor3 = window.theme.accentcolor
 
             sector.BlackOutline = Instance.new("Frame", sector.Main)
             sector.BlackOutline.Name = "blackline"
             sector.BlackOutline.ZIndex = 1
             sector.BlackOutline.Size = sector.Main.Size + UDim2.fromOffset(4, 4)
             sector.BlackOutline.BorderSizePixel = 0
-            sector.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+            sector.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
             sector.BlackOutline.Position = UDim2.fromOffset(-2, -2)
             sector.Main:GetPropertyChangedSignal("Size"):Connect(function()
                 sector.BlackOutline.Size = sector.Main.Size + UDim2.fromOffset(4, 4)
             end)
 
-            local size = textservice:GetTextSize(sector.name, 13, Enum.Font.Code, Vector2.new(2000, 2000))
+            local size = textservice:GetTextSize(sector.name, 13, window.theme.font, Vector2.new(2000, 2000))
             sector.Label = Instance.new("TextLabel", sector.Main)
             sector.Label.AnchorPoint = Vector2.new(0,0.5)
             sector.Label.Position = UDim2.fromOffset(12, -1)
-            sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 13, Enum.Font.Code, Vector2.new(200,300)).X + 10, 0, sector.Main.Size.X.Offset), size.Y)
+            sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 13, window.theme.font, Vector2.new(200,300)).X + 10, 0, sector.Main.Size.X.Offset), size.Y)
             sector.Label.BackgroundTransparency = 1
             sector.Label.BorderSizePixel = 0
             sector.Label.ZIndex = 4
             sector.Label.Text = sector.name
             sector.Label.TextColor3 = Color3.new(1,1,2552/255)
             sector.Label.TextStrokeTransparency = 1
-            sector.Label.Font = Enum.Font.Code
+            sector.Label.Font = window.theme.font
             sector.Label.TextSize = 13
 
             sector.LabelBackFrame = Instance.new("Frame", sector.Label)
@@ -328,7 +282,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
             sector.LabelBackFrame.Size = UDim2.fromOffset(sector.Label.Size.X.Offset, 10)
             sector.LabelBackFrame.BorderSizePixel = 0
             sector.LabelBackFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-            sector.LabelBackFrame.Position = UDim2.fromOffset(0, 5)
+            sector.LabelBackFrame.Position = UDim2.fromOffset(0, 6)
 
             sector.Items = Instance.new("Frame", sector.Main) 
             sector.Items.Name = "items"
@@ -341,10 +295,10 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
             sector.ListLayout = Instance.new("UIListLayout", sector.Items)
             sector.ListLayout.FillDirection = Enum.FillDirection.Vertical
             sector.ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-            sector.ListLayout.Padding = UDim.new(0, 9)
+            sector.ListLayout.Padding = UDim.new(0, 10)
 
             sector.ListPadding = Instance.new("UIPadding", sector.Items)
-            sector.ListPadding.PaddingTop = UDim.new(0, 12)
+            sector.ListPadding.PaddingTop = UDim.new(0, 10)
             sector.ListPadding.PaddingLeft = UDim.new(0, 6)
             sector.ListPadding.PaddingRight = UDim.new(0, 6)
 
@@ -365,14 +319,14 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
 
                 button.Gradient = Instance.new("UIGradient", button.Main)
                 button.Gradient.Rotation = 90
-                button.Gradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(49, 49, 49)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(39, 39, 39))}
+                button.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, window.theme.buttoncolor), ColorSequenceKeypoint.new(1.00, window.theme.buttoncolor2) })
 
                 button.Outline = Instance.new("Frame", button.Main)
                 button.Outline.Name = "blackline"
                 button.Outline.ZIndex = 3
                 button.Outline.Size = button.Main.Size + UDim2.fromOffset(2, 2)
                 button.Outline.BorderSizePixel = 0
-                button.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                button.Outline.BackgroundColor3 = window.theme.outlinecolor
                 button.Outline.Position = UDim2.fromOffset(-1, -1)
 
                 button.BlackOutline = Instance.new("Frame", button.Main)
@@ -380,7 +334,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 button.BlackOutline.ZIndex = 2
                 button.BlackOutline.Size = button.Main.Size + UDim2.fromOffset(4, 4)
                 button.BlackOutline.BorderSizePixel = 0
-                button.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                button.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                 button.BlackOutline.Position = UDim2.fromOffset(-2, -2)
 
                 button.Label = Instance.new("TextLabel", button.Main)
@@ -389,9 +343,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 button.Label.Position = UDim2.new(0, -1, 0, 0)
                 button.Label.ZIndex = 4
                 button.Label.AutomaticSize = Enum.AutomaticSize.XY
-                button.Label.Font = Enum.Font.Code
+                button.Label.Font = window.theme.font
                 button.Label.Text = " " .. button.text
-                button.Label.TextColor3 = Color3.fromRGB(200, 200, 200)
+                button.Label.TextColor3 = window.theme.itemscolor
                 button.Label.TextSize = 13
                 button.Label.TextStrokeTransparency = 1
                 button.Label.TextXAlignment = Enum.TextXAlignment.Left
@@ -402,20 +356,20 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 end)
 
                 button.BlackOutline.MouseEnter:Connect(function()
-                    button.Outline.BackgroundColor3 = window.accentcolor
-                    button.BlackOutline.BackgroundColor3 = window.accentcolor
+                    button.Outline.BackgroundColor3 = window.theme.accentcolor
+                    button.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                     button.Outline.BackgroundTransparency = 0.4
                     button.BlackOutline.BackgroundTransparency = 0.5
                 end)
                 button.BlackOutline.MouseLeave:Connect(function()
-                    button.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-                    button.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                    button.Outline.BackgroundColor3 = window.theme.outlinecolor
+                    button.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                     button.Outline.BackgroundTransparency = 0
                     button.BlackOutline.BackgroundTransparency = 0
                 end)
 
-                sector.Main.Size = UDim2.new(0, window.size.X.Offset / 2 - 17, 0, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
 
                 return button
             end
@@ -429,9 +383,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 label.Main.Position = UDim2.new(0, -1, 0, 0)
                 label.Main.ZIndex = 4
                 label.Main.AutomaticSize = Enum.AutomaticSize.XY
-                label.Main.Font = Enum.Font.Code
+                label.Main.Font = window.theme.font
                 label.Main.Text = text
-                label.Main.TextColor3 = Color3.fromRGB(200, 200, 200)
+                label.Main.TextColor3 = window.theme.itemscolor
                 label.Main.TextSize = 13
                 label.Main.TextStrokeTransparency = 1
                 label.Main.TextXAlignment = Enum.TextXAlignment.Left
@@ -440,25 +394,24 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     label.Main.Text = value
                 end
 
-
-                sector.Main.Size = UDim2.new(0, window.size.X.Offset / 2 - 17, 0, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
 
                 return label
             end
-
+            
             function sector:AddToggle(text,default, callback)
                 local toggle = { }
                 toggle.text = text or ""
                 toggle.default = default or false
                 toggle.callback = callback or function(value) end
-
+                
                 toggle.value = toggle.default
 
                 toggle.Main = Instance.new("TextButton", sector.Items)
                 toggle.Main.Name = "toggle"
                 toggle.Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                toggle.Main.BorderColor3 = Color3.fromRGB(60, 60, 60)
+                toggle.Main.BorderColor3 = window.theme.outlinecolor
                 toggle.Main.BorderSizePixel = 0
                 toggle.Main.Size = UDim2.fromOffset(10, 10)
                 toggle.Main.AutoButtonColor = false
@@ -469,11 +422,11 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 toggle.Main.TextSize = 14
 
                 toggle.Outline = Instance.new("Frame", toggle.Main)
-                toggle.Outline.Name = "blackline"
+                toggle.Outline.Name = "outline"
                 toggle.Outline.ZIndex = 3
                 toggle.Outline.Size = toggle.Main.Size + UDim2.fromOffset(2, 2)
                 toggle.Outline.BorderSizePixel = 0
-                toggle.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                toggle.Outline.BackgroundColor3 = window.theme.outlinecolor
                 toggle.Outline.Position = UDim2.fromOffset(-1, -1)
 
                 toggle.BlackOutline = Instance.new("Frame", toggle.Main)
@@ -481,12 +434,12 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 toggle.BlackOutline.ZIndex = 2
                 toggle.BlackOutline.Size = toggle.Main.Size + UDim2.fromOffset(4, 4)
                 toggle.BlackOutline.BorderSizePixel = 0
-                toggle.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                toggle.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                 toggle.BlackOutline.Position = UDim2.fromOffset(-2, -2)
-
+                
                 toggle.Gradient = Instance.new("UIGradient", toggle.Main)
                 toggle.Gradient.Rotation = (22.5 * 13)
-                toggle.Gradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(30, 30, 30)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(45, 45, 45))}
+                toggle.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, Color3.fromRGB(30, 30, 30)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(45, 45, 45)) })
 
                 toggle.Label = Instance.new("TextLabel", toggle.Main)
                 toggle.Label.Name = "Label"
@@ -494,10 +447,10 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 toggle.Label.BackgroundTransparency = 1
                 toggle.Label.Position = UDim2.fromOffset(toggle.Main.AbsoluteSize.X + 10, -2)
                 toggle.Label.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 71, toggle.BlackOutline.Size.Y.Offset)
-                toggle.Label.Font = Enum.Font.Code
+                toggle.Label.Font = window.theme.font
                 toggle.Label.ZIndex = 2
                 toggle.Label.Text = toggle.text
-                toggle.Label.TextColor3 = Color3.fromRGB(200, 200, 200)
+                toggle.Label.TextColor3 = window.theme.itemscolor
                 toggle.Label.TextSize = 13
                 toggle.Label.TextStrokeTransparency = 1
                 toggle.Label.TextXAlignment = Enum.TextXAlignment.Left
@@ -510,10 +463,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
 
                 toggle.Gradient2 = Instance.new("UIGradient", toggle.CheckedFrame)
                 toggle.Gradient2.Rotation = (22.5 * 13)
-                game:GetService("RunService").RenderStepped:Connect(function()
-                    local clr = ColorSequence.new({ColorSequenceKeypoint.new(0.00, window.accentcolor2), ColorSequenceKeypoint.new(1.00, window.accentcolor)})
-                    toggle.Gradient2.Color = clr
-                end)
+                toggle.Gradient2.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, window.theme.accentcolor2), ColorSequenceKeypoint.new(1.00, window.theme.accentcolor) })
 
                 toggle.Items = Instance.new("Frame", toggle.Main)
                 toggle.Items.Name = "\n"
@@ -548,7 +498,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     keybind.value = keybind.default
 
                     local text = toggle.defaultkeybind == "None" and "[None]" or "[" .. keybind.default.Name .. "]"
-                    local size = textservice:GetTextSize(text, 13, Enum.Font.Code, Vector2.new(2000, 2000))
+                    local size = textservice:GetTextSize(text, 13, window.theme.font, Vector2.new(2000, 2000))
 
                     keybind.Main = Instance.new("TextButton", toggle.Items)
                     keybind.Main.Name = "keybind"
@@ -557,7 +507,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     keybind.Main.ZIndex = 2
                     keybind.Main.Size = UDim2.fromOffset(size.X + 2, size.Y)
                     keybind.Main.Text = text
-                    keybind.Main.Font = Enum.Font.Code
+                    keybind.Main.Font = window.theme.font
                     keybind.Main.TextColor3 = Color3.fromRGB(136, 136, 136)
                     keybind.Main.TextSize = 13
                     keybind.Main.TextXAlignment = Enum.TextXAlignment.Right
@@ -601,37 +551,36 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
 
                     colorpicker.Gradient = Instance.new("UIGradient", colorpicker.Main)
                     colorpicker.Gradient.Rotation = 90
-                    game:GetService("RunService").RenderStepped:Connect(function()
-                        local clr = Color3.new(math.clamp(colorpicker.value.R / 1.7, 0, 1), math.clamp(colorpicker.value.G / 1.7, 0, 1), math.clamp(colorpicker.value.B / 1.7, 0, 1))
-                        colorpicker.Gradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0.00, colorpicker.value), ColorSequenceKeypoint.new(1.00, clr)})
-                    end)
+
+                    local clr = Color3.new(math.clamp(colorpicker.value.R / 1.7, 0, 1), math.clamp(colorpicker.value.G / 1.7, 0, 1), math.clamp(colorpicker.value.B / 1.7, 0, 1))
+                    colorpicker.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, colorpicker.value), ColorSequenceKeypoint.new(1.00, clr) })
 
                     colorpicker.Outline = Instance.new("Frame", colorpicker.Main)
                     colorpicker.Outline.Name = "outline"
                     colorpicker.Outline.ZIndex = 5
                     colorpicker.Outline.Size = colorpicker.Main.Size + UDim2.fromOffset(2, 2)
                     colorpicker.Outline.BorderSizePixel = 0
-                    colorpicker.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                    colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
                     colorpicker.Outline.Position = UDim2.fromOffset(-1, -1)
-
+    
                     colorpicker.BlackOutline = Instance.new("Frame", colorpicker.Main)
                     colorpicker.BlackOutline.Name = "blackline"
                     colorpicker.BlackOutline.ZIndex = 4
                     colorpicker.BlackOutline.Size = colorpicker.Main.Size + UDim2.fromOffset(4, 4)
                     colorpicker.BlackOutline.BorderSizePixel = 0
-                    colorpicker.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                    colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                     colorpicker.BlackOutline.Position = UDim2.fromOffset(-2, -2)
 
                     colorpicker.BlackOutline.MouseEnter:Connect(function()
-                        colorpicker.Outline.BackgroundColor3 = window.accentcolor
-                        colorpicker.BlackOutline.BackgroundColor3 = window.accentcolor
+                        colorpicker.Outline.BackgroundColor3 = window.theme.accentcolor
+                        colorpicker.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                         colorpicker.Outline.BackgroundTransparency = 0.4
                         colorpicker.BlackOutline.BackgroundTransparency = 0.5
                     end)
                     colorpicker.BlackOutline.MouseLeave:Connect(function()
                         if not window.OpenedColorPickers[colorpicker.MainPicker] then
-                            colorpicker.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-                            colorpicker.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                            colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
+                            colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                             colorpicker.Outline.BackgroundTransparency = 0
                             colorpicker.BlackOutline.BackgroundTransparency = 0
                         end
@@ -653,15 +602,15 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     colorpicker.Outline2.ZIndex = 99
                     colorpicker.Outline2.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(2, 2)
                     colorpicker.Outline2.BorderSizePixel = 0
-                    colorpicker.Outline2.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                    colorpicker.Outline2.BackgroundColor3 = window.theme.outlinecolor
                     colorpicker.Outline2.Position = UDim2.fromOffset(-1, -1)
-
+    
                     colorpicker.BlackOutline2 = Instance.new("Frame", colorpicker.MainPicker)
                     colorpicker.BlackOutline2.Name = "blackline"
                     colorpicker.BlackOutline2.ZIndex = 98
                     colorpicker.BlackOutline2.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(4, 4)
                     colorpicker.BlackOutline2.BorderSizePixel = 0
-                    colorpicker.BlackOutline2.BackgroundColor3 = Color3.new(0, 0, 0)
+                    colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
                     colorpicker.BlackOutline2.Position = UDim2.fromOffset(-2, -2)
 
                     colorpicker.hue = Instance.new("ImageLabel", colorpicker.MainPicker)
@@ -671,7 +620,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     colorpicker.hue.Image = "rbxassetid://4155801252"
                     colorpicker.hue.ScaleType = Enum.ScaleType.Stretch
                     colorpicker.hue.BackgroundColor3 = Color3.new(1,0,0)
-                    colorpicker.hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                    colorpicker.hue.BorderColor3 = window.theme.outlinecolor2
 
                     colorpicker.hueselectorpointer = Instance.new("ImageLabel", colorpicker.MainPicker)
                     colorpicker.hueselectorpointer.ZIndex = 101
@@ -686,17 +635,11 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     colorpicker.selector.Position = UDim2.new(0,5,0,163)
                     colorpicker.selector.Size = UDim2.new(0,150,0,10)
                     colorpicker.selector.BackgroundColor3 = Color3.fromRGB(255,255,255)
-                    colorpicker.selector.BorderColor3 = Color3.new(0, 0, 0)
+                    colorpicker.selector.BorderColor3 = window.theme.outlinecolor2
                     colorpicker.selector.Text = ""
-
+        
                     colorpicker.gradient = Instance.new("UIGradient", colorpicker.selector)
-                    colorpicker.gradient.Color = ColorSequence.new({
-                        ColorSequenceKeypoint.new(0, Color3.new(1,0,0)),
-                        ColorSequenceKeypoint.new(0.25,Color3.new(1,0,1)),
-                        ColorSequenceKeypoint.new(0.5,Color3.new(0,1,1)),
-                        ColorSequenceKeypoint.new(0.75,Color3.new(1,1,0)),
-                        ColorSequenceKeypoint.new(1,Color3.new(1,0,0)),
-                    })
+                    colorpicker.gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.new(1,0,0)), ColorSequenceKeypoint.new(0.25,Color3.new(1,0,1)), ColorSequenceKeypoint.new(0.5,Color3.new(0,1,1)), ColorSequenceKeypoint.new(0.75,Color3.new(1,1,0)), ColorSequenceKeypoint.new(1,Color3.new(1,0,0))})
 
                     colorpicker.pointer = Instance.new("Frame", colorpicker.selector)
                     colorpicker.pointer.ZIndex = 101
@@ -722,6 +665,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     function colorpicker:Set(value)
                         local color = Color3.new(math.clamp(value.r, 0, 1), math.clamp(value.g, 0, 1), math.clamp(value.b, 0, 1))
                         colorpicker.value = color
+
+                        local clr = Color3.new(math.clamp(color.R / 1.7, 0, 1), math.clamp(color.G / 1.7, 0, 1), math.clamp(color.B / 1.7, 0, 1))
+                        colorpicker.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, color), ColorSequenceKeypoint.new(1.00, clr) })
                         pcall(colorpicker.callback, color)
                     end
                     colorpicker:Set(colorpicker.default)
@@ -735,7 +681,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                             colorpicker:RefreshSelector()
                         end
                     end)
-
+    
                     colorpicker.selector.InputEnded:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseButton1 then
                             dragging_selector = false
@@ -749,14 +695,14 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                             colorpicker:RefreshHue()
                         end
                     end)
-
+    
                     colorpicker.hue.InputEnded:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseButton1 then
                             dragging_hue = false
                             colorpicker:RefreshHue()
                         end
                     end)
-
+    
                     game:GetService("UserInputService").InputChanged:Connect(function(input)
                         if dragging_selector and input.UserInputType == Enum.UserInputType.MouseMovement then
                             colorpicker:RefreshSelector()
@@ -778,13 +724,13 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                             colorpicker.MainPicker.Visible = not colorpicker.MainPicker.Visible
                             window.OpenedColorPickers[colorpicker.MainPicker] = colorpicker.MainPicker.Visible
                             if window.OpenedColorPickers[colorpicker.MainPicker] then
-                                colorpicker.Outline.BackgroundColor3 = window.accentcolor
-                                colorpicker.BlackOutline.BackgroundColor3 = window.accentcolor
+                                colorpicker.Outline.BackgroundColor3 = window.theme.accentcolor
+                                colorpicker.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                                 colorpicker.Outline.BackgroundTransparency = 0.4
                                 colorpicker.BlackOutline.BackgroundTransparency = 0.5
                             else
-                                colorpicker.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-                                colorpicker.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                                colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
+                                colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                                 colorpicker.Outline.BackgroundTransparency = 0
                                 colorpicker.BlackOutline.BackgroundTransparency = 0
                             end
@@ -808,14 +754,14 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 end)
 
                 local MouseEnter = function()
-                    toggle.Outline.BackgroundColor3 = window.accentcolor
-                    toggle.BlackOutline.BackgroundColor3 = window.accentcolor
+                    toggle.Outline.BackgroundColor3 = window.theme.accentcolor
+                    toggle.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                     toggle.Outline.BackgroundTransparency = 0.4
                     toggle.BlackOutline.BackgroundTransparency = 0.5
                 end
                 local MouseLeave = function()
-                    toggle.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-                    toggle.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                    toggle.Outline.BackgroundColor3 = window.theme.outlinecolor
+                    toggle.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                     toggle.Outline.BackgroundTransparency = 0
                     toggle.BlackOutline.BackgroundTransparency = 0
                 end
@@ -826,11 +772,11 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 toggle.BlackOutline.MouseLeave:Connect(MouseLeave)
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
 
                 return toggle
             end
-
+            
             function sector:AddTextbox(text,default,callback)
                 local textbox = { }
                 textbox.text = text or ""
@@ -846,14 +792,14 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
 
                 textbox.Gradient = Instance.new("UIGradient", textbox.Holder)
                 textbox.Gradient.Rotation = 90
-                textbox.Gradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(49, 49, 49)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(39, 39, 39))}
+                textbox.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, Color3.fromRGB(49, 49, 49)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(39, 39, 39)) })
 
                 textbox.Main = Instance.new("TextBox", textbox.Holder)
                 textbox.Main.PlaceholderText = textbox.text
                 textbox.Main.PlaceholderColor3 = Color3.fromRGB(190, 190, 190)
                 textbox.Main.Text = ""
                 textbox.Main.BackgroundTransparency = 1
-                textbox.Main.Font = Enum.Font.Code
+                textbox.Main.Font = window.theme.font
                 textbox.Main.Name = "textbox"
                 textbox.Main.MultiLine = false
                 textbox.Main.ZIndex = 5
@@ -872,7 +818,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 textbox.Outline.ZIndex = 3
                 textbox.Outline.Size = textbox.Holder.Size + UDim2.fromOffset(2, 2)
                 textbox.Outline.BorderSizePixel = 0
-                textbox.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                textbox.Outline.BackgroundColor3 = window.theme.outlinecolor
                 textbox.Outline.Position = UDim2.fromOffset(-1, -1)
 
                 textbox.BlackOutline = Instance.new("Frame", textbox.Main)
@@ -880,18 +826,18 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 textbox.BlackOutline.ZIndex = 2
                 textbox.BlackOutline.Size = textbox.Holder.Size + UDim2.fromOffset(4, 4)
                 textbox.BlackOutline.BorderSizePixel = 0
-                textbox.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                textbox.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                 textbox.BlackOutline.Position = UDim2.fromOffset(-2, -2)
 
                 textbox.BlackOutline.MouseEnter:Connect(function()
-                    textbox.Outline.BackgroundColor3 = window.accentcolor
-                    textbox.BlackOutline.BackgroundColor3 = window.accentcolor
+                    textbox.Outline.BackgroundColor3 = window.theme.accentcolor
+                    textbox.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                     textbox.Outline.BackgroundTransparency = 0.4
                     textbox.BlackOutline.BackgroundTransparency = 0.5
                 end)
                 textbox.BlackOutline.MouseLeave:Connect(function()
-                    textbox.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-                    textbox.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                    textbox.Outline.BackgroundColor3 = window.theme.outlinecolor
+                    textbox.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                     textbox.Outline.BackgroundTransparency = 0
                     textbox.BlackOutline.BackgroundTransparency = 0
                 end)
@@ -904,7 +850,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 end
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
 
                 return textbox
             end
@@ -931,9 +877,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 slider.Label = Instance.new("TextLabel", slider.BackLabel)
                 slider.Label.BackgroundTransparency = 1
                 slider.Label.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 10)
-                slider.Label.Font = Enum.Font.Code
+                slider.Label.Font = window.theme.font
                 slider.Label.Text = slider.text .. ": " .. tostring(slider.default)
-                slider.Label.TextColor3 = Color3.fromRGB(200, 200, 200)
+                slider.Label.TextColor3 = window.theme.itemscolor
                 slider.Label.Position = UDim2.fromOffset(0, 3)
                 slider.Label.TextSize = 13
                 slider.Label.ZIndex = 2
@@ -954,7 +900,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 slider.Outline.ZIndex = 3
                 slider.Outline.Size = slider.Main.Size + UDim2.fromOffset(2, 2)
                 slider.Outline.BorderSizePixel = 0
-                slider.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                slider.Outline.BackgroundColor3 = window.theme.outlinecolor
                 slider.Outline.Position = UDim2.fromOffset(-1, -1)
 
                 slider.BlackOutline = Instance.new("Frame", slider.Main)
@@ -962,12 +908,12 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 slider.BlackOutline.ZIndex = 2
                 slider.BlackOutline.Size = slider.Main.Size + UDim2.fromOffset(4, 4)
                 slider.BlackOutline.BorderSizePixel = 0
-                slider.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                slider.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                 slider.BlackOutline.Position = UDim2.fromOffset(-2, -2)
 
                 slider.Gradient = Instance.new("UIGradient", slider.Main)
                 slider.Gradient.Rotation = 90
-                slider.Gradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(49, 49, 49)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(41, 41, 41))}
+                slider.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, Color3.fromRGB(49, 49, 49)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(41, 41, 41)) })
 
                 slider.SlideBar = Instance.new("Frame", slider.Main)
                 slider.SlideBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255) --Color3.fromRGB(204, 0, 102)
@@ -977,20 +923,17 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
 
                 slider.Gradient2 = Instance.new("UIGradient", slider.SlideBar)
                 slider.Gradient2.Rotation = 90
-                game:GetService("RunService").RenderStepped:Connect(function()
-                    local clr = ColorSequence.new({ColorSequenceKeypoint.new(0.00, window.accentcolor), ColorSequenceKeypoint.new(1.00, window.accentcolor2)})
-                    slider.Gradient2.Color = clr
-                end)
+                slider.Gradient2.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, window.theme.accentcolor), ColorSequenceKeypoint.new(1.00, window.theme.accentcolor2) })
 
                 slider.BlackOutline.MouseEnter:Connect(function()
-                    slider.Outline.BackgroundColor3 = window.accentcolor
-                    slider.BlackOutline.BackgroundColor3 = window.accentcolor
+                    slider.Outline.BackgroundColor3 = window.theme.accentcolor
+                    slider.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                     slider.Outline.BackgroundTransparency = 0.4
                     slider.BlackOutline.BackgroundTransparency = 0.5
                 end)
                 slider.BlackOutline.MouseLeave:Connect(function()
-                    slider.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-                    slider.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                    slider.Outline.BackgroundColor3 = window.theme.outlinecolor
+                    slider.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                     slider.Outline.BackgroundTransparency = 0
                     slider.BlackOutline.BackgroundTransparency = 0
                 end)
@@ -1044,7 +987,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
 				end)
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
 
                 return slider
             end
@@ -1061,9 +1004,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 colorpicker.Label.BackgroundTransparency = 1
                 colorpicker.Label.Size = UDim2.fromOffset(156, 10)
                 colorpicker.Label.ZIndex = 2
-                colorpicker.Label.Font = Enum.Font.Code
+                colorpicker.Label.Font = window.theme.font
                 colorpicker.Label.Text = colorpicker.text
-                colorpicker.Label.TextColor3 = Color3.fromRGB(200, 200, 200)
+                colorpicker.Label.TextColor3 = window.theme.itemscolor
                 colorpicker.Label.TextSize = 13
                 colorpicker.Label.TextStrokeTransparency = 1
                 colorpicker.Label.TextXAlignment = Enum.TextXAlignment.Left
@@ -1077,17 +1020,16 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
 
                 colorpicker.Gradient = Instance.new("UIGradient", colorpicker.Main)
                 colorpicker.Gradient.Rotation = 90
-                game:GetService("RunService").RenderStepped:Connect(function()
-                    local clr = Color3.new(math.clamp(colorpicker.value.R / 1.7, 0, 1), math.clamp(colorpicker.value.G / 1.7, 0, 1), math.clamp(colorpicker.value.B / 1.7, 0, 1))
-                    colorpicker.Gradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0.00, colorpicker.value), ColorSequenceKeypoint.new(1.00, clr)})
-                end)
+
+                local clr = Color3.new(math.clamp(colorpicker.value.R / 1.7, 0, 1), math.clamp(colorpicker.value.G / 1.7, 0, 1), math.clamp(colorpicker.value.B / 1.7, 0, 1))
+                colorpicker.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, colorpicker.value), ColorSequenceKeypoint.new(1.00, clr) })
 
                 colorpicker.Outline = Instance.new("Frame", colorpicker.Main)
                 colorpicker.Outline.Name = "outline"
                 colorpicker.Outline.ZIndex = 5
                 colorpicker.Outline.Size = colorpicker.Main.Size + UDim2.fromOffset(2, 2)
                 colorpicker.Outline.BorderSizePixel = 0
-                colorpicker.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
                 colorpicker.Outline.Position = UDim2.fromOffset(-1, -1)
 
                 colorpicker.BlackOutline = Instance.new("Frame", colorpicker.Main)
@@ -1095,19 +1037,19 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 colorpicker.BlackOutline.ZIndex = 4
                 colorpicker.BlackOutline.Size = colorpicker.Main.Size + UDim2.fromOffset(4, 4)
                 colorpicker.BlackOutline.BorderSizePixel = 0
-                colorpicker.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                 colorpicker.BlackOutline.Position = UDim2.fromOffset(-2, -2)
 
                 colorpicker.BlackOutline.MouseEnter:Connect(function()
-                    colorpicker.Outline.BackgroundColor3 = window.accentcolor
-                    colorpicker.BlackOutline.BackgroundColor3 = window.accentcolor
+                    colorpicker.Outline.BackgroundColor3 = window.theme.accentcolor
+                    colorpicker.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                     colorpicker.Outline.BackgroundTransparency = 0.4
                     colorpicker.BlackOutline.BackgroundTransparency = 0.5
                 end)
                 colorpicker.BlackOutline.MouseLeave:Connect(function()
                     if not window.OpenedColorPickers[colorpicker.MainPicker] then
-                        colorpicker.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-                        colorpicker.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                        colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
+                        colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                         colorpicker.Outline.BackgroundTransparency = 0
                         colorpicker.BlackOutline.BackgroundTransparency = 0
                     end
@@ -1129,7 +1071,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 colorpicker.Outline2.ZIndex = 99
                 colorpicker.Outline2.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(2, 2)
                 colorpicker.Outline2.BorderSizePixel = 0
-                colorpicker.Outline2.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                colorpicker.Outline2.BackgroundColor3 = window.theme.outlinecolor
                 colorpicker.Outline2.Position = UDim2.fromOffset(-1, -1)
 
                 colorpicker.BlackOutline2 = Instance.new("Frame", colorpicker.MainPicker)
@@ -1137,7 +1079,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 colorpicker.BlackOutline2.ZIndex = 98
                 colorpicker.BlackOutline2.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(4, 4)
                 colorpicker.BlackOutline2.BorderSizePixel = 0
-                colorpicker.BlackOutline2.BackgroundColor3 = Color3.new(0, 0, 0)
+                colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
                 colorpicker.BlackOutline2.Position = UDim2.fromOffset(-2, -2)
 
                 colorpicker.hue = Instance.new("ImageLabel", colorpicker.MainPicker)
@@ -1147,7 +1089,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 colorpicker.hue.Image = "rbxassetid://4155801252"
                 colorpicker.hue.ScaleType = Enum.ScaleType.Stretch
                 colorpicker.hue.BackgroundColor3 = Color3.new(1,0,0)
-                colorpicker.hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                colorpicker.hue.BorderColor3 = window.theme.outlinecolor2
 
                 colorpicker.hueselectorpointer = Instance.new("ImageLabel", colorpicker.MainPicker)
                 colorpicker.hueselectorpointer.ZIndex = 101
@@ -1164,15 +1106,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 colorpicker.selector.BackgroundColor3 = Color3.fromRGB(255,255,255)
                 colorpicker.selector.BorderColor3 = Color3.new(0, 0, 0)
                 colorpicker.selector.Text = ""
-
+    
                 colorpicker.gradient = Instance.new("UIGradient", colorpicker.selector)
-                colorpicker.gradient.Color = ColorSequence.new({
-                    ColorSequenceKeypoint.new(0, Color3.new(1,0,0)),
-                    ColorSequenceKeypoint.new(0.25,Color3.new(1,0,1)),
-                    ColorSequenceKeypoint.new(0.5,Color3.new(0,1,1)),
-                    ColorSequenceKeypoint.new(0.75,Color3.new(1,1,0)),
-                    ColorSequenceKeypoint.new(1,Color3.new(1,0,0)),
-                })
+                colorpicker.gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.new(1,0,0)), ColorSequenceKeypoint.new(0.25,Color3.new(1,0,1)), ColorSequenceKeypoint.new(0.5,Color3.new(0,1,1)), ColorSequenceKeypoint.new(0.75,Color3.new(1,1,0)), ColorSequenceKeypoint.new(1,Color3.new(1,0,0)) })
 
                 colorpicker.pointer = Instance.new("Frame", colorpicker.selector)
                 colorpicker.pointer.ZIndex = 101
@@ -1198,6 +1134,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 function colorpicker:Set(value)
                     local color = Color3.new(math.clamp(value.r, 0, 1), math.clamp(value.g, 0, 1), math.clamp(value.b, 0, 1))
                     colorpicker.value = color
+
+                    local clr = Color3.new(math.clamp(color.R / 1.7, 0, 1), math.clamp(color.G / 1.7, 0, 1), math.clamp(color.B / 1.7, 0, 1))
+                    colorpicker.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, color), ColorSequenceKeypoint.new(1.00, clr) })
                     pcall(colorpicker.callback, color)
                 end
                 colorpicker:Set(colorpicker.default)
@@ -1254,13 +1193,13 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                         colorpicker.MainPicker.Visible = not colorpicker.MainPicker.Visible
                         window.OpenedColorPickers[colorpicker.MainPicker] = colorpicker.MainPicker.Visible
                         if window.OpenedColorPickers[colorpicker.MainPicker] then
-                            colorpicker.Outline.BackgroundColor3 = window.accentcolor
-                            colorpicker.BlackOutline.BackgroundColor3 = window.accentcolor
+                            colorpicker.Outline.BackgroundColor3 = window.theme.accentcolor
+                            colorpicker.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                             colorpicker.Outline.BackgroundTransparency = 0.4
                             colorpicker.BlackOutline.BackgroundTransparency = 0.5
                         else
-                            colorpicker.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-                            colorpicker.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                            colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
+                            colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                             colorpicker.Outline.BackgroundTransparency = 0
                             colorpicker.BlackOutline.BackgroundTransparency = 0
                         end
@@ -1272,7 +1211,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 colorpicker.BlackOutline.InputBegan:Connect(inputBegan)
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
 
                 return colorpicker
             end
@@ -1291,9 +1230,9 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 keybind.Main.BackgroundTransparency = 1
                 keybind.Main.Size = UDim2.fromOffset(156, 10)
                 keybind.Main.ZIndex = 2
-                keybind.Main.Font = Enum.Font.Code
+                keybind.Main.Font = window.theme.font
                 keybind.Main.Text = keybind.text
-                keybind.Main.TextColor3 = Color3.fromRGB(200, 200, 200)
+                keybind.Main.TextColor3 = window.theme.itemscolor
                 keybind.Main.TextSize = 13
                 keybind.Main.TextStrokeTransparency = 1
                 keybind.Main.TextXAlignment = Enum.TextXAlignment.Left
@@ -1301,12 +1240,12 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 keybind.Bind = Instance.new("TextButton", keybind.Main)
                 keybind.Bind.Name = "keybind"
                 keybind.Bind.BackgroundTransparency = 1
-                keybind.Bind.BorderColor3 = Color3.fromRGB(60, 60, 60)
+                keybind.Bind.BorderColor3 = window.theme.outlinecolor
                 keybind.Bind.ZIndex = 2
                 keybind.Bind.BorderSizePixel = 0
                 keybind.Bind.Position = UDim2.fromOffset(sector.Main.Size.X.Offset - 50, 0)
                 keybind.Bind.Size = UDim2.fromOffset(37, 10)
-                keybind.Bind.Font = Enum.Font.Code
+                keybind.Bind.Font = window.theme.font
                 keybind.Bind.Text = keybind.default == "None" and "[None]" or "[" .. keybind.default.Name .. "]"
                 keybind.Bind.TextColor3 = Color3.fromRGB(136, 136, 136)
                 keybind.Bind.TextSize = 14
@@ -1340,7 +1279,8 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 end)
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
+
                 return keybind
             end
 
@@ -1365,10 +1305,10 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 dropdown.Label.BackgroundTransparency = 1
                 dropdown.Label.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 10)
                 dropdown.Label.Position = UDim2.fromOffset(0, 3)
-                dropdown.Label.Font = Enum.Font.Code
+                dropdown.Label.Font = window.theme.font
                 dropdown.Label.Text = dropdown.text
                 dropdown.Label.ZIndex = 4
-                dropdown.Label.TextColor3 = Color3.fromRGB(200, 200, 200)
+                dropdown.Label.TextColor3 = window.theme.itemscolor
                 dropdown.Label.TextSize = 13
                 dropdown.Label.TextStrokeTransparency = 1
                 dropdown.Label.TextXAlignment = Enum.TextXAlignment.Left
@@ -1380,7 +1320,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 dropdown.Main.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 16)
                 dropdown.Main.ZIndex = 4
                 dropdown.Main.AutoButtonColor = false
-                dropdown.Main.Font = Enum.Font.Code
+                dropdown.Main.Font = window.theme.font
                 dropdown.Main.Text = ""
                 dropdown.Main.TextColor3 = Color3.fromRGB(255, 255, 255)
                 dropdown.Main.TextSize = 14
@@ -1395,7 +1335,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 dropdown.SelectedLabel.BackgroundTransparency = 1
                 dropdown.SelectedLabel.Position = UDim2.fromOffset(5, 2)
                 dropdown.SelectedLabel.Size = UDim2.fromOffset(130, 13)
-                dropdown.SelectedLabel.Font = Enum.Font.Code
+                dropdown.SelectedLabel.Font = window.theme.font
                 dropdown.SelectedLabel.Text = dropdown.text
                 dropdown.SelectedLabel.ZIndex = 5
                 dropdown.SelectedLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -1420,7 +1360,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 dropdown.Outline.ZIndex = 3
                 dropdown.Outline.Size = dropdown.Main.Size + UDim2.fromOffset(2, 2)
                 dropdown.Outline.BorderSizePixel = 0
-                dropdown.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                dropdown.Outline.BackgroundColor3 = window.theme.outlinecolor
                 dropdown.Outline.Position = UDim2.fromOffset(-1, -1)
 
                 dropdown.BlackOutline = Instance.new("Frame", dropdown.Main)
@@ -1428,7 +1368,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 dropdown.BlackOutline.ZIndex = 2
                 dropdown.BlackOutline.Size = dropdown.Main.Size + UDim2.fromOffset(4, 4)
                 dropdown.BlackOutline.BorderSizePixel = 0
-                dropdown.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                dropdown.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                 dropdown.BlackOutline.Position = UDim2.fromOffset(-2, -2)
 
                 dropdown.ItemsFrame = Instance.new("ScrollingFrame", dropdown.Main)
@@ -1462,7 +1402,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     Item.ZIndex = 8
                     Item.Text = v
                     Item.AutoButtonColor = false
-                    Item.Font = Enum.Font.Code
+                    Item.Font = window.theme.font
                     Item.TextSize = 13
                     Item.TextXAlignment = Enum.TextXAlignment.Left
                     Item.TextStrokeTransparency = 1
@@ -1482,7 +1422,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                     game:GetService("RunService").RenderStepped:Connect(function()
                         if dropdown.value == v then
                             Item.BackgroundColor3 = Color3.fromRGB(64, 64, 64)
-                            Item.TextColor3 = window.accentcolor
+                            Item.TextColor3 = window.theme.accentcolor
                             Item.Text = " " .. v
                         else
                             Item.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
@@ -1497,7 +1437,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 dropdown.OutlineItems.ZIndex = 5
                 dropdown.OutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(2, 2)
                 dropdown.OutlineItems.BorderSizePixel = 0
-                dropdown.OutlineItems.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                dropdown.OutlineItems.BackgroundColor3 = window.theme.outlinecolor
                 dropdown.OutlineItems.Position = dropdown.ItemsFrame.Position + UDim2.fromOffset(-1, -1)
                 dropdown.OutlineItems.Visible = false
 
@@ -1506,7 +1446,7 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 dropdown.BlackOutlineItems.ZIndex = 4
                 dropdown.BlackOutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(4, 4)
                 dropdown.BlackOutlineItems.BorderSizePixel = 0
-                dropdown.BlackOutlineItems.BackgroundColor3 = Color3.new(0, 0, 0)
+                dropdown.BlackOutlineItems.BackgroundColor3 = window.theme.outlinecolor2
                 dropdown.BlackOutlineItems.Position = dropdown.ItemsFrame.Position + UDim2.fromOffset(-2, -2)
                 dropdown.BlackOutlineItems.Visible = false
 
@@ -1549,20 +1489,20 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
                 dropdown.Nav.MouseButton1Down:Connect(MouseButton1Down)
 
                 dropdown.BlackOutline.MouseEnter:Connect(function()
-                    dropdown.Outline.BackgroundColor3 = window.accentcolor
-                    dropdown.BlackOutline.BackgroundColor3 = window.accentcolor
+                    dropdown.Outline.BackgroundColor3 = window.theme.accentcolor
+                    dropdown.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                     dropdown.Outline.BackgroundTransparency = 0.4
                     dropdown.BlackOutline.BackgroundTransparency = 0.5
                 end)
                 dropdown.BlackOutline.MouseLeave:Connect(function()
-                    dropdown.Outline.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-                    dropdown.BlackOutline.BackgroundColor3 = Color3.new(0, 0, 0)
+                    dropdown.Outline.BackgroundColor3 = window.theme.outlinecolor
+                    dropdown.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                     dropdown.Outline.BackgroundTransparency = 0
                     dropdown.BlackOutline.BackgroundTransparency = 0
                 end)
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                tab.TabPage.CanvasSize = sector.Main.Size
 
                 return dropdown
             end
@@ -1573,11 +1513,11 @@ function library:CreateWindow(name,accentcolor,accentcolor2,textsize,sizeX,sizeY
             local first_left, first_right = (#tab.SectorsLeft == 1), (#tab.SectorsRight == 1)
             game:GetService("RunService").RenderStepped:Connect(function()
                 if sector.side:lower() == "right" then
-                    tab.SectorsRight[size_right + 1].space = sector.Main.AbsoluteSize.Y + 12
-                    sector.Main.Position = first_right and UDim2.new(0, window.size.X.Offset - sector.Main.AbsoluteSize.X - 12, 0, 12) or tab.SectorsRight[size_right].Main.Position + UDim2.fromOffset(0, tab.SectorsRight[size_right].space)
+                    tab.SectorsRight[size_right + 1].space = sector.Main.AbsoluteSize.Y + 11
+                    sector.Main.Position = first_right and UDim2.new(0, window.size.X.Offset - sector.Main.AbsoluteSize.X - 11, 0, 12) or tab.SectorsRight[size_right].Main.Position + UDim2.fromOffset(0, tab.SectorsRight[size_right].space)
                 else
-                    tab.SectorsLeft[size_left + 1].space = sector.Main.AbsoluteSize.Y + 12
-                    sector.Main.Position = first_left and UDim2.new(0, 12, 0, 12) or tab.SectorsLeft[size_left].Main.Position + UDim2.fromOffset(0, tab.SectorsLeft[size_left].space)
+                    tab.SectorsLeft[size_left + 1].space = sector.Main.AbsoluteSize.Y + 11
+                    sector.Main.Position = first_left and UDim2.new(0, 11, 0, 11) or tab.SectorsLeft[size_left].Main.Position + UDim2.fromOffset(0, tab.SectorsLeft[size_left].space)
                 end
             end)
 
