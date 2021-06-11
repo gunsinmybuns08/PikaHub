@@ -352,11 +352,6 @@ function library:CreateWindow(name, size, hidebutton)
                 button.Label.TextSize = 13
                 button.Label.TextStrokeTransparency = 1
                 button.Label.TextXAlignment = Enum.TextXAlignment.Left
-                button.Label.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                        pcall(button.callback)
-                    end
-                end)
 
                 button.BlackOutline.MouseEnter:Connect(function()
                     button.Outline.BackgroundColor3 = window.theme.accentcolor
