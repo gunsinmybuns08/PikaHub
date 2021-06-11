@@ -49,6 +49,7 @@ function library:CreateWatermark(name)
     watermark.mainbar.Name = "Main"
     watermark.mainbar.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
     watermark.mainbar.BorderColor3 = Color3.fromRGB(80, 80, 80)
+    watermark.mainbar.Visible = watermark.Visible
     watermark.mainbar.BorderSizePixel = 0
     watermark.mainbar.ZIndex = 5
     watermark.mainbar.Position = UDim2.new(0.0559123, -89, 0.01, 0)
@@ -58,6 +59,7 @@ function library:CreateWatermark(name)
     watermark.Outline.Name = "outline"
     watermark.Outline.ZIndex = 4
     watermark.Outline.BorderSizePixel = 0
+    watermark.Outline.Visible = watermark.Visible
     watermark.Outline.BackgroundColor3 = library.theme.outlinecolor
     watermark.Outline.Position = UDim2.fromOffset(-1, -1)
 
@@ -66,6 +68,7 @@ function library:CreateWatermark(name)
     watermark.BlackOutline.ZIndex = 3
     watermark.BlackOutline.BorderSizePixel = 0
     watermark.BlackOutline.BackgroundColor3 = library.theme.outlinecolor2
+    watermark.BlackOutline.Visible = watermark.Visible
     watermark.BlackOutline.Position = UDim2.fromOffset(-2, -2)
 
     watermark.label = Instance.new("TextLabel", watermark.mainbar)
@@ -76,6 +79,7 @@ function library:CreateWatermark(name)
     watermark.label.Size = UDim2.new(0, 238, 0, 25)
     watermark.label.Font = library.theme.font
     watermark.label.ZIndex = 6
+    watermark.label.Visible = watermark.Visible
     watermark.label.Text = " ".. name .." | ".. gamename .." | 0 FPS"
     watermark.label.TextColor3 = Color3.fromRGB(255, 255, 255)
     watermark.label.TextSize = 15.000
@@ -88,6 +92,7 @@ function library:CreateWatermark(name)
     watermark.topbar.ZIndex = 6
     watermark.topbar.BackgroundColor3 = library.theme.accentcolor
     watermark.topbar.BorderSizePixel = 0
+    watermark.topbar.Visible = watermark.Visible
     watermark.topbar.Size = UDim2.new(0, 0, 0, 1)
 
     watermark.mainbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 25)
@@ -99,8 +104,6 @@ function library:CreateWatermark(name)
     game.TweenService:Create(watermark.label, TweenInfo.new(0.7, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Size = UDim2.new(0, watermark.label.TextBounds.X+4, 0, 25) }):Play()
     game.TweenService:Create(watermark.topbar, TweenInfo.new(0.7, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 2) }):Play()
     
-    wait(1)
-
     local LastIteration, Start
     local FrameUpdateTable = { }
     game:GetService("RunService").Heartbeat:Connect(function()
