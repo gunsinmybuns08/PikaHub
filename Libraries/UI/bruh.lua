@@ -106,7 +106,7 @@ function library:CreateWatermark(name)
     
     local LastIteration, Start
     local FrameUpdateTable = { }
-    game:GetService("RunService").Heartbeat:Connect(function()
+    game:GetService("RunService").RenderStepped:Connect(function()
         LastIteration = tick()
         for Index = #FrameUpdateTable, 1, -1 do
             FrameUpdateTable[Index + 1] = (FrameUpdateTable[Index] >= LastIteration - 1) and FrameUpdateTable[Index] or nil
@@ -414,6 +414,20 @@ function library:CreateWindow(name, size, hidebutton)
             sector.ListPadding.PaddingLeft = UDim.new(0, 6)
             sector.ListPadding.PaddingRight = UDim.new(0, 6)
 
+            table.insert(sector.side:lower() == "left" and tab.SectorsLeft or tab.SectorsRight, sector)
+
+            local size_left, size_right = #tab.SectorsLeft - 1, #tab.SectorsRight - 1
+            local first_left, first_right = (#tab.SectorsLeft == 1), (#tab.SectorsRight == 1)
+            function sector:RefreshSize()
+                if sector.side:lower() == "right" then
+                    tab.SectorsRight[size_right + 1].space = sector.Main.AbsoluteSize.Y + 11
+                    sector.Main.Position = first_right and UDim2.new(0, window.size.X.Offset - sector.Main.AbsoluteSize.X - 11, 0, 12) or tab.SectorsRight[size_right].Main.Position + UDim2.fromOffset(0, tab.SectorsRight[size_right].space)
+                else
+                    tab.SectorsLeft[size_left + 1].space = sector.Main.AbsoluteSize.Y + 11
+                    sector.Main.Position = first_left and UDim2.new(0, 11, 0, 11) or tab.SectorsLeft[size_left].Main.Position + UDim2.fromOffset(0, tab.SectorsLeft[size_left].space)
+                end
+            end
+
             function sector:AddButton(text, callback)
                 local button = { }
                 button.text = text or ""
@@ -477,7 +491,7 @@ function library:CreateWindow(name, size, hidebutton)
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
                 tab.TabPage.CanvasSize = sector.Main.Size
-
+                sector:RefreshSize()
                 return button
             end
 
@@ -503,6 +517,7 @@ function library:CreateWindow(name, size, hidebutton)
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
                 tab.TabPage.CanvasSize = sector.Main.Size
+                sector:RefreshSize()
 
                 return label
             end
@@ -880,6 +895,7 @@ function library:CreateWindow(name, size, hidebutton)
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
                 tab.TabPage.CanvasSize = sector.Main.Size
+                sector:RefreshSize()
 
                 return toggle
             end
@@ -958,6 +974,7 @@ function library:CreateWindow(name, size, hidebutton)
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
                 tab.TabPage.CanvasSize = sector.Main.Size
+                sector:RefreshSize()
 
                 return textbox
             end
@@ -1096,6 +1113,7 @@ function library:CreateWindow(name, size, hidebutton)
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
                 tab.TabPage.CanvasSize = sector.Main.Size
+                sector:RefreshSize()
 
                 return slider
             end
@@ -1320,6 +1338,7 @@ function library:CreateWindow(name, size, hidebutton)
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
                 tab.TabPage.CanvasSize = sector.Main.Size
+                sector:RefreshSize()
 
                 return colorpicker
             end
@@ -1388,6 +1407,7 @@ function library:CreateWindow(name, size, hidebutton)
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
                 tab.TabPage.CanvasSize = sector.Main.Size
+                sector:RefreshSize()
 
                 return keybind
             end
@@ -1611,23 +1631,10 @@ function library:CreateWindow(name, size, hidebutton)
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
                 tab.TabPage.CanvasSize = sector.Main.Size
+                sector:RefreshSize()
 
                 return dropdown
             end
-
-            table.insert(sector.side:lower() == "left" and tab.SectorsLeft or tab.SectorsRight, sector)
-
-            local size_left, size_right = #tab.SectorsLeft - 1, #tab.SectorsRight - 1
-            local first_left, first_right = (#tab.SectorsLeft == 1), (#tab.SectorsRight == 1)
-            game:GetService("RunService").RenderStepped:Connect(function()
-                if sector.side:lower() == "right" then
-                    tab.SectorsRight[size_right + 1].space = sector.Main.AbsoluteSize.Y + 11
-                    sector.Main.Position = first_right and UDim2.new(0, window.size.X.Offset - sector.Main.AbsoluteSize.X - 11, 0, 12) or tab.SectorsRight[size_right].Main.Position + UDim2.fromOffset(0, tab.SectorsRight[size_right].space)
-                else
-                    tab.SectorsLeft[size_left + 1].space = sector.Main.AbsoluteSize.Y + 11
-                    sector.Main.Position = first_left and UDim2.new(0, 11, 0, 11) or tab.SectorsLeft[size_left].Main.Position + UDim2.fromOffset(0, tab.SectorsLeft[size_left].space)
-                end
-            end)
 
             return sector
         end
