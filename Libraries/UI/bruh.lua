@@ -1639,6 +1639,4 @@ function library:CreateWindow(name, size, hidebutton)
     return window
 end
 
-library:CreateWatermark('test')
-
 return library
