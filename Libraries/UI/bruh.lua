@@ -1,7 +1,5 @@
 --YOU ARE NOT PERMITTED TO USE THIS UI LIBRARY!
-
 local library = { }
-
 
 local player = game:GetService("Players").LocalPlayer
 local UserInputService = game:GetService("UserInputService")
@@ -38,11 +36,9 @@ library.theme = {
 
 function library:CreateWatermark(name)
     local watermark = { }
-
     watermark.Visible = true
 
     local gamename = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-
     watermark.main = Instance.new("ScreenGui", game.CoreGui)
     watermark.main.Name = name
     if syn then
