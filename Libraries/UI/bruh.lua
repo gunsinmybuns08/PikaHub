@@ -1501,6 +1501,15 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                 dropdown.BlackOutline.Position = UDim2.fromOffset(-2, -2)
 
+                dropdown.BackFrame = Instance.new("TextButton", dropdown.MainBack)
+                dropdown.BackFrame.BackgroundTransparency = 1
+                dropdown.BackFrame.BorderSizePixel = 0
+                dropdown.BackFrame.Size = UDim2.fromOffset(dropdown.Main.Size.X.Offset, math.clamp(#dropdown.items * 20, 20, 156) + 4)
+                dropdown.BackFrame.Position = UDim2.fromOffset(0, dropdown.Main.Size.Y.Offset + 8)
+                dropdown.BackFrame.ZIndex = 7
+                dropdown.BackFrame.AutoButtonColor = false
+                dropdown.BackFrame.Text = ""
+
                 dropdown.ItemsFrame = Instance.new("ScrollingFrame", dropdown.Main)
                 dropdown.ItemsFrame.Name = "itemsframe"
                 dropdown.ItemsFrame.BorderSizePixel = 0
@@ -1604,12 +1613,16 @@ function library:CreateWindow(name, size, hidebutton)
 
                 local MouseButton1Down = function()
                     if dropdown.Nav.Rotation == 180 then
+                        dropdown.ItemsFrame.ScrollingEnabled = true
+                        tab.TabPage.ScrollingEnabled = false
                         dropdown.Nav.Rotation = 0
                         dropdown.ItemsFrame.Visible = true
                         dropdown.ItemsFrame.Active = true
                         dropdown.OutlineItems.Visible = true
                         dropdown.BlackOutlineItems.Visible = true
                     else
+                        dropdown.ItemsFrame.ScrollingEnabled = false
+                        tab.TabPage.ScrollingEnabled = true
                         dropdown.Nav.Rotation = 180
                         dropdown.ItemsFrame.Visible = false
                         dropdown.ItemsFrame.Active = false
