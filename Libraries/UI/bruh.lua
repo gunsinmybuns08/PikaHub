@@ -310,6 +310,7 @@ function library:CreateWindow(name, size, hidebutton)
 		tab.TabPage.Position = window.BlackLine.Position + UDim2.fromOffset(0, 1)
 		tab.TabPage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - 40)
         tab.TabPage.BackgroundTransparency = 1
+        tab.TabPage.CanvasSize = UDim2.new(0, window.size.X.Offset, 0, 0)
 
         local block = false
         function tab:SelectTab()
@@ -418,7 +419,8 @@ function library:CreateWindow(name, size, hidebutton)
 
             local size_left, size_right = #tab.SectorsLeft - 1, #tab.SectorsRight - 1
             local first_left, first_right = (#tab.SectorsLeft == 1), (#tab.SectorsRight == 1)
-            function sector:RefreshSize()
+            function sector:FixSize()
+                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
                 if sector.side:lower() == "right" then
                     tab.SectorsRight[size_right + 1].space = sector.Main.AbsoluteSize.Y + 11
                     sector.Main.Position = first_right and UDim2.new(0, window.size.X.Offset - sector.Main.AbsoluteSize.X - 11, 0, 12) or tab.SectorsRight[size_right].Main.Position + UDim2.fromOffset(0, tab.SectorsRight[size_right].space)
@@ -489,9 +491,7 @@ function library:CreateWindow(name, size, hidebutton)
                     button.BlackOutline.BackgroundTransparency = 0
                 end)
 
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
-                sector:RefreshSize()
+                sector:FixSize()
                 return button
             end
 
@@ -515,10 +515,7 @@ function library:CreateWindow(name, size, hidebutton)
                     label.Main.Text = value
                 end
 
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
-                sector:RefreshSize()
-
+                sector:FixSize()
                 return label
             end
             
@@ -893,10 +890,7 @@ function library:CreateWindow(name, size, hidebutton)
                 toggle.BlackOutline.MouseEnter:Connect(MouseEnter)
                 toggle.BlackOutline.MouseLeave:Connect(MouseLeave)
 
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
-                sector:RefreshSize()
-
+                sector:FixSize()
                 return toggle
             end
             
@@ -973,10 +967,7 @@ function library:CreateWindow(name, size, hidebutton)
                     textbox.BlackOutline.BackgroundTransparency = 0
                 end)
 
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
-                sector:RefreshSize()
-
+                sector:FixSize()
                 return textbox
             end
 
@@ -1112,10 +1103,7 @@ function library:CreateWindow(name, size, hidebutton)
 					end
 				end)
 
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
-                sector:RefreshSize()
-
+                sector:FixSize()
                 return slider
             end
 
@@ -1337,10 +1325,7 @@ function library:CreateWindow(name, size, hidebutton)
                 colorpicker.Outline.InputBegan:Connect(inputBegan)
                 colorpicker.BlackOutline.InputBegan:Connect(inputBegan)
 
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
-                sector:RefreshSize()
-
+                sector:FixSize()
                 return colorpicker
             end
 
@@ -1406,10 +1391,7 @@ function library:CreateWindow(name, size, hidebutton)
                     end
                 end)
 
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
-                sector:RefreshSize()
-
+                sector:FixSize()
                 return keybind
             end
 
@@ -1500,15 +1482,6 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.BlackOutline.BorderSizePixel = 0
                 dropdown.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                 dropdown.BlackOutline.Position = UDim2.fromOffset(-2, -2)
-
-                dropdown.BackFrame = Instance.new("TextButton", dropdown.MainBack)
-                dropdown.BackFrame.BackgroundTransparency = 1
-                dropdown.BackFrame.BorderSizePixel = 0
-                dropdown.BackFrame.Size = UDim2.fromOffset(dropdown.Main.Size.X.Offset, math.clamp(#dropdown.items * 20, 20, 156) + 4)
-                dropdown.BackFrame.Position = UDim2.fromOffset(0, dropdown.Main.Size.Y.Offset + 8)
-                dropdown.BackFrame.ZIndex = 7
-                dropdown.BackFrame.AutoButtonColor = false
-                dropdown.BackFrame.Text = ""
 
                 dropdown.ItemsFrame = Instance.new("ScrollingFrame", dropdown.Main)
                 dropdown.ItemsFrame.Name = "itemsframe"
@@ -1647,10 +1620,7 @@ function library:CreateWindow(name, size, hidebutton)
                     dropdown.BlackOutline.BackgroundTransparency = 0
                 end)
 
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
-                tab.TabPage.CanvasSize = sector.Main.Size
-                sector:RefreshSize()
-
+                sector:FixSize()
                 return dropdown
             end
 
