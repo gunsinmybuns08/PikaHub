@@ -932,8 +932,16 @@ function library:CreateWindow(name, size, hidebutton)
                 textbox.Main.TextColor3 = Color3.fromRGB(255, 255, 255)
                 textbox.Main.BorderSizePixel = 0
                 textbox.Main.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-                textbox.Main:GetPropertyChangedSignal("Text"):Connect(function()
-                    pcall(textbox.callback, textbox.Main.Text)
+                function textbox:Set(text)
+                    textbox.Main.Text = text
+                    pcall(textbox.callback, text)
+                end
+                if textbox.default then 
+                    textbox:Set(textbox.default)
+                end
+
+                textbox.Main.FocusLost:Connect(function()
+                    textbox:Set(textbox.Main.Text)
                 end)
 
                 textbox.Outline = Instance.new("Frame", textbox.Main)
@@ -964,13 +972,6 @@ function library:CreateWindow(name, size, hidebutton)
                     textbox.Outline.BackgroundTransparency = 0
                     textbox.BlackOutline.BackgroundTransparency = 0
                 end)
-
-                function textbox:Set(text)
-                    textbox.Main.Text = text
-                end
-                if textbox.default then 
-                    textbox:Set(textbox.default)
-                end
 
                 sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
                 tab.TabPage.CanvasSize = sector.Main.Size
