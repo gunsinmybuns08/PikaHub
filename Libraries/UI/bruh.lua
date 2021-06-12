@@ -5,15 +5,6 @@ local player = game:GetService("Players").LocalPlayer
 local UserInputService = game:GetService("UserInputService")
 local mouse = player:GetMouse()
 
-local gui
-local dragging, dragInput, dragStart, startPos
-UserInputService.InputChanged:Connect(function(input)
-	if input == dragInput and dragging then
-        local delta = input.Position - dragStart
-        gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-	end
-end)
-
 library.theme = {
     fontsize = 15,
     font = Enum.Font.Code,
@@ -151,8 +142,11 @@ end
 
 function library:CreateWindow(name, size, hidebutton)
     local window = { }
-    
-    window.name = name or "New Window"
+    if getgenv().uilib then
+        getgenv().uilib:Remove()
+    end
+
+    window.name = name or ""
     window.size = UDim2.fromOffset(size.X, size.Y) or UDim2.fromOffset(492, 598)
     window.hidebutton = hidebutton or Enum.KeyCode.RightShift
     window.theme = library.theme
@@ -163,18 +157,27 @@ function library:CreateWindow(name, size, hidebutton)
         syn.protect_gui(window.Main)
     end
 
+    getgenv().uilib = window.Main
+
     game:GetService("UserInputService").InputBegan:Connect(function(key)
         if key.KeyCode == window.hidebutton then
             window.Main.Enabled = not window.Main.Enabled
         end
     end)
 
+    local dragging, dragInput, dragStart, startPos
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - dragStart
+            window.Frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
+
     local dragstart = function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            gui = window.Frame
             dragging = true
             dragStart = input.Position
-            startPos = gui.Position
+            startPos = window.Frame.Position
             
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
@@ -304,8 +307,8 @@ function library:CreateWindow(name, size, hidebutton)
         tab.TabPage.Visible = false
         tab.TabPage.AutomaticCanvasSize = Enum.AutomaticSize.Y
         tab.TabPage.ScrollingDirection = "Y"
-		tab.TabPage.Position = UDim2.new(0,0,0.0019470076076686, 39)
-		tab.TabPage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - 39)
+		tab.TabPage.Position = window.BlackLine.Position + UDim2.fromOffset(0, 1)
+		tab.TabPage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - 40)
         tab.TabPage.BackgroundTransparency = 1
 
         local block = false
@@ -1645,3 +1648,4 @@ function library:CreateWindow(name, size, hidebutton)
 end
 
 return library
+
