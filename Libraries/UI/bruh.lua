@@ -1428,6 +1428,7 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.MainBack.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 34)
                 dropdown.MainBack.BorderSizePixel = 0
                 dropdown.MainBack.BackgroundTransparency = 1
+
                 dropdown.Label = Instance.new("TextLabel", dropdown.MainBack)
                 dropdown.Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 dropdown.Label.BackgroundTransparency = 1
@@ -1506,10 +1507,11 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.ItemsFrame.Size = UDim2.fromOffset(dropdown.Main.Size.X.Offset, math.clamp(#dropdown.items * 20, 20, 156) + 4)
                 dropdown.ItemsFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
                 dropdown.ItemsFrame.Position = UDim2.fromOffset(0, dropdown.Main.Size.Y.Offset + 8)
-                dropdown.ItemsFrame.ScrollBarThickness = 0
+                dropdown.ItemsFrame.ScrollBarThickness = 2
                 dropdown.ItemsFrame.ZIndex = 8
                 dropdown.ItemsFrame.ScrollingDirection = "Y"
                 dropdown.ItemsFrame.Visible = false
+                dropdown.ItemsFrame.CanvasSize = UDim2.fromOffset(dropdown.Main.AbsoluteSize.X, 0)
 
                 dropdown.ListLayout = Instance.new("UIListLayout", dropdown.ItemsFrame)
                 dropdown.ListLayout.FillDirection = Enum.FillDirection.Vertical
@@ -1535,6 +1537,7 @@ function library:CreateWindow(name, size, hidebutton)
                     Item.TextSize = 13
                     Item.TextXAlignment = Enum.TextXAlignment.Left
                     Item.TextStrokeTransparency = 1
+                    dropdown.ItemsFrame.CanvasSize = dropdown.ItemsFrame.CanvasSize + UDim2.fromOffset(0, 20)
 
                     Item.MouseButton1Down:Connect(function()
                         dropdown.Nav.Rotation = 180
@@ -1560,6 +1563,7 @@ function library:CreateWindow(name, size, hidebutton)
                         end
                     end)
                 end
+                dropdown.ItemsFrame.CanvasSize = dropdown.ItemsFrame.CanvasSize + UDim2.fromOffset(0, 4)
 
                 dropdown.OutlineItems = Instance.new("Frame", dropdown.Main)
                 dropdown.OutlineItems.Name = "blackline"
