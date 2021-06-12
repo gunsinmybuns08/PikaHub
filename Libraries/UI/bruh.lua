@@ -157,8 +157,6 @@ function library:CreateWindow(name, size, hidebutton)
     window.hidebutton = hidebutton or Enum.KeyCode.RightShift
     window.theme = library.theme
 
-    window.SelectedTab = nil
-
     window.Main = Instance.new("ScreenGui", game.CoreGui)
     window.Main.Name = name
     if syn then
@@ -281,6 +279,7 @@ function library:CreateWindow(name, size, hidebutton)
     window.ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
     window.OpenedColorPickers = { }
+    window.Tabs = { }
 
     function window:CreateTab(name)
         local tab = { }
@@ -302,21 +301,12 @@ function library:CreateWindow(name, size, hidebutton)
         tab.TabPage = Instance.new("ScrollingFrame", window.Frame)
         tab.TabPage.Name = tab.name:gsub(" ", "") .. "page"
         tab.TabPage.ScrollBarThickness = 0
+        tab.TabPage.Visible = false
         tab.TabPage.AutomaticCanvasSize = Enum.AutomaticSize.Y
         tab.TabPage.ScrollingDirection = "Y"
 		tab.TabPage.Position = UDim2.new(0,0,0.0019470076076686, 39)
 		tab.TabPage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - 39)
         tab.TabPage.BackgroundTransparency = 1
-
-        game:GetService("RunService").RenderStepped:Connect(function()
-            tab.TabPage.Visible = (window.SelectedTab == tab.TabButton)
-            if window.SelectedTab ~= tab.TabButton and tab.TabButton.TextColor3 == window.theme.accentcolor then
-                tab.TabButton.TextColor3 = Color3.fromRGB(230, 230, 230)
-            end
-            if window.SelectedTab and window.SelectedTab.TextColor3 ~= window.theme.accentcolor then
-                window.SelectedTab.TextColor3 = window.theme.accentcolor
-            end
-        end)
 
         local block = false
         function tab:SelectTab()
@@ -325,20 +315,27 @@ function library:CreateWindow(name, size, hidebutton)
             until block == false
 
             block = true
-            window.SelectedTab = tab.TabButton
+            for i,v in pairs(window.Tabs) do
+                if v ~= tab then
+                    v.TabButton.TextColor3 = Color3.fromRGB(230, 230, 230)
+                    v.TabPage.Visible = false
+                end
+            end
+
+            tab.TabButton.TextColor3 = window.theme.accentcolor
+            tab.TabPage.Visible = true
             window.Line:TweenSizeAndPosition(UDim2.fromOffset(size.X + 15, 1), UDim2.new(0, (tab.TabButton.AbsolutePosition.X - window.Frame.AbsolutePosition.X), 0, 0) + (window.BlackLine.Position - UDim2.fromOffset(0, 1)), Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.1)
             wait(0.2)
             block = false
         end
     
+        if #window.Tabs == 0 then
+            tab:SelectTab()
+        end
 
         tab.TabButton.MouseButton1Down:Connect(function()
             tab:SelectTab()
         end)
-
-        if not window.SelectedTab then
-            tab:SelectTab()
-        end
 
         tab.SectorsLeft = { }
         tab.SectorsRight = { }
@@ -1640,6 +1637,7 @@ function library:CreateWindow(name, size, hidebutton)
             return sector
         end
 
+        table.insert(window.Tabs, tab)
         return tab
     end
 
