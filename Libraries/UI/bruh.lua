@@ -30,7 +30,7 @@ function library:CreateWatermark(name)
     watermark.Visible = true
 
     local gamename = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-    watermark.main = Instance.new("ScreenGui", game:GetService("CoreGui") or game:GetService("StarterGui"))
+    watermark.main = Instance.new("ScreenGui", is_sirhurt_closure and game:GetService("StarterGui") or game:GetService("CoreGui"))
     watermark.main.Name = name
     if syn then
         syn.protect_gui(watermark.main)
@@ -151,7 +151,7 @@ function library:CreateWindow(name, size, hidebutton)
     window.hidebutton = hidebutton or Enum.KeyCode.RightShift
     window.theme = library.theme
 
-    window.Main = Instance.new("ScreenGui", game:GetService("CoreGui") or game:GetService("StarterGui"))
+    window.Main = Instance.new("ScreenGui", is_sirhurt_closure and game:GetService("StarterGui") or game:GetService("CoreGui"))
     window.Main.Name = name
     if syn then
         syn.protect_gui(window.Main)
