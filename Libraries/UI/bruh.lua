@@ -100,6 +100,12 @@ function library:CreateWatermark(name)
 
     local startTime, counter, oldfps = os.clock(), 0, nil
     runservice.Heartbeat:Connect(function()
+        watermark.label.Visible = watermark.Visible
+        watermark.mainbar.Visible = watermark.Visible
+        watermark.topbar.Visible = watermark.Visible
+        watermark.Outline.Visible = watermark.Visible
+        watermark.BlackOutline.Visible = watermark.Visible
+
         local currentTime = os.clock()
         counter = counter + 1
         if currentTime - startTime >= 1 then 
@@ -109,13 +115,7 @@ function library:CreateWatermark(name)
 
             if fps ~= oldfps then
                 watermark.label.Text = " " .. name .." | ".. gamename .." | " .. fps .." FPS"
-
-                watermark.label.Visible = watermark.Visible
-                watermark.mainbar.Visible = watermark.Visible
-                watermark.topbar.Visible = watermark.Visible
-                watermark.Outline.Visible = watermark.Visible
-                watermark.BlackOutline.Visible = watermark.Visible
-        
+    
                 watermark.label.Size = UDim2.new(0, watermark.label.TextBounds.X+10, 0, 25)
                 watermark.mainbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 25)
                 watermark.topbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 1)
