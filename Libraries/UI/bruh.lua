@@ -2,7 +2,8 @@
 local library = { }
 
 local player = game:GetService("Players").LocalPlayer
-local UserInputService = game:GetService("UserInputService")
+local uis = game:GetService("UserInputService")
+local runservice = game:GetService("RunService")
 local mouse = player:GetMouse()
 
 library.theme = {
@@ -92,35 +93,39 @@ function library:CreateWatermark(name)
     watermark.BlackOutline.Size = watermark.mainbar.Size + UDim2.fromOffset(4, 4)
 
     game.TweenService:Create(watermark.mainbar, TweenInfo.new(0.7, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Size = UDim2.new(0, watermark.label.TextBounds.X+4, 0, 25) }):Play()
+    game.TweenService:Create(watermark.Outline, TweenInfo.new(0.7, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Size = UDim2.new(0, watermark.label.TextBounds.X+4, 0, 25) }):Play()
+    game.TweenService:Create(watermark.BlackOutline, TweenInfo.new(0.7, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Size = UDim2.new(0, watermark.label.TextBounds.X+4, 0, 25) }):Play()
     game.TweenService:Create(watermark.label, TweenInfo.new(0.7, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Size = UDim2.new(0, watermark.label.TextBounds.X+4, 0, 25) }):Play()
     game.TweenService:Create(watermark.topbar, TweenInfo.new(0.7, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 2) }):Play()
-    
-    local LastIteration, Start
-    local FrameUpdateTable = { }
-    game:GetService("RunService").RenderStepped:Connect(function()
-        LastIteration = tick()
-        for Index = #FrameUpdateTable, 1, -1 do
-            FrameUpdateTable[Index + 1] = (FrameUpdateTable[Index] >= LastIteration - 1) and FrameUpdateTable[Index] or nil
+
+    local startTime, counter, oldfps = os.clock(), 0, nil
+    runservice.Heartbeat:Connect(function()
+        local currentTime = os.clock()
+        counter = counter + 1
+        if currentTime - startTime >= 1 then 
+            local fps = math.floor(counter / (currentTime - startTime))
+            counter = 0
+            startTime = currentTime
+
+            if fps ~= oldfps then
+                watermark.label.Text = " " .. name .." | ".. gamename .." | " .. fps .." FPS"
+
+                watermark.label.Visible = watermark.Visible
+                watermark.mainbar.Visible = watermark.Visible
+                watermark.topbar.Visible = watermark.Visible
+                watermark.Outline.Visible = watermark.Visible
+                watermark.BlackOutline.Visible = watermark.Visible
+        
+                watermark.label.Size = UDim2.new(0, watermark.label.TextBounds.X+10, 0, 25)
+                watermark.mainbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 25)
+                watermark.topbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 1)
+                watermark.Outline.Size = watermark.mainbar.Size + UDim2.fromOffset(2, 2)
+                watermark.BlackOutline.Size = watermark.mainbar.Size + UDim2.fromOffset(4, 4)
+            end
+            oldfps = fps
         end
-    
-        FrameUpdateTable[1] = LastIteration
-        local fps = (tick() - Start >= 1 and #FrameUpdateTable) or (#FrameUpdateTable / (tick() - Start))
-        watermark.label.Text = " " .. name .." | ".. gamename .." | " .. math.floor(fps) .." FPS"
-
-        watermark.label.Visible = watermark.Visible
-        watermark.mainbar.Visible = watermark.Visible
-        watermark.topbar.Visible = watermark.Visible
-        watermark.Outline.Visible = watermark.Visible
-        watermark.BlackOutline.Visible = watermark.Visible
-
-        watermark.label.Size = UDim2.new(0, watermark.label.TextBounds.X+10, 0, 25)
-        watermark.mainbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 25)
-        watermark.topbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 1)
-        watermark.Outline.Size = watermark.mainbar.Size + UDim2.fromOffset(2, 2)
-        watermark.BlackOutline.Size = watermark.mainbar.Size + UDim2.fromOffset(4, 4)
     end)
-    Start = tick()
-    
+
     watermark.mainbar.MouseEnter:Connect(function()
         game.TweenService:Create(watermark.mainbar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 1, Active = false }):Play()
         game.TweenService:Create(watermark.topbar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 1, Active = false }):Play()
@@ -159,14 +164,14 @@ function library:CreateWindow(name, size, hidebutton)
 
     getgenv().uilib = window.Main
 
-    game:GetService("UserInputService").InputBegan:Connect(function(key)
+    uis.InputBegan:Connect(function(key)
         if key.KeyCode == window.hidebutton then
             window.Main.Enabled = not window.Main.Enabled
         end
     end)
 
     local dragging, dragInput, dragStart, startPos
-    UserInputService.InputChanged:Connect(function(input)
+    uis.InputChanged:Connect(function(input)
         if input == dragInput and dragging then
             local delta = input.Position - dragStart
             window.Frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
@@ -634,7 +639,7 @@ function library:CreateWindow(name, size, hidebutton)
                         keybind.Main.Text = "..."
                     end)
 
-                    game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+                    uis.InputBegan:Connect(function(input, gameProcessed)
                         if not gameProcessed then
                             if keybind.Main.Text == "..." then
                                 if input.UserInputType == Enum.UserInputType.Keyboard then
@@ -822,7 +827,7 @@ function library:CreateWindow(name, size, hidebutton)
                         end
                     end)
     
-                    game:GetService("UserInputService").InputChanged:Connect(function(input)
+                    uis.InputChanged:Connect(function(input)
                         if dragging_selector and input.UserInputType == Enum.UserInputType.MouseMovement then
                             colorpicker:RefreshSelector()
                         end
@@ -1097,7 +1102,7 @@ function library:CreateWindow(name, size, hidebutton)
                     end
                 end)
 
-				game:GetService("UserInputService").InputChanged:Connect(function(input)
+				uis.InputChanged:Connect(function(input)
 					if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
                         slider:Refresh()
 					end
@@ -1287,7 +1292,7 @@ function library:CreateWindow(name, size, hidebutton)
                     end
                 end)
 
-                game:GetService("UserInputService").InputChanged:Connect(function(input)
+                uis.InputChanged:Connect(function(input)
                     if dragging_selector and input.UserInputType == Enum.UserInputType.MouseMovement then
                         colorpicker:RefreshSelector()
                     end
@@ -1372,7 +1377,7 @@ function library:CreateWindow(name, size, hidebutton)
                     pcall(keybind.newkeycallback, value)
                 end
 
-                game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+                uis.InputBegan:Connect(function(input, gameProcessed)
                     if not gameProcessed then
                         if keybind.Bind.Text == "..." then
                             if input.UserInputType == Enum.UserInputType.Keyboard then
@@ -1533,7 +1538,7 @@ function library:CreateWindow(name, size, hidebutton)
                         pcall(dropdown.callback, v)
                     end)
 
-                    game:GetService("RunService").RenderStepped:Connect(function()
+                    runservice.RenderStepped:Connect(function()
                         if dropdown.value == v then
                             Item.BackgroundColor3 = Color3.fromRGB(64, 64, 64)
                             Item.TextColor3 = window.theme.accentcolor
