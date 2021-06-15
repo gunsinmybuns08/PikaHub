@@ -175,12 +175,6 @@ function library:CreateWindow(name, size, hidebutton)
 
     getgenv().uilib = window.Main
 
-    uis.InputBegan:Connect(function(key)
-        if key.KeyCode == window.hidebutton then
-            window.Main.Enabled = not window.Main.Enabled
-        end
-    end)
-
     local dragging, dragInput, dragStart, startPos
     uis.InputChanged:Connect(function(input)
         if input == dragInput and dragging then
@@ -216,6 +210,12 @@ function library:CreateWindow(name, size, hidebutton)
     window.Frame.Size = window.size
     window.Frame.BackgroundColor3 = window.theme.backgroundcolor
     window.Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+
+    uis.InputBegan:Connect(function(key)
+        if key.KeyCode == window.hidebutton then
+            window.Frame.Visible = not window.Frame.Visible
+        end
+    end)
 
     window.BlackOutline = Instance.new("Frame", window.Frame)
     window.BlackOutline.Name = "blackline"
