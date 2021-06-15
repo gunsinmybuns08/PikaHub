@@ -1,9 +1,16 @@
 --YOU ARE NOT PERMITTED TO USE THIS UI LIBRARY!
 local library = { }
 
-local player = game:GetService("Players").LocalPlayer
+-- Services
+local players = game:GetService("Players")
 local uis = game:GetService("UserInputService")
 local runservice = game:GetService("RunService")
+local tweenservice = game:GetService("TweenService")
+local marketplaceservice = game:GetService("MarketplaceService")
+local textservice = game:GetService("TextService")
+local coregui = game:GetService("CoreGui")
+
+local player = players.LocalPlayer
 local mouse = player:GetMouse()
 
 library.theme = {
@@ -30,8 +37,8 @@ function library:CreateWatermark(name)
     local watermark = { }
     watermark.Visible = true
 
-    local gamename = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-    watermark.main = Instance.new("ScreenGui", game:GetService("CoreGui"))
+    local gamename = marketplaceservice:GetProductInfo(game.PlaceId).Name
+    watermark.main = Instance.new("ScreenGui", coregui)
     watermark.main.Name = name
     if syn then
         syn.protect_gui(watermark.main)
@@ -39,13 +46,16 @@ function library:CreateWatermark(name)
     
     watermark.mainbar = Instance.new("Frame", watermark.main)
     watermark.mainbar.Name = "Main"
-    watermark.mainbar.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
     watermark.mainbar.BorderColor3 = Color3.fromRGB(80, 80, 80)
     watermark.mainbar.Visible = watermark.Visible
     watermark.mainbar.BorderSizePixel = 0
     watermark.mainbar.ZIndex = 5
     watermark.mainbar.Position = UDim2.new(0.0559123, -89, 0.01, 0)
     watermark.mainbar.Size = UDim2.new(0, 0, 0, 25)
+
+    watermark.Gradient = Instance.new("UIGradient", watermark.mainbar)
+    watermark.Gradient.Rotation = 90
+    watermark.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, Color3.fromRGB(40, 40, 40)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(10, 10, 10)) })
 
     watermark.Outline = Instance.new("Frame", watermark.mainbar)
     watermark.Outline.Name = "outline"
@@ -92,11 +102,11 @@ function library:CreateWatermark(name)
     watermark.Outline.Size = watermark.mainbar.Size + UDim2.fromOffset(2, 2)
     watermark.BlackOutline.Size = watermark.mainbar.Size + UDim2.fromOffset(4, 4)
 
-    game.TweenService:Create(watermark.mainbar, TweenInfo.new(0.7, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Size = UDim2.new(0, watermark.label.TextBounds.X+4, 0, 25) }):Play()
-    game.TweenService:Create(watermark.Outline, TweenInfo.new(0.7, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Size = UDim2.new(0, watermark.label.TextBounds.X+4, 0, 25) }):Play()
-    game.TweenService:Create(watermark.BlackOutline, TweenInfo.new(0.7, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Size = UDim2.new(0, watermark.label.TextBounds.X+4, 0, 25) }):Play()
-    game.TweenService:Create(watermark.label, TweenInfo.new(0.7, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Size = UDim2.new(0, watermark.label.TextBounds.X+4, 0, 25) }):Play()
-    game.TweenService:Create(watermark.topbar, TweenInfo.new(0.7, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 2) }):Play()
+    watermark.mainbar.Size = UDim2.new(0, watermark.label.TextBounds.X+4, 0, 25)    
+    watermark.label.Size = UDim2.new(0, watermark.label.TextBounds.X+4, 0, 25)
+    watermark.topbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 1)
+    watermark.Outline.Size = watermark.mainbar.Size + UDim2.fromOffset(2, 2)
+    watermark.BlackOutline.Size = watermark.mainbar.Size + UDim2.fromOffset(4, 4)
 
     local startTime, counter, oldfps = os.clock(), 0, nil
     runservice.Heartbeat:Connect(function()
@@ -119,6 +129,7 @@ function library:CreateWatermark(name)
                 watermark.label.Size = UDim2.new(0, watermark.label.TextBounds.X+10, 0, 25)
                 watermark.mainbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 25)
                 watermark.topbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 1)
+
                 watermark.Outline.Size = watermark.mainbar.Size + UDim2.fromOffset(2, 2)
                 watermark.BlackOutline.Size = watermark.mainbar.Size + UDim2.fromOffset(4, 4)
             end
@@ -127,19 +138,19 @@ function library:CreateWatermark(name)
     end)
 
     watermark.mainbar.MouseEnter:Connect(function()
-        game.TweenService:Create(watermark.mainbar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 1, Active = false }):Play()
-        game.TweenService:Create(watermark.topbar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 1, Active = false }):Play()
-        game.TweenService:Create(watermark.label, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { TextTransparency = 1, Active = false }):Play()
-        game.TweenService:Create(watermark.Outline, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 1, Active = false }):Play()
-        game.TweenService:Create(watermark.BlackOutline, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 1, Active = false }):Play()
+        tweenservice:Create(watermark.mainbar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 1, Active = false }):Play()
+        tweenservice:Create(watermark.topbar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 1, Active = false }):Play()
+        tweenservice:Create(watermark.label, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { TextTransparency = 1, Active = false }):Play()
+        tweenservice:Create(watermark.Outline, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 1, Active = false }):Play()
+        tweenservice:Create(watermark.BlackOutline, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 1, Active = false }):Play()
     end)
     
     watermark.mainbar.MouseLeave:Connect(function()
-        game.TweenService:Create(watermark.mainbar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 0, Active = true }):Play()
-        game.TweenService:Create(watermark.topbar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 0, Active = true }):Play()
-        game.TweenService:Create(watermark.label, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { TextTransparency = 0, Active = true }):Play()
-        game.TweenService:Create(watermark.Outline, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 0, Active = true }):Play()
-        game.TweenService:Create(watermark.BlackOutline, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 0, Active = true }):Play()
+        tweenservice:Create(watermark.mainbar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 0, Active = true }):Play()
+        tweenservice:Create(watermark.topbar, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 0, Active = true }):Play()
+        tweenservice:Create(watermark.label, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { TextTransparency = 0, Active = true }):Play()
+        tweenservice:Create(watermark.Outline, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 0, Active = true }):Play()
+        tweenservice:Create(watermark.BlackOutline, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { BackgroundTransparency = 0, Active = true }):Play()
     end)
 
     return watermark
@@ -156,7 +167,7 @@ function library:CreateWindow(name, size, hidebutton)
     window.hidebutton = hidebutton or Enum.KeyCode.RightShift
     window.theme = library.theme
 
-    window.Main = Instance.new("ScreenGui", game:GetService("CoreGui"))
+    window.Main = Instance.new("ScreenGui", coregui)
     window.Main.Name = name
     if syn then
         syn.protect_gui(window.Main)
