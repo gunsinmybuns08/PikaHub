@@ -1,4 +1,4 @@
---YOU ARE NOT PERMITTED TO USE THIS UI LIBRARY!
+-- (WARNING: This Repository is Licensed! You are not permitted to use/copy this User Interface library)
 local library = { }
 
 -- Services
