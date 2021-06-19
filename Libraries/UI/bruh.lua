@@ -204,11 +204,13 @@ function library:CreateWindow(name, size, hidebutton)
         end
     end
 
-    window.Frame = Instance.new("Frame", window.Main)
+    window.Frame = Instance.new("TextButton", window.Main)
     window.Frame.Name = "main"
     window.Frame.Position = UDim2.fromScale(0.5, 0.5)
     window.Frame.BorderSizePixel = 0
     window.Frame.Size = window.size
+    window.Frame.Text = ""
+    window.Frame.AutoButtonColor = false
     window.Frame.BackgroundColor3 = window.theme.backgroundcolor
     window.Frame.AnchorPoint = Vector2.new(0.5, 0.5)
 
@@ -290,7 +292,7 @@ function library:CreateWindow(name, size, hidebutton)
         window.BackgroundImage.LayoutOrder = 10
         window.BackgroundImage.ScaleType = Enum.ScaleType.Stretch
         window.BackgroundImage.Position = window.BlackLine.Position + UDim2.fromOffset(0, 1)
-        window.BackgroundImage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - window.TopBar.AbsoluteSize.Y - 2)
+        window.BackgroundImage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - window.TopBar.AbsoluteSize.Y - 1)
         window.BackgroundImage.Image = window.theme.background
     end
 
