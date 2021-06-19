@@ -632,7 +632,7 @@ function library:CreateWindow(name, size, hidebutton)
                     keybind.default = default or "None"
                     keybind.value = keybind.default
 
-                    local text = toggle.default == "None" and "[None]" or "[" .. keybind.default.Name .. "]"
+                    local text = keybind.default == "None" and "[None]" or "[" .. keybind.default.Name .. "]"
                     local size = textservice:GetTextSize(text, 13, window.theme.font, Vector2.new(2000, 2000))
 
                     keybind.Main = Instance.new("TextButton", toggle.Items)
