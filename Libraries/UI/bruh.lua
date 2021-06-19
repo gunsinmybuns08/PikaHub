@@ -26,6 +26,7 @@ library.theme = {
     outlinecolor2 = Color3.fromRGB(0, 0, 0),
     sectorcolor = Color3.fromRGB(30, 30, 30),
     toptextcolor = Color3.fromRGB(255, 255, 255),
+    topheight = 48,
     topcolor = Color3.fromRGB(30, 30, 30),
     topcolor2 = Color3.fromRGB(12, 12, 12),
     buttoncolor = Color3.fromRGB(49, 49, 49),
@@ -206,7 +207,7 @@ function library:CreateWindow(name, size, hidebutton)
     window.Frame = Instance.new("Frame", window.Main)
     window.Frame.Name = "main"
     window.Frame.Position = UDim2.fromScale(0.5, 0.5)
-    window.Frame.BorderColor3 = window.theme.bordercolor
+    window.Frame.BorderSizePixel = 0
     window.Frame.Size = window.size
     window.Frame.BackgroundColor3 = window.theme.backgroundcolor
     window.Frame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -225,9 +226,17 @@ function library:CreateWindow(name, size, hidebutton)
     window.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
     window.BlackOutline.Position = UDim2.fromOffset(-2, -2)
 
+    window.Outline = Instance.new("Frame", window.Frame)
+    window.Outline.Name = "blackline"
+    window.Outline.ZIndex = 1
+    window.Outline.Size = window.size + UDim2.fromOffset(2, 2)
+    window.Outline.BorderSizePixel = 0
+    window.Outline.BackgroundColor3 = window.theme.outlinecolor
+    window.Outline.Position = UDim2.fromOffset(-1, -1)
+
     window.TopBar = Instance.new("Frame", window.Frame)
     window.TopBar.Name = "top"
-    window.TopBar.Size = UDim2.fromOffset(window.size.X.Offset, 20)
+    window.TopBar.Size = UDim2.fromOffset(window.size.X.Offset, window.theme.topheight)
     window.TopBar.BorderSizePixel = 0
     window.TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     window.TopBar.InputBegan:Connect(dragstart)
@@ -245,24 +254,23 @@ function library:CreateWindow(name, size, hidebutton)
     window.NameLabel.Name = "title"
     window.NameLabel.Position = UDim2.fromOffset(6, 0)
     window.NameLabel.BackgroundTransparency = 1
-    window.NameLabel.Size = UDim2.fromOffset(194, 19)
+    window.NameLabel.Size = UDim2.fromOffset(194, window.TopBar.AbsoluteSize.Y / 2 - 2)
     window.NameLabel.TextSize = window.theme.fontsize
 
-    window.Line2 = Instance.new("Frame", window.Frame)
+    window.Line2 = Instance.new("Frame", window.TopBar)
     window.Line2.Name = "line"
-    window.Line2.Position = UDim2.fromOffset(0, 20)
+    window.Line2.Position = UDim2.fromOffset(0, window.TopBar.AbsoluteSize.Y / 2)
     window.Line2.Size = UDim2.fromOffset(window.size.X.Offset, 1)
     window.Line2.BorderSizePixel = 0
     window.Line2.BackgroundColor3 = window.theme.accentcolor
 
-    window.TabList = Instance.new("Frame", window.Frame)
+    window.TabList = Instance.new("Frame", window.TopBar)
     window.TabList.Name = "tablist"
     window.TabList.BackgroundTransparency = 1
-    window.TabList.Position = UDim2.fromOffset(0, 21)
-    window.TabList.Size = UDim2.fromOffset(window.size.X.Offset, 19)
-    window.TopBar.Size = UDim2.fromOffset(window.TopBar.Size.X.Offset, window.TopBar.Size.Y.Offset + window.TabList.Size.Y.Offset)
+    window.TabList.Position = UDim2.fromOffset(0, window.TopBar.AbsoluteSize.Y / 2 + 1)
+    window.TabList.Size = UDim2.fromOffset(window.size.X.Offset, window.TopBar.AbsoluteSize.Y / 2)
     window.TabList.BorderSizePixel = 0
-    window.TabList.BackgroundColor3 = Color3.new(0.09803921568, 0.09803921568, 0.09803921568)
+    window.TabList.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 
     window.TabList.InputBegan:Connect(dragstart)
     window.TabList.InputChanged:Connect(dragend)
@@ -273,7 +281,7 @@ function library:CreateWindow(name, size, hidebutton)
     window.BlackLine.BorderSizePixel = 0
     window.BlackLine.ZIndex = 9
     window.BlackLine.BackgroundColor3 = window.theme.outlinecolor2
-    window.BlackLine.Position = UDim2.fromOffset(0, window.TabList.Position.Y.Offset) + UDim2.fromOffset(0, window.TabList.AbsoluteSize.Y - 1)
+    window.BlackLine.Position = UDim2.fromOffset(0, window.TopBar.AbsoluteSize.Y)
 
     if window.theme.background then
         window.BackgroundImage = Instance.new("ImageButton", window.Frame)
@@ -282,7 +290,7 @@ function library:CreateWindow(name, size, hidebutton)
         window.BackgroundImage.LayoutOrder = 10
         window.BackgroundImage.ScaleType = Enum.ScaleType.Stretch
         window.BackgroundImage.Position = window.BlackLine.Position + UDim2.fromOffset(0, 1)
-        window.BackgroundImage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - 40)
+        window.BackgroundImage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - window.TopBar.AbsoluteSize.Y - 2)
         window.BackgroundImage.Image = window.theme.background
     end
 
@@ -313,7 +321,8 @@ function library:CreateWindow(name, size, hidebutton)
         tab.TabButton.AutoButtonColor = false
         tab.TabButton.Font = window.theme.font
         tab.TabButton.BackgroundTransparency = 1
-        tab.TabButton.Size = UDim2.fromOffset(size.X + 15, 16)
+        tab.TabButton.BorderSizePixel = 0
+        tab.TabButton.Size = UDim2.fromOffset(size.X + 15, window.TabList.AbsoluteSize.Y - 1)
         tab.TabButton.Name = tab.name
         tab.TabButton.TextSize = window.theme.fontsize
 
@@ -324,7 +333,7 @@ function library:CreateWindow(name, size, hidebutton)
         tab.TabPage.AutomaticCanvasSize = Enum.AutomaticSize.Y
         tab.TabPage.ScrollingDirection = "Y"
 		tab.TabPage.Position = window.BlackLine.Position + UDim2.fromOffset(0, 1)
-		tab.TabPage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - 40)
+		tab.TabPage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - (window.TopBar.AbsoluteSize.Y + 1))
         tab.TabPage.BackgroundTransparency = 1
         tab.TabPage.CanvasSize = UDim2.new(0, window.size.X.Offset, 0, 0)
 
@@ -371,6 +380,7 @@ function library:CreateWindow(name, size, hidebutton)
             sector.Main.ZIndex = 2
             sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, 20)
             sector.Main.BackgroundColor3 = window.theme.sectorcolor
+            sector.Main.Position = sector.side == "left" and UDim2.new(0, 11, 0, 12) or UDim2.new(0, window.size.X.Offset - sector.Main.AbsoluteSize.X - 11, 0, 12)
 
             sector.Line = Instance.new("Frame", sector.Main)
             sector.Line.Name = "line"
