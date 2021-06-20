@@ -743,7 +743,15 @@ function library:CreateWindow(name, size, hidebutton)
                     colorpicker.MainPicker.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
                     colorpicker.MainPicker.Position = UDim2.fromOffset(colorpicker.Main.AbsolutePosition.X + -colorpicker.MainPicker.AbsoluteSize.X + colorpicker.Main.AbsoluteSize.X, colorpicker.Main.AbsolutePosition.Y + 15)
                     window.Frame:GetPropertyChangedSignal("Visible"):Connect(function()
-                        colorpicker.MainPicker.Visible = window.Frame.Visible
+                        if colorpicker.MainPicker.Visible then
+                            colorpicker.MainPicker.Visible = window.Frame.Visible
+                            window.OpenedColorPickers[colorpicker.MainPicker] = window.Frame.Visible
+
+                            colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
+                            colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
+                            colorpicker.Outline.BackgroundTransparency = 0
+                            colorpicker.BlackOutline.BackgroundTransparency = 0
+                        end
                     end)
 
                     colorpicker.Outline2 = Instance.new("TextButton", colorpicker.MainPicker)
@@ -1211,7 +1219,15 @@ function library:CreateWindow(name, size, hidebutton)
                 colorpicker.MainPicker.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
                 colorpicker.MainPicker.Position = UDim2.fromOffset(colorpicker.Main.AbsolutePosition.X + -colorpicker.MainPicker.AbsoluteSize.X + colorpicker.Main.AbsoluteSize.X, colorpicker.Main.AbsolutePosition.Y + 15)
                 window.Frame:GetPropertyChangedSignal("Visible"):Connect(function()
-                    colorpicker.MainPicker.Visible = window.Frame.Visible
+                    if colorpicker.MainPicker.Visible then
+                        colorpicker.MainPicker.Visible = window.Frame.Visible
+                        window.OpenedColorPickers[colorpicker.MainPicker] = window.Frame.Visible
+
+                        colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
+                        colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
+                        colorpicker.Outline.BackgroundTransparency = 0
+                        colorpicker.BlackOutline.BackgroundTransparency = 0
+                    end
                 end)
                 
                 colorpicker.Outline2 = Instance.new("TextButton", colorpicker.MainPicker)
