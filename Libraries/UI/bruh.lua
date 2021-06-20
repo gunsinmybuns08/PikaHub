@@ -733,7 +733,7 @@ function library:CreateWindow(name, size, hidebutton)
                         end
                     end)
 
-                    colorpicker.MainPicker = Instance.new("Frame", colorpicker.Main)
+                    colorpicker.MainPicker = Instance.new("Frame", window.Main)
                     colorpicker.MainPicker.Name = "picker"
                     colorpicker.MainPicker.ZIndex = 100
                     colorpicker.MainPicker.Visible = false
@@ -741,7 +741,7 @@ function library:CreateWindow(name, size, hidebutton)
                     colorpicker.MainPicker.Size = UDim2.fromOffset(160, 178)
                     colorpicker.MainPicker.BorderSizePixel = 0
                     colorpicker.MainPicker.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-                    colorpicker.MainPicker.Position = UDim2.fromOffset(-colorpicker.MainPicker.AbsoluteSize.X + colorpicker.Main.AbsoluteSize.X, 15)
+                    colorpicker.MainPicker.Position = UDim2.fromOffset(colorpicker.Main.AbsolutePosition.X + -colorpicker.MainPicker.AbsoluteSize.X + colorpicker.Main.AbsoluteSize.X, colorpicker.Main.AbsolutePosition.Y + 15)
 
                     colorpicker.Outline2 = Instance.new("TextButton", colorpicker.MainPicker)
                     colorpicker.Outline2.AutoButtonColor = false
@@ -1198,7 +1198,7 @@ function library:CreateWindow(name, size, hidebutton)
                     end
                 end)
 
-                colorpicker.MainPicker = Instance.new("Frame", colorpicker.Main)
+                colorpicker.MainPicker = Instance.new("Frame", window.Main)
                 colorpicker.MainPicker.Name = "picker"
                 colorpicker.MainPicker.ZIndex = 100
                 colorpicker.MainPicker.Visible = false
@@ -1206,7 +1206,7 @@ function library:CreateWindow(name, size, hidebutton)
                 colorpicker.MainPicker.Size = UDim2.fromOffset(160, 178)
                 colorpicker.MainPicker.BorderSizePixel = 0
                 colorpicker.MainPicker.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-                colorpicker.MainPicker.Position = UDim2.fromOffset(-colorpicker.MainPicker.AbsoluteSize.X + colorpicker.Main.AbsoluteSize.X, 15)
+                colorpicker.MainPicker.Position = UDim2.fromOffset(colorpicker.Main.AbsolutePosition.X + -colorpicker.MainPicker.AbsoluteSize.X + colorpicker.Main.AbsoluteSize.X, colorpicker.Main.AbsolutePosition.Y + 15)
 
                 colorpicker.Outline2 = Instance.new("TextButton", colorpicker.MainPicker)
                 colorpicker.Outline2.AutoButtonColor = false
