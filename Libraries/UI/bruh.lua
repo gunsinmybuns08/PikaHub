@@ -1212,8 +1212,8 @@ function library:CreateWindow(name, size, hidebutton)
                 colorpicker.MainPicker.Position = UDim2.fromOffset(colorpicker.Main.AbsolutePosition.X + -colorpicker.MainPicker.AbsoluteSize.X + colorpicker.Main.AbsoluteSize.X, colorpicker.Main.AbsolutePosition.Y + 15)
                 window.Frame:GetPropertyChangedSignal("Visible"):Connect(function()
                     colorpicker.MainPicker.Visible = window.Frame.Visible
-                end)'
-                '
+                end)
+                
                 colorpicker.Outline2 = Instance.new("TextButton", colorpicker.MainPicker)
                 colorpicker.Outline2.AutoButtonColor = false
                 colorpicker.Outline2.Name = "outline"
