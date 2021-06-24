@@ -733,7 +733,7 @@ function library:CreateWindow(name, size, hidebutton)
                         end
                     end)
 
-                    colorpicker.MainPicker = Instance.new("Frame", window.Main)
+                    colorpicker.MainPicker = Instance.new("Frame", colorpicker.Main)
                     colorpicker.MainPicker.Name = "picker"
                     colorpicker.MainPicker.ZIndex = 100
                     colorpicker.MainPicker.Visible = false
@@ -741,18 +741,8 @@ function library:CreateWindow(name, size, hidebutton)
                     colorpicker.MainPicker.Size = UDim2.fromOffset(160, 178)
                     colorpicker.MainPicker.BorderSizePixel = 0
                     colorpicker.MainPicker.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-                    colorpicker.MainPicker.Position = UDim2.fromOffset(colorpicker.Main.AbsolutePosition.X + -colorpicker.MainPicker.AbsoluteSize.X + colorpicker.Main.AbsoluteSize.X, colorpicker.Main.AbsolutePosition.Y + 15)
-                    window.Frame:GetPropertyChangedSignal("Visible"):Connect(function()
-                        if colorpicker.MainPicker.Visible then
-                            colorpicker.MainPicker.Visible = window.Frame.Visible
-                            window.OpenedColorPickers[colorpicker.MainPicker] = window.Frame.Visible
-
-                            colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
-                            colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
-                            colorpicker.Outline.BackgroundTransparency = 0
-                            colorpicker.BlackOutline.BackgroundTransparency = 0
-                        end
-                    end)
+                    colorpicker.MainPicker.Rotation = 0.000000000000001
+                    colorpicker.MainPicker.Position = UDim2.fromOffset(-colorpicker.MainPicker.AbsoluteSize.X + colorpicker.Main.AbsoluteSize.X, 15)
 
                     colorpicker.Outline2 = Instance.new("TextButton", colorpicker.MainPicker)
                     colorpicker.Outline2.AutoButtonColor = false
@@ -1098,6 +1088,7 @@ function library:CreateWindow(name, size, hidebutton)
                     slider.value = value
                     value = math.round(value * slider.decimals) / slider.decimals
                     local percent = 1 - ((slider.max - value) / (slider.max - slider.min))
+
                     slider.SlideBar:TweenSize(UDim2.fromOffset(percent * slider.Main.Size.X.Offset, slider.Main.Size.Y.Offset), Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.05)
 					slider.Label.Text = slider.text .. ": " .. tostring(value)
 					pcall(slider.callback, value)
@@ -1209,7 +1200,7 @@ function library:CreateWindow(name, size, hidebutton)
                     end
                 end)
 
-                colorpicker.MainPicker = Instance.new("Frame", window.Main)
+                colorpicker.MainPicker = Instance.new("Frame", colorpicker.Main)
                 colorpicker.MainPicker.Name = "picker"
                 colorpicker.MainPicker.ZIndex = 100
                 colorpicker.MainPicker.Visible = false
@@ -1217,19 +1208,9 @@ function library:CreateWindow(name, size, hidebutton)
                 colorpicker.MainPicker.Size = UDim2.fromOffset(160, 178)
                 colorpicker.MainPicker.BorderSizePixel = 0
                 colorpicker.MainPicker.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-                colorpicker.MainPicker.Position = UDim2.fromOffset(colorpicker.Main.AbsolutePosition.X + -colorpicker.MainPicker.AbsoluteSize.X + colorpicker.Main.AbsoluteSize.X, colorpicker.Main.AbsolutePosition.Y + 15)
-                window.Frame:GetPropertyChangedSignal("Visible"):Connect(function()
-                    if colorpicker.MainPicker.Visible then
-                        colorpicker.MainPicker.Visible = window.Frame.Visible
-                        window.OpenedColorPickers[colorpicker.MainPicker] = window.Frame.Visible
+                colorpicker.MainPicker.Rotation = 0.000000000000001
+                colorpicker.MainPicker.Position = UDim2.fromOffset(-colorpicker.MainPicker.AbsoluteSize.X + colorpicker.Main.AbsoluteSize.X, 15)
 
-                        colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
-                        colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
-                        colorpicker.Outline.BackgroundTransparency = 0
-                        colorpicker.BlackOutline.BackgroundTransparency = 0
-                    end
-                end)
-                
                 colorpicker.Outline2 = Instance.new("TextButton", colorpicker.MainPicker)
                 colorpicker.Outline2.AutoButtonColor = false
                 colorpicker.Outline2.Name = "outline"
@@ -1269,11 +1250,11 @@ function library:CreateWindow(name, size, hidebutton)
                 colorpicker.selector.Position = UDim2.new(0,5,0,163)
                 colorpicker.selector.Size = UDim2.new(0,150,0,10)
                 colorpicker.selector.BackgroundColor3 = Color3.fromRGB(255,255,255)
-                colorpicker.selector.BorderColor3 = Color3.new(0, 0, 0)
+                colorpicker.selector.BorderColor3 = window.theme.outlinecolor2
                 colorpicker.selector.Text = ""
     
                 colorpicker.gradient = Instance.new("UIGradient", colorpicker.selector)
-                colorpicker.gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.new(1,0,0)), ColorSequenceKeypoint.new(0.25,Color3.new(1,0,1)), ColorSequenceKeypoint.new(0.5,Color3.new(0,1,1)), ColorSequenceKeypoint.new(0.75,Color3.new(1,1,0)), ColorSequenceKeypoint.new(1,Color3.new(1,0,0)) })
+                colorpicker.gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.new(1,0,0)), ColorSequenceKeypoint.new(0.25,Color3.new(1,0,1)), ColorSequenceKeypoint.new(0.5,Color3.new(0,1,1)), ColorSequenceKeypoint.new(0.75,Color3.new(1,1,0)), ColorSequenceKeypoint.new(1,Color3.new(1,0,0))})
 
                 colorpicker.pointer = Instance.new("Frame", colorpicker.selector)
                 colorpicker.pointer.ZIndex = 101
