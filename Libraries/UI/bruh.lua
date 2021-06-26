@@ -552,7 +552,7 @@ function library:CreateWindow(name, size, hidebutton)
                 return label
             end
             
-            function sector:AddToggle(text,default, callback)
+            function sector:AddToggle(text, default, callback)
                 local toggle = { }
                 toggle.text = text or ""
                 toggle.default = default or false
@@ -688,7 +688,7 @@ function library:CreateWindow(name, size, hidebutton)
                     return keybind
                 end
 
-                function toggle:AddColorpicker(default,callback)
+                function toggle:AddColorpicker(default, callback)
                     local colorpicker = { }
 
                     colorpicker.callback = callback or function() end
@@ -928,7 +928,7 @@ function library:CreateWindow(name, size, hidebutton)
                 return toggle
             end
             
-            function sector:AddTextbox(text,default,callback)
+            function sector:AddTextbox(text, default, callback)
                 local textbox = { }
                 textbox.text = text or ""
                 textbox.callback = callback or function() end
@@ -1006,7 +1006,7 @@ function library:CreateWindow(name, size, hidebutton)
                 return textbox
             end
 
-            function sector:AddSlider(text,min,default,max,decimals,callback)
+            function sector:AddSlider(text, min, max, default, decimals, callback)
                 local slider = { }
                 slider.text = text or ""
                 slider.callback = callback or function(value) end
@@ -1432,7 +1432,7 @@ function library:CreateWindow(name, size, hidebutton)
                 return keybind
             end
 
-            function sector:AddDropdown(text,items,default,callback)
+            function sector:AddDropdown(text, items, default, callback)
                 local dropdown = { }
 
                 dropdown.text = text or ""
@@ -1567,7 +1567,6 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.IgnoreBackButtons.ZIndex = 7
                 dropdown.IgnoreBackButtons.Text = ""
                 dropdown.IgnoreBackButtons.Active = false
-                dropdown.IgnoreBackButtons.Visible = false
                 dropdown.IgnoreBackButtons.AutoButtonColor = false
 
                 dropdown.items = { }
@@ -1594,8 +1593,7 @@ function library:CreateWindow(name, size, hidebutton)
                         dropdown.ItemsFrame.Active = false
                         dropdown.OutlineItems.Visible = false
                         dropdown.BlackOutlineItems.Visible = false
-                        dropdown.IgnoreBackButtons.Visible = false
-                        dropdown.IgnoreBackButtons.Active = false
+                        dropdown.IgnoreBackButtons.Active = dropdown.ItemsFrame.Visible
 
                         dropdown.SelectedLabel.Text = v
                         dropdown.value = v
@@ -1664,8 +1662,7 @@ function library:CreateWindow(name, size, hidebutton)
                         tweenservice:Create(dropdown.Nav, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Rotation = 0 }):Play()
                         dropdown.ItemsFrame.Visible = true
                         dropdown.ItemsFrame.Active = true
-                        dropdown.IgnoreBackButtons.Visible = true
-                        dropdown.IgnoreBackButtons.Active = true
+                        dropdown.IgnoreBackButtons.Active = dropdown.ItemsFrame.Visible
                         dropdown.OutlineItems.Visible = true
                         dropdown.BlackOutlineItems.Visible = true
                     else
@@ -1674,8 +1671,7 @@ function library:CreateWindow(name, size, hidebutton)
                         tweenservice:Create(dropdown.Nav, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Rotation = 180 }):Play()
                         dropdown.ItemsFrame.Visible = false
                         dropdown.ItemsFrame.Active = false
-                        dropdown.IgnoreBackButtons.Visible = false
-                        dropdown.IgnoreBackButtons.Active = false
+                        dropdown.IgnoreBackButtons.Active = dropdown.ItemsFrame.Visible
                         dropdown.OutlineItems.Visible = false
                         dropdown.BlackOutlineItems.Visible = false
                     end
