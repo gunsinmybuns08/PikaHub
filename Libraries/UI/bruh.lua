@@ -1146,7 +1146,7 @@ function library:CreateWindow(name, size, hidebutton)
                         return 
                     end
                     if (slider.InputLabel.Text:match("^%d+$")) then
-                        slider:Set(tonumber(slider.InputLabel.Text))
+                        slider:Set(math.clamp(tonumber(slider.InputLabel.Text), slider.min, slider.max))
                     end
                     slider.InputLabel.Text = slider:Get()
                 end)
