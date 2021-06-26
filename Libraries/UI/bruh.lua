@@ -44,6 +44,11 @@ function library:CreateWatermark(name)
     if syn then
         syn.protect_gui(watermark.main)
     end
+
+    if getgenv().watermark then
+        getgenv().watermark:Remove()
+    end
+    getgenv().watermark = watermark.main
     
     watermark.mainbar = Instance.new("Frame", watermark.main)
     watermark.mainbar.Name = "Main"
@@ -159,9 +164,6 @@ end
 
 function library:CreateWindow(name, size, hidebutton)
     local window = { }
-    if getgenv().uilib then
-        getgenv().uilib:Remove()
-    end
 
     window.name = name or ""
     window.size = UDim2.fromOffset(size.X, size.Y) or UDim2.fromOffset(492, 598)
@@ -174,6 +176,9 @@ function library:CreateWindow(name, size, hidebutton)
         syn.protect_gui(window.Main)
     end
 
+    if getgenv().uilib then
+        getgenv().uilib:Remove()
+    end
     getgenv().uilib = window.Main
 
     local dragging, dragInput, dragStart, startPos
