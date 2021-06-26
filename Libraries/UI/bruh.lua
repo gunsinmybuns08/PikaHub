@@ -1567,6 +1567,7 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.IgnoreBackButtons.ZIndex = 7
                 dropdown.IgnoreBackButtons.Text = ""
                 dropdown.IgnoreBackButtons.Active = false
+                dropdown.IgnoreBackButtons.Visible = false
                 dropdown.IgnoreBackButtons.AutoButtonColor = false
 
                 dropdown.items = { }
@@ -1593,7 +1594,8 @@ function library:CreateWindow(name, size, hidebutton)
                         dropdown.ItemsFrame.Active = false
                         dropdown.OutlineItems.Visible = false
                         dropdown.BlackOutlineItems.Visible = false
-                        dropdown.IgnoreBackButtons.Active = dropdown.ItemsFrame.Visible
+                        dropdown.IgnoreBackButtons.Visible = false
+                        dropdown.IgnoreBackButtons.Active = false
 
                         dropdown.SelectedLabel.Text = v
                         dropdown.value = v
@@ -1662,7 +1664,8 @@ function library:CreateWindow(name, size, hidebutton)
                         tweenservice:Create(dropdown.Nav, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Rotation = 0 }):Play()
                         dropdown.ItemsFrame.Visible = true
                         dropdown.ItemsFrame.Active = true
-                        dropdown.IgnoreBackButtons.Active = dropdown.ItemsFrame.Visible
+                        dropdown.IgnoreBackButtons.Visible = true
+                        dropdown.IgnoreBackButtons.Active = true
                         dropdown.OutlineItems.Visible = true
                         dropdown.BlackOutlineItems.Visible = true
                     else
@@ -1671,7 +1674,8 @@ function library:CreateWindow(name, size, hidebutton)
                         tweenservice:Create(dropdown.Nav, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Rotation = 180 }):Play()
                         dropdown.ItemsFrame.Visible = false
                         dropdown.ItemsFrame.Active = false
-                        dropdown.IgnoreBackButtons.Active = dropdown.ItemsFrame.Visible
+                        dropdown.IgnoreBackButtons.Visible = false
+                        dropdown.IgnoreBackButtons.Active = false
                         dropdown.OutlineItems.Visible = false
                         dropdown.BlackOutlineItems.Visible = false
                     end
