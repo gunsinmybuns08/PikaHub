@@ -953,6 +953,7 @@ function library:CreateWindow(name, size, hidebutton)
                 textbox.Main.Font = window.theme.font
                 textbox.Main.Name = "textbox"
                 textbox.Main.MultiLine = false
+                textbox.Main.ClearTextOnFocus = false
                 textbox.Main.ZIndex = 5
                 textbox.Main.TextScaled = true
                 textbox.Main.Size = textbox.Holder.Size
