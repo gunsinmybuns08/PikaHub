@@ -1126,6 +1126,8 @@ function library:CreateWindow(name, size, hidebutton)
                 end
 
                 function slider:Set(value)
+                    value = math.clamp(value, slider.min, slider.max)
+
                     slider.value = value
                     value = math.round(value * slider.decimals) / slider.decimals
                     local percent = 1 - ((slider.max - value) / (slider.max - slider.min))
@@ -1145,9 +1147,8 @@ function library:CreateWindow(name, size, hidebutton)
                     end
                     if (slider.InputLabel.Text:match("^%d+$")) then
                         slider:Set(tonumber(slider.InputLabel.Text))
-                    else
-                        slider.InputLabel.Text = slider:Get()
                     end
+                    slider.InputLabel.Text = slider:Get()
                 end)
 
                 function slider:Refresh()
