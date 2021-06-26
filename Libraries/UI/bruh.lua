@@ -12,6 +12,7 @@ local coregui = game:GetService("CoreGui")
 
 local player = players.LocalPlayer
 local mouse = player:GetMouse()
+local camera = game.Workspace.CurrentCamera
 
 library.theme = {
     fontsize = 15,
@@ -1119,25 +1120,22 @@ function library:CreateWindow(name, size, hidebutton)
                 end)
 
 
-                function slider:Get(size)
-                    local percent = math.clamp(size or slider.SlideBar.AbsoluteSize.X, 0, slider.Main.Size.X.Offset) / slider.Main.Size.X.Offset
+                function slider:Get()
+                    local percent = math.clamp(slider.SlideBar.AbsoluteSize.X, 0, slider.Main.Size.X.Offset) / slider.Main.Size.X.Offset
                     local value = math.floor((slider.min + (slider.max - slider.min) * percent) * slider.decimals) / slider.decimals
                     return value
                 end
 
                 function slider:Set(value)
-                    value = math.clamp(value, slider.min, slider.max)
+                    slider.value = math.clamp(math.round(value * slider.decimals) / slider.decimals, slider.min, slider.max)
+                    local percent = 1 - ((slider.max - slider.value) / (slider.max - slider.min))
 
-                    slider.value = value
-                    value = math.round(value * slider.decimals) / slider.decimals
-                    local percent = 1 - ((slider.max - value) / (slider.max - slider.min))
-
-                    local size = UDim2.fromOffset(percent * slider.Main.Size.X.Offset, slider.Main.Size.Y.Offset)
-                    slider.SlideBar:TweenSize(size, Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.05)
-
-                    value = slider:Get(size.X.Offset)
-					slider.InputLabel.Text = value
-					pcall(slider.callback, value)
+                    slider.SlideBar:TweenSize(UDim2.fromOffset(percent * slider.Main.Size.X.Offset, slider.Main.Size.Y.Offset), Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.05)
+                    wait(0.05)
+                    
+                    slider.value = slider:Get()
+					slider.InputLabel.Text = slider.value
+					pcall(slider.callback, slider.value)
 				end
                 slider:Set(slider.default)
 
@@ -1146,7 +1144,7 @@ function library:CreateWindow(name, size, hidebutton)
                         return 
                     end
                     if (slider.InputLabel.Text:match("^%d+$")) then
-                        slider:Set(math.clamp(tonumber(slider.InputLabel.Text), slider.min, slider.max))
+                        slider:Set(tonumber(slider.InputLabel.Text))
                     end
                     slider.InputLabel.Text = slider:Get()
                 end)
