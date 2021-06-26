@@ -1006,7 +1006,7 @@ function library:CreateWindow(name, size, hidebutton)
                 return textbox
             end
 
-            function sector:AddSlider(text, min, max, default, decimals, callback)
+            function sector:AddSlider(text, min, default, max, decimals, callback)
                 local slider = { }
                 slider.text = text or ""
                 slider.callback = callback or function(value) end
