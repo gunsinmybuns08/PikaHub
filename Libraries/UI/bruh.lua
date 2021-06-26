@@ -1121,19 +1121,14 @@ function library:CreateWindow(name, size, hidebutton)
 
 
                 function slider:Get()
-                    local percent = math.clamp(slider.SlideBar.AbsoluteSize.X, 0, slider.Main.Size.X.Offset) / slider.Main.Size.X.Offset
-                    local value = math.floor((slider.min + (slider.max - slider.min) * percent) * slider.decimals) / slider.decimals
-                    return value
+                    return slider.value
                 end
 
                 function slider:Set(value)
                     slider.value = math.clamp(math.round(value * slider.decimals) / slider.decimals, slider.min, slider.max)
                     local percent = 1 - ((slider.max - slider.value) / (slider.max - slider.min))
 
-                    slider.SlideBar:TweenSize(UDim2.fromOffset(percent * slider.Main.Size.X.Offset, slider.Main.Size.Y.Offset), Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.05)
-                    wait(0.05)
-                    
-                    slider.value = slider:Get()
+                    slider.SlideBar:TweenSize(UDim2.fromOffset(percent * slider.Main.AbsoluteSize.X, slider.Main.AbsoluteSize.Y), Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.05)
 					slider.InputLabel.Text = slider.value
 					pcall(slider.callback, slider.value)
 				end
@@ -1145,14 +1140,16 @@ function library:CreateWindow(name, size, hidebutton)
                     end
                     if (slider.InputLabel.Text:match("^%d+$")) then
                         slider:Set(tonumber(slider.InputLabel.Text))
+                    else
+                        slider.InputLabel.Text = tostring(slider.value)
                     end
-                    slider.InputLabel.Text = slider:Get()
                 end)
 
                 function slider:Refresh()
                     local mousePos = camera:WorldToViewportPoint(mouse.Hit.p)
-                    local percent = math.clamp(mousePos.X - slider.SlideBar.AbsolutePosition.X, 0, slider.Main.Size.X.Offset) / slider.Main.Size.X.Offset
+                    local percent = math.clamp(mousePos.X - slider.SlideBar.AbsolutePosition.X, 0, slider.Main.AbsoluteSize.X) / slider.Main.AbsoluteSize.X
                     local value = math.floor((slider.min + (slider.max - slider.min) * percent) * slider.decimals) / slider.decimals
+                    value = math.clamp(value, slider.min, slider.max)
                     slider:Set(value)
                 end
 
