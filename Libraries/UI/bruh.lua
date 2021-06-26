@@ -1435,7 +1435,7 @@ function library:CreateWindow(name, size, hidebutton)
                 local dropdown = { }
 
                 dropdown.text = text or ""
-                dropdown.items = items or { }
+                dropdown.defaultitems = items or { }
                 dropdown.default = default
                 dropdown.callback = callback or function() end
                 dropdown.value = dropdown.default
@@ -1481,7 +1481,7 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.SelectedLabel = Instance.new("TextLabel", dropdown.Main)
                 dropdown.SelectedLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 dropdown.SelectedLabel.BackgroundTransparency = 1
-                dropdown.SelectedLabel.Position = UDim2.fromOffset(5, 2)
+                dropdown.SelectedLabel.Position = UDim2.fromOffset(5, 1)
                 dropdown.SelectedLabel.Size = UDim2.fromOffset(130, 13)
                 dropdown.SelectedLabel.Font = window.theme.font
                 dropdown.SelectedLabel.Text = dropdown.text
@@ -1522,7 +1522,6 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.ItemsFrame = Instance.new("ScrollingFrame", dropdown.Main)
                 dropdown.ItemsFrame.Name = "itemsframe"
                 dropdown.ItemsFrame.BorderSizePixel = 0
-                dropdown.ItemsFrame.Size = UDim2.fromOffset(dropdown.Main.Size.X.Offset, math.clamp(#dropdown.items * 20, 20, 156) + 4)
                 dropdown.ItemsFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
                 dropdown.ItemsFrame.Position = UDim2.fromOffset(0, dropdown.Main.Size.Y.Offset + 8)
                 dropdown.ItemsFrame.ScrollBarThickness = 2
@@ -1540,48 +1539,6 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.ListPadding.PaddingBottom = UDim.new(0, 2)
                 dropdown.ListPadding.PaddingLeft = UDim.new(0, 2)
                 dropdown.ListPadding.PaddingRight = UDim.new(0, 2)
-
-                for i,v in pairs(dropdown.items) do
-                    local Item = Instance.new("TextButton", dropdown.ItemsFrame)
-                    Item.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-                    Item.TextColor3 = Color3.fromRGB(255, 255, 255)
-                    Item.BorderSizePixel = 0
-                    Item.Position = UDim2.fromOffset(0, 0)
-                    Item.Size = UDim2.fromOffset(dropdown.Main.Size.X.Offset - 4, 20)
-                    Item.ZIndex = 8
-                    Item.Text = v
-                    Item.AutoButtonColor = false
-                    Item.Font = window.theme.font
-                    Item.TextSize = 13
-                    Item.TextXAlignment = Enum.TextXAlignment.Left
-                    Item.TextStrokeTransparency = 1
-                    dropdown.ItemsFrame.CanvasSize = dropdown.ItemsFrame.CanvasSize + UDim2.fromOffset(0, 20)
-
-                    Item.MouseButton1Down:Connect(function()
-                        dropdown.Nav.Rotation = 180
-                        dropdown.ItemsFrame.Visible = false
-                        dropdown.ItemsFrame.Active = false
-                        dropdown.OutlineItems.Visible = false
-                        dropdown.BlackOutlineItems.Visible = false
-
-                        dropdown.SelectedLabel.Text = v
-                        dropdown.value = v
-                        pcall(dropdown.callback, v)
-                    end)
-
-                    runservice.RenderStepped:Connect(function()
-                        if dropdown.value == v then
-                            Item.BackgroundColor3 = Color3.fromRGB(64, 64, 64)
-                            Item.TextColor3 = window.theme.accentcolor
-                            Item.Text = " " .. v
-                        else
-                            Item.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-                            Item.TextColor3 = Color3.fromRGB(255, 255, 255)
-                            Item.Text = v
-                        end
-                    end)
-                end
-                dropdown.ItemsFrame.CanvasSize = dropdown.ItemsFrame.CanvasSize + UDim2.fromOffset(0, 4)
 
                 dropdown.OutlineItems = Instance.new("Frame", dropdown.Main)
                 dropdown.OutlineItems.Name = "blackline"
@@ -1601,14 +1558,91 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.BlackOutlineItems.Position = dropdown.ItemsFrame.Position + UDim2.fromOffset(-2, -2)
                 dropdown.BlackOutlineItems.Visible = false
 
-                dropdown.IgnoreBackButtons = Instance.new("TextButton", dropdown.ItemsFrame)
+                dropdown.IgnoreBackButtons = Instance.new("TextButton", dropdown.Main)
                 dropdown.IgnoreBackButtons.BackgroundTransparency = 1
                 dropdown.IgnoreBackButtons.BorderSizePixel = 0
-                dropdown.IgnoreBackButtons.Position = UDim2.fromOffset(0, 0)
-                dropdown.IgnoreBackButtons.Size = dropdown.ItemsFrame.Size
+                dropdown.IgnoreBackButtons.Position = UDim2.fromOffset(0, dropdown.Main.Size.Y.Offset + 8)
+                dropdown.IgnoreBackButtons.Size = UDim2.new(0, 0, 0, 0)
                 dropdown.IgnoreBackButtons.ZIndex = 7
                 dropdown.IgnoreBackButtons.Text = ""
+                dropdown.IgnoreBackButtons.Active = false
                 dropdown.IgnoreBackButtons.AutoButtonColor = false
+
+                dropdown.items = { }
+                function dropdown:Add(v)
+                    local Item = Instance.new("TextButton", dropdown.ItemsFrame)
+                    Item.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+                    Item.TextColor3 = Color3.fromRGB(255, 255, 255)
+                    Item.BorderSizePixel = 0
+                    Item.Position = UDim2.fromOffset(0, 0)
+                    Item.Size = UDim2.fromOffset(dropdown.Main.Size.X.Offset - 4, 20)
+                    Item.ZIndex = 9
+                    Item.Text = v
+                    Item.Name = v
+                    Item.AutoButtonColor = false
+                    Item.Font = window.theme.font
+                    Item.TextSize = 13
+                    Item.TextXAlignment = Enum.TextXAlignment.Left
+                    Item.TextStrokeTransparency = 1
+                    dropdown.ItemsFrame.CanvasSize = dropdown.ItemsFrame.CanvasSize + UDim2.fromOffset(0, Item.AbsoluteSize.Y)
+
+                    Item.MouseButton1Down:Connect(function()
+                        dropdown.Nav.Rotation = 180
+                        dropdown.ItemsFrame.Visible = false
+                        dropdown.ItemsFrame.Active = false
+                        dropdown.OutlineItems.Visible = false
+                        dropdown.BlackOutlineItems.Visible = false
+                        dropdown.IgnoreBackButtons.Active = dropdown.ItemsFrame.Visible
+
+                        dropdown.SelectedLabel.Text = v
+                        dropdown.value = v
+                        pcall(dropdown.callback, v)
+                    end)
+
+                    runservice.RenderStepped:Connect(function()
+                        if dropdown.value == v then
+                            Item.BackgroundColor3 = Color3.fromRGB(64, 64, 64)
+                            Item.TextColor3 = window.theme.accentcolor
+                            Item.Text = " " .. v
+                        else
+                            Item.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+                            Item.TextColor3 = Color3.fromRGB(255, 255, 255)
+                            Item.Text = v
+                        end
+                    end)
+
+                    table.insert(dropdown.items, v)
+                    dropdown.ItemsFrame.Size = UDim2.fromOffset(dropdown.Main.Size.X.Offset, math.clamp(#dropdown.items * Item.AbsoluteSize.Y, 20, 156) + 4)
+                    dropdown.ItemsFrame.CanvasSize = dropdown.ItemsFrame.Size
+
+                    dropdown.OutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(2, 2)
+                    dropdown.BlackOutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(4, 4)
+                    dropdown.IgnoreBackButtons.Size = dropdown.ItemsFrame.Size
+                end
+
+                function dropdown:Remove(value)
+                    local item = dropdown.ItemsFrame:FindFirstChild(value)
+                    if item then
+                        for i,v in pairs(dropdown.items) do
+                            if v == value then
+                                table.remove(dropdown.items, i)
+                            end
+                        end
+
+                        dropdown.ItemsFrame.Size = UDim2.fromOffset(dropdown.Main.Size.X.Offset, math.clamp(#dropdown.items * item.AbsoluteSize.Y, 20, 156) + 4)
+                        dropdown.ItemsFrame.CanvasSize = dropdown.ItemsFrame.Size
+    
+                        dropdown.OutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(2, 2)
+                        dropdown.BlackOutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(4, 4)
+                        dropdown.IgnoreBackButtons.Size = dropdown.ItemsFrame.Size
+
+                        item:Remove()
+                    end
+                end 
+
+                for i,v in pairs(dropdown.defaultitems) do
+                    dropdown:Add(v)
+                end
 
                 function dropdown:Set(value)
                     dropdown.SelectedLabel.Text = value
@@ -1624,17 +1658,19 @@ function library:CreateWindow(name, size, hidebutton)
                     if dropdown.Nav.Rotation == 180 then
                         dropdown.ItemsFrame.ScrollingEnabled = true
                         tab.TabPage.ScrollingEnabled = false
-                        dropdown.Nav.Rotation = 0
+                        tweenservice:Create(dropdown.Nav, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Rotation = 0 }):Play()
                         dropdown.ItemsFrame.Visible = true
                         dropdown.ItemsFrame.Active = true
+                        dropdown.IgnoreBackButtons.Active = dropdown.ItemsFrame.Visible
                         dropdown.OutlineItems.Visible = true
                         dropdown.BlackOutlineItems.Visible = true
                     else
                         dropdown.ItemsFrame.ScrollingEnabled = false
                         tab.TabPage.ScrollingEnabled = true
-                        dropdown.Nav.Rotation = 180
+                        tweenservice:Create(dropdown.Nav, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Rotation = 180 }):Play()
                         dropdown.ItemsFrame.Visible = false
                         dropdown.ItemsFrame.Active = false
+                        dropdown.IgnoreBackButtons.Active = dropdown.ItemsFrame.Visible
                         dropdown.OutlineItems.Visible = false
                         dropdown.BlackOutlineItems.Visible = false
                     end
