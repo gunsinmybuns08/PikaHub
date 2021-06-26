@@ -641,6 +641,9 @@ function library:CreateWindow(name, size, hidebutton)
                     toggle.CheckedFrame.Visible = value
                     pcall(toggle.callback, value) 
                 end
+                function toggle:Get() 
+                    return toggle.value
+                end
                 toggle:Set(toggle.default)
 
                 function toggle:AddKeybind(default)
@@ -823,6 +826,10 @@ function library:CreateWindow(name, size, hidebutton)
                         colorpicker.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, color), ColorSequenceKeypoint.new(1.00, clr) })
                         pcall(colorpicker.callback, color)
                     end
+
+                    function colorpicker:Get(value)
+                        return colorpicker.value
+                    end
                     colorpicker:Set(colorpicker.default)
 
                     local dragging_selector = false
@@ -934,6 +941,8 @@ function library:CreateWindow(name, size, hidebutton)
                 textbox.callback = callback or function() end
                 textbox.default = default
 
+                textbox.value = ""
+
                 textbox.Holder = Instance.new("Frame", sector.Items)
                 textbox.Holder.Name = "holder"
                 textbox.Holder.ZIndex = 4
@@ -962,9 +971,15 @@ function library:CreateWindow(name, size, hidebutton)
                 textbox.Main.BorderSizePixel = 0
                 textbox.Main.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
                 function textbox:Set(text)
+                    textbox.value = text
                     textbox.Main.Text = text
                     pcall(textbox.callback, text)
                 end
+
+                function textbox:Get()
+                    return textbox.value
+                end
+
                 if textbox.default then 
                     textbox:Set(textbox.default)
                 end
@@ -1029,7 +1044,7 @@ function library:CreateWindow(name, size, hidebutton)
                 slider.Label.BackgroundTransparency = 1
                 slider.Label.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 6)
                 slider.Label.Font = window.theme.font
-                slider.Label.Text = slider.text .. ":"
+                slider.Label.Text = slider.text .. ": "
                 slider.Label.TextColor3 = window.theme.itemscolor
                 slider.Label.Position = UDim2.fromOffset(0, 0)
                 slider.Label.TextSize = 13
@@ -1037,18 +1052,17 @@ function library:CreateWindow(name, size, hidebutton)
                 slider.Label.TextStrokeTransparency = 1
                 slider.Label.TextXAlignment = Enum.TextXAlignment.Left
 
-                local size = textservice:GetTextSize(slider.Label.Text, slider.Label.TextSize, slider.Label.Font, Vector2.new(200,300))
                 slider.InputLabel = Instance.new("TextBox", slider.MainBack)
-                slider.InputLabel.BackgroundTransparency = 1
-                slider.InputLabel.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 6)
-                slider.InputLabel.Font = window.theme.font
-                slider.InputLabel.Text = "0"
-                slider.InputLabel.TextColor3 = window.theme.itemscolor
-                slider.InputLabel.Position = UDim2.fromOffset(size.X + 3, 0)
-                slider.InputLabel.TextSize = 13
-                slider.InputLabel.ZIndex = 2
-                slider.InputLabel.TextStrokeTransparency = 1
-                slider.InputLabel.TextXAlignment = Enum.TextXAlignment.Left
+                slider.Label.BackgroundTransparency = 1
+                slider.Label.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 6)
+                slider.Label.Font = window.theme.font
+                slider.Label.Text = slider.text .. ": "
+                slider.Label.TextColor3 = window.theme.itemscolor
+                slider.Label.Position = UDim2.fromOffset(0, 0)
+                slider.Label.TextSize = 13
+                slider.Label.ZIndex = 2
+                slider.Label.TextStrokeTransparency = 1
+                slider.Label.TextXAlignment = Enum.TextXAlignment.Left
 
                 slider.Main = Instance.new("TextButton", slider.MainBack)
                 slider.Main.Name = "slider"
@@ -1103,41 +1117,19 @@ function library:CreateWindow(name, size, hidebutton)
                     slider.BlackOutline.BackgroundTransparency = 0
                 end)
 
-
-                function slider:Get(size)
-                    local percent = math.clamp(size or slider.SlideBar.AbsoluteSize.X, 0, slider.Main.Size.X.Offset) / slider.Main.Size.X.Offset
-                    local value = math.floor((slider.min + (slider.max - slider.min) * percent) * slider.decimals) / slider.decimals
-                    return value
-                end
-
                 function slider:Set(value)
                     slider.value = value
                     value = math.round(value * slider.decimals) / slider.decimals
                     local percent = 1 - ((slider.max - value) / (slider.max - slider.min))
 
-                    local size = UDim2.fromOffset(percent * slider.Main.Size.X.Offset, slider.Main.Size.Y.Offset)
-                    slider.SlideBar:TweenSize(size, Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.05)
-                    value = slider:Get(size.X.Offset)
-
-					slider.InputLabel.Text = value
+                    slider.SlideBar:TweenSize(UDim2.fromOffset(percent * slider.Main.Size.X.Offset, slider.Main.Size.Y.Offset), Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.05)
+					slider.Label.Text = slider.text .. ": " .. tostring(value)
 					pcall(slider.callback, value)
 				end
                 slider:Set(slider.default)
 
-                slider.InputLabel.FocusLost:Connect(function(Return)
-                    if not Return then 
-                        return 
-                    end
-                    if (slider.InputLabel.Text:match("^%d+$")) then
-                        slider:Set(tonumber(slider.InputLabel.Text))
-                    else
-                        slider.InputLabel.Text = slider:Get()
-                    end
-                end)
-
                 function slider:Refresh()
-                    local mousePos = camera:WorldToViewportPoint(mouse.Hit.p)
-                    local percent = math.clamp(mousePos.X - slider.SlideBar.AbsolutePosition.X, 0, slider.Main.Size.X.Offset) / slider.Main.Size.X.Offset
+                    local percent = math.clamp(mouse.X - slider.SlideBar.AbsolutePosition.X, 0, slider.Main.Size.X.Offset) / slider.Main.Size.X.Offset
                     local value = math.floor((slider.min + (slider.max - slider.min) * percent) * slider.decimals) / slider.decimals
                     slider:Set(value)
                 end
@@ -1326,6 +1318,9 @@ function library:CreateWindow(name, size, hidebutton)
                     colorpicker.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, color), ColorSequenceKeypoint.new(1.00, clr) })
                     pcall(colorpicker.callback, color)
                 end
+                function colorpicker:Get()
+                    return colorpicker.value
+                end
                 colorpicker:Set(colorpicker.default)
 
                 local dragging_selector = false
@@ -1440,8 +1435,12 @@ function library:CreateWindow(name, size, hidebutton)
                 end)
 
                 function keybind:Set(value)
+                    keybind.value = value
                     keybind.Bind.Text = "[" .. value.Name .. "]"
                     pcall(keybind.newkeycallback, value)
+                end
+                function keybind:Get()
+                    return keybind.value
                 end
 
                 uis.InputBegan:Connect(function(input, gameProcessed)
@@ -1684,6 +1683,9 @@ function library:CreateWindow(name, size, hidebutton)
                     dropdown.SelectedLabel.Text = value
                     dropdown.value = value
                     pcall(dropdown.callback, value)
+                end
+                function dropdown:Get()
+                    return dropdown.value
                 end
 
                 if dropdown.default then
