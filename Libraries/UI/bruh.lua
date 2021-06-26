@@ -1620,6 +1620,7 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.IgnoreBackButtons.ZIndex = 7
                 dropdown.IgnoreBackButtons.Text = ""
                 dropdown.IgnoreBackButtons.Active = false
+                dropdown.IgnoreBackButtons.Visible = false
                 dropdown.IgnoreBackButtons.AutoButtonColor = false
 
                 dropdown.items = { }
