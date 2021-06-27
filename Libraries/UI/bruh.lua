@@ -105,7 +105,7 @@ function library:CreateWatermark(name)
     watermark.topbar.Visible = watermark.Visible
     watermark.topbar.Size = UDim2.new(0, 0, 0, 1)
 
-    watermark.mainbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 25)
+    watermark.mainbar.Size = UDim2.new(0, watermark.label.TextBounds.X, 0, 25)
     watermark.topbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 1)
     watermark.Outline.Size = watermark.mainbar.Size + UDim2.fromOffset(2, 2)
     watermark.BlackOutline.Size = watermark.mainbar.Size + UDim2.fromOffset(4, 4)
@@ -140,8 +140,8 @@ function library:CreateWatermark(name)
                     watermark.label.Text = " " .. name:gsub("{game}", gamename):gsub("{fps}", fps .. " FPS") .. " "
         
                     watermark.label.Size = UDim2.new(0, watermark.label.TextBounds.X+10, 0, 25)
-                    watermark.mainbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 25)
-                    watermark.topbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 1)
+                    watermark.mainbar.Size = UDim2.new(0, watermark.label.TextBounds.X, 0, 25)
+                    watermark.topbar.Size = UDim2.new(0, watermark.label.TextBounds.X, 0, 1)
 
                     watermark.Outline.Size = watermark.mainbar.Size + UDim2.fromOffset(2, 2)
                     watermark.BlackOutline.Size = watermark.mainbar.Size + UDim2.fromOffset(4, 4)
