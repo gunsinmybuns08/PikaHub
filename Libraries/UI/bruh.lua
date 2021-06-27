@@ -491,7 +491,7 @@ function library:CreateWindow(name, size, hidebutton)
                 for i,v in pairs(tab.SectorsRight) do
                     sizeright = sizeright + v.Main.AbsoluteSize.Y
                 end
-                local extra = sizeleft > sizeright and (#tab.SectorsLeft - 1) * 12 or (#tab.SectorsRight - 1) * 12
+                local extra = sizeleft > sizeright and (#tab.SectorsLeft - 1) * tab.LeftListPadding.PaddingTop.Offset or (#tab.SectorsRight - 1) * tab.RightListPadding.PaddingTop.Offset
                 local size = math.round(sizeleft > sizeright and sizeleft or sizeright) + extra + 20
                 tab.TabPage.CanvasSize = UDim2.fromOffset(tab.TabPage.AbsoluteSize.X, size)
             end
