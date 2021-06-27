@@ -1095,6 +1095,7 @@ function library:CreateWindow(name, size, hidebutton)
                 local size = textservice:GetTextSize(slider.Label.Text, slider.Label.TextSize, slider.Label.Font, Vector2.new(200,300))
                 slider.InputLabel = Instance.new("TextBox", slider.MainBack)
                 slider.InputLabel.BackgroundTransparency = 1
+                slider.InputLabel.ClearTextOnFocus = false
                 slider.InputLabel.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - size.X - 15, 12)
                 slider.InputLabel.Font = window.theme.font
                 slider.InputLabel.Text = "0"
