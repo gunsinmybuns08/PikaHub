@@ -1,5 +1,6 @@
 local _gamelists = {
-    Cbro = 301549746
+    Cbro = 301549746,
+    Mortem = 4169490976
 }
 
 for i,v in pairs(_gamelists) do
