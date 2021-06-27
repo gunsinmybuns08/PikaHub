@@ -36,12 +36,13 @@ library.theme = {
 }
 
 function library:CreateWatermark(name)
+    local gamename = marketplaceservice:GetProductInfo(game.PlaceId).Name
     local watermark = { }
     watermark.Visible = true
+    watermark.text = " " .. name:gsub("{game}", gamename):gsub("{fps}", "0 FPS") .. " "
 
-    local gamename = marketplaceservice:GetProductInfo(game.PlaceId).Name
     watermark.main = Instance.new("ScreenGui", coregui)
-    watermark.main.Name = name
+    watermark.main.Name = "Watermark"
     if syn then
         syn.protect_gui(watermark.main)
     end
@@ -84,12 +85,12 @@ function library:CreateWatermark(name)
     watermark.label.Name = "FPSLabel"
     watermark.label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     watermark.label.BackgroundTransparency = 1.000
-    watermark.label.Position = UDim2.new(-0.00268030656, 0, 0, 0)
+    watermark.label.Position = UDim2.new(0, 0, 0, 0)
     watermark.label.Size = UDim2.new(0, 238, 0, 25)
     watermark.label.Font = library.theme.font
     watermark.label.ZIndex = 6
     watermark.label.Visible = watermark.Visible
-    watermark.label.Text = " ".. name .." | ".. gamename .." | 0 FPS"
+    watermark.label.Text = watermark.text
     watermark.label.TextColor3 = Color3.fromRGB(255, 255, 255)
     watermark.label.TextSize = 15.000
     watermark.label.TextStrokeTransparency = 0.000
@@ -123,24 +124,30 @@ function library:CreateWatermark(name)
         watermark.Outline.Visible = watermark.Visible
         watermark.BlackOutline.Visible = watermark.Visible
 
-        local currentTime = os.clock()
-        counter = counter + 1
-        if currentTime - startTime >= 1 then 
-            local fps = math.floor(counter / (currentTime - startTime))
-            counter = 0
-            startTime = currentTime
+        if not name:find("{fps}") then
+            watermark.label.Text = " " .. name:gsub("{game}", gamename):gsub("{fps}", "0 FPS") .. " "
+        end
 
-            if fps ~= oldfps then
-                watermark.label.Text = " " .. name .." | ".. gamename .." | " .. fps .." FPS"
-    
-                watermark.label.Size = UDim2.new(0, watermark.label.TextBounds.X+10, 0, 25)
-                watermark.mainbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 25)
-                watermark.topbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 1)
+        if name:find("{fps}") then
+            local currentTime = os.clock()
+            counter = counter + 1
+            if currentTime - startTime >= 1 then 
+                local fps = math.floor(counter / (currentTime - startTime))
+                counter = 0
+                startTime = currentTime
 
-                watermark.Outline.Size = watermark.mainbar.Size + UDim2.fromOffset(2, 2)
-                watermark.BlackOutline.Size = watermark.mainbar.Size + UDim2.fromOffset(4, 4)
+                if fps ~= oldfps then
+                    watermark.label.Text = " " .. name:gsub("{game}", gamename):gsub("{fps}", fps .. " FPS") .. " "
+        
+                    watermark.label.Size = UDim2.new(0, watermark.label.TextBounds.X+10, 0, 25)
+                    watermark.mainbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 25)
+                    watermark.topbar.Size = UDim2.new(0, watermark.label.TextBounds.X+6, 0, 1)
+
+                    watermark.Outline.Size = watermark.mainbar.Size + UDim2.fromOffset(2, 2)
+                    watermark.BlackOutline.Size = watermark.mainbar.Size + UDim2.fromOffset(4, 4)
+                end
+                oldfps = fps
             end
-            oldfps = fps
         end
     end)
 
