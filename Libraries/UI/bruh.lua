@@ -1927,17 +1927,21 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.Main.MouseButton1Down:Connect(MouseButton1Down)
                 dropdown.Nav.MouseButton1Down:Connect(MouseButton1Down)
 
-                dropdown.BlackOutline.MouseEnter:Connect(function()
+                dropdown.BlackOutline2.MouseEnter:Connect(function()
                     dropdown.Outline.BackgroundColor3 = window.theme.accentcolor
                     dropdown.BlackOutline.BackgroundColor3 = window.theme.accentcolor
+                    dropdown.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
                     dropdown.Outline.BackgroundTransparency = 0.4
                     dropdown.BlackOutline.BackgroundTransparency = 0.5
+                    dropdown.BlackOutline2.BackgroundTransparency = 0.7
                 end)
-                dropdown.BlackOutline.MouseLeave:Connect(function()
+                dropdown.BlackOutline2.MouseLeave:Connect(function()
                     dropdown.Outline.BackgroundColor3 = window.theme.outlinecolor
                     dropdown.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
+                    dropdown.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
                     dropdown.Outline.BackgroundTransparency = 0
                     dropdown.BlackOutline.BackgroundTransparency = 0
+                    dropdown.BlackOutline2.BackgroundTransparency = 0
                 end)
 
                 sector:FixSize()
