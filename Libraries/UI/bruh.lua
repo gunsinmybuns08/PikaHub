@@ -180,6 +180,9 @@ function library:CreateWindow(name, size, hidebutton)
 
     window.Main = Instance.new("ScreenGui", coregui)
     window.Main.Name = name
+    if syn then
+        syn.protect_gui(window.Main)
+    end
 
     if getgenv().uilib then
         getgenv().uilib:Remove()
@@ -324,9 +327,7 @@ function library:CreateWindow(name, size, hidebutton)
         local tab = { }
         tab.name = name or ""
 
-        local textservice = game:GetService("TextService")
         local size = textservice:GetTextSize(tab.name, window.theme.fontsize, window.theme.font, Vector2.new(200,300))
-
         tab.TabButton = Instance.new("TextButton", window.TabList)
         tab.TabButton.TextColor3 = window.theme.tabstextcolor
         tab.TabButton.Text = tab.name
