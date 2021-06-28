@@ -1875,6 +1875,7 @@ function library:CreateWindow(name, size, hidebutton)
     
                         dropdown.OutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(2, 2)
                         dropdown.BlackOutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(4, 4)
+                        dropdown.BlackOutline2Items.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(6, 6)
                         dropdown.IgnoreBackButtons.Size = dropdown.ItemsFrame.Size
 
                         item:Remove()
