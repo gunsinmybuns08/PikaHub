@@ -1770,7 +1770,7 @@ function library:CreateWindow(name, size, hidebutton)
 
                 dropdown.BlackOutline2Items = Instance.new("Frame", dropdown.Main)
                 dropdown.BlackOutline2Items.Name = "blackline"
-                dropdown.BlackOutline2Items.ZIndex = 4
+                dropdown.BlackOutline2Items.ZIndex = 5
                 dropdown.BlackOutline2Items.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(6, 6)
                 dropdown.BlackOutline2Items.BorderSizePixel = 0
                 dropdown.BlackOutline2Items.BackgroundColor3 = window.theme.outlinecolor2
@@ -1779,7 +1779,7 @@ function library:CreateWindow(name, size, hidebutton)
                 
                 dropdown.OutlineItems = Instance.new("Frame", dropdown.Main)
                 dropdown.OutlineItems.Name = "blackline"
-                dropdown.OutlineItems.ZIndex = 4
+                dropdown.OutlineItems.ZIndex = 5
                 dropdown.OutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(4, 4)
                 dropdown.OutlineItems.BorderSizePixel = 0
                 dropdown.OutlineItems.BackgroundColor3 = window.theme.outlinecolor
@@ -1788,7 +1788,7 @@ function library:CreateWindow(name, size, hidebutton)
 
                 dropdown.BlackOutlineItems = Instance.new("Frame", dropdown.Main)
                 dropdown.BlackOutlineItems.Name = "blackline"
-                dropdown.BlackOutlineItems.ZIndex = 4
+                dropdown.BlackOutlineItems.ZIndex = 5
                 dropdown.BlackOutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(-2, -2)
                 dropdown.BlackOutlineItems.BorderSizePixel = 0
                 dropdown.BlackOutlineItems.BackgroundColor3 = window.theme.outlinecolor2
@@ -2077,5 +2077,13 @@ function library:CreateWindow(name, size, hidebutton)
 
     return window
 end
+--[[
+local window = library:CreateWindow("pika hub", Vector2.new(492, 598), Enum.KeyCode.RightShift)
+local tab = window:CreateTab("Test")
+local sector = tab:CreateSector("Test")
+local dropdown = sector:AddDropdown("Test", {"Test", "Test2"}, "Test", function() end)
 
+local sector = tab:CreateSector("Test")
+local dropdown = sector:AddToggle("Test", false, function() end)
+]]
 return library
