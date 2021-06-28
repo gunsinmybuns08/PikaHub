@@ -180,9 +180,6 @@ function library:CreateWindow(name, size, hidebutton)
 
     window.Main = Instance.new("ScreenGui", coregui)
     window.Main.Name = name
-    if syn then
-        syn.protect_gui(window.Main)
-    end
 
     if getgenv().uilib then
         getgenv().uilib:Remove()
@@ -234,20 +231,28 @@ function library:CreateWindow(name, size, hidebutton)
     end)
 
     window.BlackOutline = Instance.new("Frame", window.Frame)
-    window.BlackOutline.Name = "blackline"
-    window.BlackOutline.ZIndex = 0
-    window.BlackOutline.Size = window.size + UDim2.fromOffset(4, 4)
+    window.BlackOutline.Name = "outline"
+    window.BlackOutline.ZIndex = 1
+    window.BlackOutline.Size = window.size + UDim2.fromOffset(2, 2)
     window.BlackOutline.BorderSizePixel = 0
     window.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
-    window.BlackOutline.Position = UDim2.fromOffset(-2, -2)
+    window.BlackOutline.Position = UDim2.fromOffset(-1, -1)
 
     window.Outline = Instance.new("Frame", window.Frame)
-    window.Outline.Name = "blackline"
-    window.Outline.ZIndex = 1
-    window.Outline.Size = window.size + UDim2.fromOffset(2, 2)
+    window.Outline.Name = "outline"
+    window.Outline.ZIndex = 0
+    window.Outline.Size = window.size + UDim2.fromOffset(4, 4)
     window.Outline.BorderSizePixel = 0
     window.Outline.BackgroundColor3 = window.theme.outlinecolor
-    window.Outline.Position = UDim2.fromOffset(-1, -1)
+    window.Outline.Position = UDim2.fromOffset(-2, -2)
+
+    window.BlackOutline2 = Instance.new("Frame", window.Frame)
+    window.BlackOutline2.Name = "outline"
+    window.BlackOutline2.ZIndex = -1
+    window.BlackOutline2.Size = window.size + UDim2.fromOffset(6, 6)
+    window.BlackOutline2.BorderSizePixel = 0
+    window.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
+    window.BlackOutline2.Position = UDim2.fromOffset(-3, -3)
 
     window.TopBar = Instance.new("Frame", window.Frame)
     window.TopBar.Name = "top"
@@ -327,7 +332,9 @@ function library:CreateWindow(name, size, hidebutton)
         local tab = { }
         tab.name = name or ""
 
+        local textservice = game:GetService("TextService")
         local size = textservice:GetTextSize(tab.name, window.theme.fontsize, window.theme.font, Vector2.new(200,300))
+
         tab.TabButton = Instance.new("TextButton", window.TabList)
         tab.TabButton.TextColor3 = window.theme.tabstextcolor
         tab.TabButton.Text = tab.name
@@ -423,29 +430,51 @@ function library:CreateWindow(name, size, hidebutton)
             
             sector.Main = Instance.new("Frame", sector.side == "left" and tab.Left or tab.Right) 
             sector.Main.Name = sector.name:gsub(" ", "") .. "Sector"
-            sector.Main.BorderColor3 = window.theme.outlinecolor
-            sector.Main.ZIndex = 2
+            sector.Main.BorderSizePixel = 0
+            sector.Main.ZIndex = 4
             sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, 20)
             sector.Main.BackgroundColor3 = window.theme.sectorcolor
             --sector.Main.Position = sector.side == "left" and UDim2.new(0, 11, 0, 12) or UDim2.new(0, window.size.X.Offset - sector.Main.AbsoluteSize.X - 11, 0, 12)
 
             sector.Line = Instance.new("Frame", sector.Main)
             sector.Line.Name = "line"
-            sector.Line.ZIndex = 2
-            sector.Line.Size = UDim2.fromOffset(sector.Main.Size.X.Offset + 2, 1)
+            sector.Line.ZIndex = 4
+            sector.Line.Size = UDim2.fromOffset(sector.Main.Size.X.Offset + 4, 1)
             sector.Line.BorderSizePixel = 0
-            sector.Line.Position = UDim2.fromOffset(-1, -1)
+            sector.Line.Position = UDim2.fromOffset(-2, -2)
             sector.Line.BackgroundColor3 = window.theme.accentcolor
 
             sector.BlackOutline = Instance.new("Frame", sector.Main)
-            sector.BlackOutline.Name = "blackline"
-            sector.BlackOutline.ZIndex = 1
-            sector.BlackOutline.Size = sector.Main.Size + UDim2.fromOffset(4, 4)
+            sector.BlackOutline.Name = "outline"
+            sector.BlackOutline.ZIndex = 3
+            sector.BlackOutline.Size = sector.Main.Size + UDim2.fromOffset(2, 2)
             sector.BlackOutline.BorderSizePixel = 0
             sector.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
-            sector.BlackOutline.Position = UDim2.fromOffset(-2, -2)
+            sector.BlackOutline.Position = UDim2.fromOffset(-1, -1)
             sector.Main:GetPropertyChangedSignal("Size"):Connect(function()
-                sector.BlackOutline.Size = sector.Main.Size + UDim2.fromOffset(4, 4)
+                sector.BlackOutline.Size = sector.Main.Size + UDim2.fromOffset(2, 2)
+            end)
+
+            sector.Outline = Instance.new("Frame", sector.Main)
+            sector.Outline.Name = "outline"
+            sector.Outline.ZIndex = 2
+            sector.Outline.Size = sector.Main.Size + UDim2.fromOffset(4, 4)
+            sector.Outline.BorderSizePixel = 0
+            sector.Outline.BackgroundColor3 = window.theme.outlinecolor
+            sector.Outline.Position = UDim2.fromOffset(-2, -2)
+            sector.Main:GetPropertyChangedSignal("Size"):Connect(function()
+                sector.Outline.Size = sector.Main.Size + UDim2.fromOffset(4, 4)
+            end)
+
+            sector.BlackOutline2 = Instance.new("Frame", sector.Main)
+            sector.BlackOutline2.Name = "outline"
+            sector.BlackOutline2.ZIndex = 1
+            sector.BlackOutline2.Size = sector.Main.Size + UDim2.fromOffset(6, 6)
+            sector.BlackOutline2.BorderSizePixel = 0
+            sector.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
+            sector.BlackOutline2.Position = UDim2.fromOffset(-3, -3)
+            sector.Main:GetPropertyChangedSignal("Size"):Connect(function()
+                sector.BlackOutline2.Size = sector.Main.Size + UDim2.fromOffset(6, 6)
             end)
 
             local size = textservice:GetTextSize(sector.name, 13, window.theme.font, Vector2.new(2000, 2000))
@@ -455,7 +484,7 @@ function library:CreateWindow(name, size, hidebutton)
             sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 13, window.theme.font, Vector2.new(200,300)).X + 10, 0, sector.Main.Size.X.Offset), size.Y)
             sector.Label.BackgroundTransparency = 1
             sector.Label.BorderSizePixel = 0
-            sector.Label.ZIndex = 4
+            sector.Label.ZIndex = 5
             sector.Label.Text = sector.name
             sector.Label.TextColor3 = Color3.new(1,1,2552/255)
             sector.Label.TextStrokeTransparency = 1
@@ -464,7 +493,7 @@ function library:CreateWindow(name, size, hidebutton)
 
             sector.LabelBackFrame = Instance.new("Frame", sector.Label)
             sector.LabelBackFrame.Name = "labelframe"
-            sector.LabelBackFrame.ZIndex = 3
+            sector.LabelBackFrame.ZIndex = 4
             sector.LabelBackFrame.Size = UDim2.fromOffset(sector.Label.Size.X.Offset, 10)
             sector.LabelBackFrame.BorderSizePixel = 0
             sector.LabelBackFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -514,7 +543,7 @@ function library:CreateWindow(name, size, hidebutton)
                 button.Main.Text = ""
                 button.Main.AutoButtonColor = false
                 button.Main.Name = "button"
-                button.Main.ZIndex = 4
+                button.Main.ZIndex = 5
                 button.Main.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 14)
                 button.Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 button.Main.MouseButton1Down:Connect(button.callback)
@@ -523,27 +552,35 @@ function library:CreateWindow(name, size, hidebutton)
                 button.Gradient.Rotation = 90
                 button.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, window.theme.buttoncolor), ColorSequenceKeypoint.new(1.00, window.theme.buttoncolor2) })
 
+                button.BlackOutline2 = Instance.new("Frame", button.Main)
+                button.BlackOutline2.Name = "blackline"
+                button.BlackOutline2.ZIndex = 4
+                button.BlackOutline2.Size = button.Main.Size + UDim2.fromOffset(6, 6)
+                button.BlackOutline2.BorderSizePixel = 0
+                button.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
+                button.BlackOutline2.Position = UDim2.fromOffset(-3, -3)
+                
                 button.Outline = Instance.new("Frame", button.Main)
                 button.Outline.Name = "blackline"
-                button.Outline.ZIndex = 3
-                button.Outline.Size = button.Main.Size + UDim2.fromOffset(2, 2)
+                button.Outline.ZIndex = 4
+                button.Outline.Size = button.Main.Size + UDim2.fromOffset(4, 4)
                 button.Outline.BorderSizePixel = 0
                 button.Outline.BackgroundColor3 = window.theme.outlinecolor
-                button.Outline.Position = UDim2.fromOffset(-1, -1)
+                button.Outline.Position = UDim2.fromOffset(-2, -2)
 
                 button.BlackOutline = Instance.new("Frame", button.Main)
                 button.BlackOutline.Name = "blackline"
-                button.BlackOutline.ZIndex = 2
-                button.BlackOutline.Size = button.Main.Size + UDim2.fromOffset(4, 4)
+                button.BlackOutline.ZIndex = 4
+                button.BlackOutline.Size = button.Main.Size + UDim2.fromOffset(2, 2)
                 button.BlackOutline.BorderSizePixel = 0
                 button.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
-                button.BlackOutline.Position = UDim2.fromOffset(-2, -2)
+                button.BlackOutline.Position = UDim2.fromOffset(-1, -1)
 
                 button.Label = Instance.new("TextLabel", button.Main)
                 button.Label.Name = "Label"
                 button.Label.BackgroundTransparency = 1
                 button.Label.Position = UDim2.new(0, -1, 0, 0)
-                button.Label.ZIndex = 4
+                button.Label.ZIndex = 5
                 button.Label.AutomaticSize = Enum.AutomaticSize.XY
                 button.Label.Font = window.theme.font
                 button.Label.Text = " " .. button.text
@@ -552,17 +589,21 @@ function library:CreateWindow(name, size, hidebutton)
                 button.Label.TextStrokeTransparency = 1
                 button.Label.TextXAlignment = Enum.TextXAlignment.Left
 
-                button.BlackOutline.MouseEnter:Connect(function()
+                button.BlackOutline2.MouseEnter:Connect(function()
                     button.Outline.BackgroundColor3 = window.theme.accentcolor
                     button.BlackOutline.BackgroundColor3 = window.theme.accentcolor
+                    button.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
                     button.Outline.BackgroundTransparency = 0.4
                     button.BlackOutline.BackgroundTransparency = 0.5
+                    button.BlackOutline2.BackgroundTransparency = 0.7
                 end)
-                button.BlackOutline.MouseLeave:Connect(function()
+                button.BlackOutline2.MouseLeave:Connect(function()
                     button.Outline.BackgroundColor3 = window.theme.outlinecolor
                     button.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
+                    button.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
                     button.Outline.BackgroundTransparency = 0
                     button.BlackOutline.BackgroundTransparency = 0
+                    button.BlackOutline2.BackgroundTransparency = 0
                 end)
 
                 sector:FixSize()
@@ -608,27 +649,35 @@ function library:CreateWindow(name, size, hidebutton)
                 toggle.Main.BorderSizePixel = 0
                 toggle.Main.Size = UDim2.fromOffset(10, 10)
                 toggle.Main.AutoButtonColor = false
-                toggle.Main.ZIndex = 4 
+                toggle.Main.ZIndex = 5
                 toggle.Main.Font = Enum.Font.SourceSans
                 toggle.Main.Text = ""
                 toggle.Main.TextColor3 = Color3.fromRGB(0, 0, 0)
                 toggle.Main.TextSize = 14
 
+                toggle.BlackOutline2 = Instance.new("Frame", toggle.Main)
+                toggle.BlackOutline2.Name = "blackline"
+                toggle.BlackOutline2.ZIndex = 4
+                toggle.BlackOutline2.Size = toggle.Main.Size + UDim2.fromOffset(6, 6)
+                toggle.BlackOutline2.BorderSizePixel = 0
+                toggle.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
+                toggle.BlackOutline2.Position = UDim2.fromOffset(-3, -3)
+                
                 toggle.Outline = Instance.new("Frame", toggle.Main)
-                toggle.Outline.Name = "outline"
-                toggle.Outline.ZIndex = 3
-                toggle.Outline.Size = toggle.Main.Size + UDim2.fromOffset(2, 2)
+                toggle.Outline.Name = "blackline"
+                toggle.Outline.ZIndex = 4
+                toggle.Outline.Size = toggle.Main.Size + UDim2.fromOffset(4, 4)
                 toggle.Outline.BorderSizePixel = 0
                 toggle.Outline.BackgroundColor3 = window.theme.outlinecolor
-                toggle.Outline.Position = UDim2.fromOffset(-1, -1)
+                toggle.Outline.Position = UDim2.fromOffset(-2, -2)
 
                 toggle.BlackOutline = Instance.new("Frame", toggle.Main)
                 toggle.BlackOutline.Name = "blackline"
-                toggle.BlackOutline.ZIndex = 2
-                toggle.BlackOutline.Size = toggle.Main.Size + UDim2.fromOffset(4, 4)
+                toggle.BlackOutline.ZIndex = 4
+                toggle.BlackOutline.Size = toggle.Main.Size + UDim2.fromOffset(2, 2)
                 toggle.BlackOutline.BorderSizePixel = 0
                 toggle.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
-                toggle.BlackOutline.Position = UDim2.fromOffset(-2, -2)
+                toggle.BlackOutline.Position = UDim2.fromOffset(-1, -1)
                 
                 toggle.Gradient = Instance.new("UIGradient", toggle.Main)
                 toggle.Gradient.Rotation = (22.5 * 13)
@@ -641,7 +690,7 @@ function library:CreateWindow(name, size, hidebutton)
                 toggle.Label.Position = UDim2.fromOffset(toggle.Main.AbsoluteSize.X + 10, -2)
                 toggle.Label.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 71, toggle.BlackOutline.Size.Y.Offset)
                 toggle.Label.Font = window.theme.font
-                toggle.Label.ZIndex = 2
+                toggle.Label.ZIndex = 5
                 toggle.Label.Text = toggle.text
                 toggle.Label.TextColor3 = window.theme.itemscolor
                 toggle.Label.TextSize = 13
@@ -649,7 +698,7 @@ function library:CreateWindow(name, size, hidebutton)
                 toggle.Label.TextXAlignment = Enum.TextXAlignment.Left
 
                 toggle.CheckedFrame = Instance.new("Frame", toggle.Main)
-                toggle.CheckedFrame.ZIndex = 4
+                toggle.CheckedFrame.ZIndex = 5
                 toggle.CheckedFrame.BorderSizePixel = 0
                 toggle.CheckedFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Color3.fromRGB(204, 0, 102)
                 toggle.CheckedFrame.Size = toggle.Main.Size
@@ -660,7 +709,7 @@ function library:CreateWindow(name, size, hidebutton)
 
                 toggle.Items = Instance.new("Frame", toggle.Main)
                 toggle.Items.Name = "\n"
-                toggle.Items.ZIndex = 3
+                toggle.Items.ZIndex = 4
                 toggle.Items.Size = UDim2.fromOffset(60, toggle.BlackOutline.AbsoluteSize.Y)
                 toggle.Items.BorderSizePixel = 0
                 toggle.Items.BackgroundTransparency = 1
@@ -700,7 +749,7 @@ function library:CreateWindow(name, size, hidebutton)
                     keybind.Main.Name = "keybind"
                     keybind.Main.BackgroundTransparency = 1
                     keybind.Main.BorderSizePixel = 0
-                    keybind.Main.ZIndex = 2
+                    keybind.Main.ZIndex = 5
                     keybind.Main.Size = UDim2.fromOffset(size.X + 2, size.Y)
                     keybind.Main.Text = text
                     keybind.Main.Font = window.theme.font
@@ -751,34 +800,46 @@ function library:CreateWindow(name, size, hidebutton)
                     local clr = Color3.new(math.clamp(colorpicker.value.R / 1.7, 0, 1), math.clamp(colorpicker.value.G / 1.7, 0, 1), math.clamp(colorpicker.value.B / 1.7, 0, 1))
                     colorpicker.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, colorpicker.value), ColorSequenceKeypoint.new(1.00, clr) })
 
+                    colorpicker.BlackOutline2 = Instance.new("Frame", colorpicker.Main)
+                    colorpicker.BlackOutline2.Name = "blackline"
+                    colorpicker.BlackOutline2.ZIndex = 4
+                    colorpicker.BlackOutline2.Size = colorpicker.Main.Size + UDim2.fromOffset(6, 6)
+                    colorpicker.BlackOutline2.BorderSizePixel = 0
+                    colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
+                    colorpicker.BlackOutline2.Position = UDim2.fromOffset(-3, -3)
+                    
                     colorpicker.Outline = Instance.new("Frame", colorpicker.Main)
-                    colorpicker.Outline.Name = "outline"
-                    colorpicker.Outline.ZIndex = 5
-                    colorpicker.Outline.Size = colorpicker.Main.Size + UDim2.fromOffset(2, 2)
+                    colorpicker.Outline.Name = "blackline"
+                    colorpicker.Outline.ZIndex = 4
+                    colorpicker.Outline.Size = colorpicker.Main.Size + UDim2.fromOffset(4, 4)
                     colorpicker.Outline.BorderSizePixel = 0
                     colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
-                    colorpicker.Outline.Position = UDim2.fromOffset(-1, -1)
+                    colorpicker.Outline.Position = UDim2.fromOffset(-2, -2)
     
                     colorpicker.BlackOutline = Instance.new("Frame", colorpicker.Main)
                     colorpicker.BlackOutline.Name = "blackline"
                     colorpicker.BlackOutline.ZIndex = 4
-                    colorpicker.BlackOutline.Size = colorpicker.Main.Size + UDim2.fromOffset(4, 4)
+                    colorpicker.BlackOutline.Size = colorpicker.Main.Size + UDim2.fromOffset(2, 2)
                     colorpicker.BlackOutline.BorderSizePixel = 0
                     colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
-                    colorpicker.BlackOutline.Position = UDim2.fromOffset(-2, -2)
+                    colorpicker.BlackOutline.Position = UDim2.fromOffset(-1, -1)
 
-                    colorpicker.BlackOutline.MouseEnter:Connect(function()
+                    colorpicker.BlackOutline2.MouseEnter:Connect(function()
                         colorpicker.Outline.BackgroundColor3 = window.theme.accentcolor
                         colorpicker.BlackOutline.BackgroundColor3 = window.theme.accentcolor
+                        colorpicker.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
                         colorpicker.Outline.BackgroundTransparency = 0.4
                         colorpicker.BlackOutline.BackgroundTransparency = 0.5
+                        colorpicker.BlackOutline2.BackgroundTransparency = 0.7
                     end)
-                    colorpicker.BlackOutline.MouseLeave:Connect(function()
+                    colorpicker.BlackOutline2.MouseLeave:Connect(function()
                         if not window.OpenedColorPickers[colorpicker.MainPicker] then
                             colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
                             colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
+                            colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
                             colorpicker.Outline.BackgroundTransparency = 0
                             colorpicker.BlackOutline.BackgroundTransparency = 0
+                            colorpicker.BlackOutline2.BackgroundTransparency = 0
                         end
                     end)
 
@@ -793,22 +854,29 @@ function library:CreateWindow(name, size, hidebutton)
                     colorpicker.MainPicker.Rotation = 0.000000000000001
                     colorpicker.MainPicker.Position = UDim2.fromOffset(-colorpicker.MainPicker.AbsoluteSize.X + colorpicker.Main.AbsoluteSize.X, 15)
 
-                    colorpicker.Outline2 = Instance.new("TextButton", colorpicker.MainPicker)
-                    colorpicker.Outline2.AutoButtonColor = false
-                    colorpicker.Outline2.Name = "outline"
-                    colorpicker.Outline2.ZIndex = 99
-                    colorpicker.Outline2.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(2, 2)
+                    colorpicker.BlackOutline3 = Instance.new("Frame", colorpicker.MainPicker)
+                    colorpicker.BlackOutline3.Name = "blackline"
+                    colorpicker.BlackOutline3.ZIndex = 98
+                    colorpicker.BlackOutline3.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(6, 6)
+                    colorpicker.BlackOutline3.BorderSizePixel = 0
+                    colorpicker.BlackOutline3.BackgroundColor3 = window.theme.outlinecolor2
+                    colorpicker.BlackOutline3.Position = UDim2.fromOffset(-3, -3)
+                    
+                    colorpicker.Outline2 = Instance.new("Frame", colorpicker.MainPicker)
+                    colorpicker.Outline2.Name = "blackline"
+                    colorpicker.Outline2.ZIndex = 98
+                    colorpicker.Outline2.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(4, 4)
                     colorpicker.Outline2.BorderSizePixel = 0
                     colorpicker.Outline2.BackgroundColor3 = window.theme.outlinecolor
-                    colorpicker.Outline2.Position = UDim2.fromOffset(-1, -1)
+                    colorpicker.Outline2.Position = UDim2.fromOffset(-2, -2)
     
-                    colorpicker.BlackOutline2 = Instance.new("Frame", colorpicker.MainPicker)
-                    colorpicker.BlackOutline2.Name = "blackline"
-                    colorpicker.BlackOutline2.ZIndex = 98
-                    colorpicker.BlackOutline2.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(4, 4)
-                    colorpicker.BlackOutline2.BorderSizePixel = 0
-                    colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
-                    colorpicker.BlackOutline2.Position = UDim2.fromOffset(-2, -2)
+                    colorpicker.BlackOutline3 = Instance.new("Frame", colorpicker.MainPicker)
+                    colorpicker.BlackOutline3.Name = "blackline"
+                    colorpicker.BlackOutline3.ZIndex = 98
+                    colorpicker.BlackOutline3.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(2, 2)
+                    colorpicker.BlackOutline3.BorderSizePixel = 0
+                    colorpicker.BlackOutline3.BackgroundColor3 = window.theme.outlinecolor2
+                    colorpicker.BlackOutline3.Position = UDim2.fromOffset(-1, -1)
 
                     colorpicker.hue = Instance.new("ImageLabel", colorpicker.MainPicker)
                     colorpicker.hue.ZIndex = 101
@@ -927,20 +995,24 @@ function library:CreateWindow(name, size, hidebutton)
                             if window.OpenedColorPickers[colorpicker.MainPicker] then
                                 colorpicker.Outline.BackgroundColor3 = window.theme.accentcolor
                                 colorpicker.BlackOutline.BackgroundColor3 = window.theme.accentcolor
+                                colorpicker.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
                                 colorpicker.Outline.BackgroundTransparency = 0.4
                                 colorpicker.BlackOutline.BackgroundTransparency = 0.5
+                                colorpicker.BlackOutline2.BackgroundTransparency = 0.7
                             else
                                 colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
                                 colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
+                                colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
                                 colorpicker.Outline.BackgroundTransparency = 0
                                 colorpicker.BlackOutline.BackgroundTransparency = 0
+                                colorpicker.BlackOutline2.BackgroundTransparency = 0
                             end
                         end
                     end
 
                     colorpicker.Main.InputBegan:Connect(inputBegan)
                     colorpicker.Outline.InputBegan:Connect(inputBegan)
-                    colorpicker.BlackOutline.InputBegan:Connect(inputBegan)
+                    colorpicker.BlackOutline2.InputBegan:Connect(inputBegan)
 
                     return colorpicker
                 end
@@ -957,20 +1029,24 @@ function library:CreateWindow(name, size, hidebutton)
                 local MouseEnter = function()
                     toggle.Outline.BackgroundColor3 = window.theme.accentcolor
                     toggle.BlackOutline.BackgroundColor3 = window.theme.accentcolor
+                    toggle.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
                     toggle.Outline.BackgroundTransparency = 0.4
                     toggle.BlackOutline.BackgroundTransparency = 0.5
+                    toggle.BlackOutline2.BackgroundTransparency = 0.7
                 end
                 local MouseLeave = function()
                     toggle.Outline.BackgroundColor3 = window.theme.outlinecolor
                     toggle.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
+                    toggle.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
                     toggle.Outline.BackgroundTransparency = 0
                     toggle.BlackOutline.BackgroundTransparency = 0
+                    toggle.BlackOutline2.BackgroundTransparency = 0
                 end
 
                 toggle.Label.MouseEnter:Connect(MouseEnter)
                 toggle.Label.MouseLeave:Connect(MouseLeave)
-                toggle.BlackOutline.MouseEnter:Connect(MouseEnter)
-                toggle.BlackOutline.MouseLeave:Connect(MouseLeave)
+                toggle.BlackOutline2.MouseEnter:Connect(MouseEnter)
+                toggle.BlackOutline2.MouseLeave:Connect(MouseLeave)
 
                 sector:FixSize()
                 return toggle
@@ -986,7 +1062,7 @@ function library:CreateWindow(name, size, hidebutton)
 
                 textbox.Holder = Instance.new("Frame", sector.Items)
                 textbox.Holder.Name = "holder"
-                textbox.Holder.ZIndex = 4
+                textbox.Holder.ZIndex = 5
                 textbox.Holder.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 14)
                 textbox.Holder.BorderSizePixel = 0
                 textbox.Holder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1029,33 +1105,45 @@ function library:CreateWindow(name, size, hidebutton)
                     textbox:Set(textbox.Main.Text)
                 end)
 
+                textbox.BlackOutline2 = Instance.new("Frame", textbox.Main)
+                textbox.BlackOutline2.Name = "blackline"
+                textbox.BlackOutline2.ZIndex = 4
+                textbox.BlackOutline2.Size = textbox.Main.Size + UDim2.fromOffset(6, 6)
+                textbox.BlackOutline2.BorderSizePixel = 0
+                textbox.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
+                textbox.BlackOutline2.Position = UDim2.fromOffset(-3, -3)
+                
                 textbox.Outline = Instance.new("Frame", textbox.Main)
                 textbox.Outline.Name = "blackline"
-                textbox.Outline.ZIndex = 3
-                textbox.Outline.Size = textbox.Holder.Size + UDim2.fromOffset(2, 2)
+                textbox.Outline.ZIndex = 4
+                textbox.Outline.Size = textbox.Main.Size + UDim2.fromOffset(4, 4)
                 textbox.Outline.BorderSizePixel = 0
                 textbox.Outline.BackgroundColor3 = window.theme.outlinecolor
-                textbox.Outline.Position = UDim2.fromOffset(-1, -1)
+                textbox.Outline.Position = UDim2.fromOffset(-2, -2)
 
                 textbox.BlackOutline = Instance.new("Frame", textbox.Main)
                 textbox.BlackOutline.Name = "blackline"
-                textbox.BlackOutline.ZIndex = 2
-                textbox.BlackOutline.Size = textbox.Holder.Size + UDim2.fromOffset(4, 4)
+                textbox.BlackOutline.ZIndex = 4
+                textbox.BlackOutline.Size = textbox.Main.Size + UDim2.fromOffset(2, 2)
                 textbox.BlackOutline.BorderSizePixel = 0
                 textbox.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
-                textbox.BlackOutline.Position = UDim2.fromOffset(-2, -2)
+                textbox.BlackOutline.Position = UDim2.fromOffset(-1, -1)
 
-                textbox.BlackOutline.MouseEnter:Connect(function()
+                textbox.BlackOutline2.MouseEnter:Connect(function()
                     textbox.Outline.BackgroundColor3 = window.theme.accentcolor
                     textbox.BlackOutline.BackgroundColor3 = window.theme.accentcolor
+                    textbox.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
                     textbox.Outline.BackgroundTransparency = 0.4
                     textbox.BlackOutline.BackgroundTransparency = 0.5
+                    textbox.BlackOutline2.BackgroundTransparency = 0.7
                 end)
-                textbox.BlackOutline.MouseLeave:Connect(function()
+                textbox.BlackOutline2.MouseLeave:Connect(function()
                     textbox.Outline.BackgroundColor3 = window.theme.outlinecolor
                     textbox.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
+                    textbox.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
                     textbox.Outline.BackgroundTransparency = 0
                     textbox.BlackOutline.BackgroundTransparency = 0
+                    textbox.BlackOutline2.BackgroundTransparency = 0
                 end)
 
                 sector:FixSize()
@@ -1089,7 +1177,7 @@ function library:CreateWindow(name, size, hidebutton)
                 slider.Label.TextColor3 = window.theme.itemscolor
                 slider.Label.Position = UDim2.fromOffset(0, 0)
                 slider.Label.TextSize = 13
-                slider.Label.ZIndex = 2
+                slider.Label.ZIndex = 4
                 slider.Label.TextStrokeTransparency = 1
                 slider.Label.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -1103,7 +1191,7 @@ function library:CreateWindow(name, size, hidebutton)
                 slider.InputLabel.TextColor3 = window.theme.itemscolor
                 slider.InputLabel.Position = UDim2.fromOffset(size.X + 3, -3)
                 slider.InputLabel.TextSize = 13
-                slider.InputLabel.ZIndex = 2
+                slider.InputLabel.ZIndex = 4
                 slider.InputLabel.TextStrokeTransparency = 1
                 slider.InputLabel.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -1115,23 +1203,31 @@ function library:CreateWindow(name, size, hidebutton)
                 slider.Main.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 10)
                 slider.Main.AutoButtonColor = false
                 slider.Main.Text = ""
-                slider.Main.ZIndex = 4
+                slider.Main.ZIndex = 5
 
+                slider.BlackOutline2 = Instance.new("Frame", slider.Main)
+                slider.BlackOutline2.Name = "blackline"
+                slider.BlackOutline2.ZIndex = 4
+                slider.BlackOutline2.Size = slider.Main.Size + UDim2.fromOffset(6, 6)
+                slider.BlackOutline2.BorderSizePixel = 0
+                slider.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
+                slider.BlackOutline2.Position = UDim2.fromOffset(-3, -3)
+                
                 slider.Outline = Instance.new("Frame", slider.Main)
                 slider.Outline.Name = "blackline"
-                slider.Outline.ZIndex = 3
-                slider.Outline.Size = slider.Main.Size + UDim2.fromOffset(2, 2)
+                slider.Outline.ZIndex = 4
+                slider.Outline.Size = slider.Main.Size + UDim2.fromOffset(4, 4)
                 slider.Outline.BorderSizePixel = 0
                 slider.Outline.BackgroundColor3 = window.theme.outlinecolor
-                slider.Outline.Position = UDim2.fromOffset(-1, -1)
+                slider.Outline.Position = UDim2.fromOffset(-2, -2)
 
                 slider.BlackOutline = Instance.new("Frame", slider.Main)
                 slider.BlackOutline.Name = "blackline"
-                slider.BlackOutline.ZIndex = 2
-                slider.BlackOutline.Size = slider.Main.Size + UDim2.fromOffset(4, 4)
+                slider.BlackOutline.ZIndex = 4
+                slider.BlackOutline.Size = slider.Main.Size + UDim2.fromOffset(2, 2)
                 slider.BlackOutline.BorderSizePixel = 0
                 slider.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
-                slider.BlackOutline.Position = UDim2.fromOffset(-2, -2)
+                slider.BlackOutline.Position = UDim2.fromOffset(-1, -1)
 
                 slider.Gradient = Instance.new("UIGradient", slider.Main)
                 slider.Gradient.Rotation = 90
@@ -1139,7 +1235,7 @@ function library:CreateWindow(name, size, hidebutton)
 
                 slider.SlideBar = Instance.new("Frame", slider.Main)
                 slider.SlideBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255) --Color3.fromRGB(204, 0, 102)
-                slider.SlideBar.ZIndex = 4
+                slider.SlideBar.ZIndex = 5
                 slider.SlideBar.BorderSizePixel = 0
                 slider.SlideBar.Size = UDim2.fromOffset(0, slider.Main.Size.Y.Offset)
 
@@ -1147,17 +1243,21 @@ function library:CreateWindow(name, size, hidebutton)
                 slider.Gradient2.Rotation = 90
                 slider.Gradient2.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, window.theme.accentcolor), ColorSequenceKeypoint.new(1.00, window.theme.accentcolor2) })
 
-                slider.BlackOutline.MouseEnter:Connect(function()
+                slider.BlackOutline2.MouseEnter:Connect(function()
                     slider.Outline.BackgroundColor3 = window.theme.accentcolor
                     slider.BlackOutline.BackgroundColor3 = window.theme.accentcolor
+                    slider.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
                     slider.Outline.BackgroundTransparency = 0.4
                     slider.BlackOutline.BackgroundTransparency = 0.5
+                    slider.BlackOutline2.BackgroundTransparency = 0.7
                 end)
-                slider.BlackOutline.MouseLeave:Connect(function()
+                slider.BlackOutline2.MouseLeave:Connect(function()
                     slider.Outline.BackgroundColor3 = window.theme.outlinecolor
                     slider.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
+                    slider.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
                     slider.Outline.BackgroundTransparency = 0
                     slider.BlackOutline.BackgroundTransparency = 0
+                    slider.BlackOutline2.BackgroundTransparency = 0
                 end)
 
 
@@ -1241,7 +1341,7 @@ function library:CreateWindow(name, size, hidebutton)
                 colorpicker.Label = Instance.new("TextLabel", sector.Items)
                 colorpicker.Label.BackgroundTransparency = 1
                 colorpicker.Label.Size = UDim2.fromOffset(156, 10)
-                colorpicker.Label.ZIndex = 2
+                colorpicker.Label.ZIndex = 4
                 colorpicker.Label.Font = window.theme.font
                 colorpicker.Label.Text = colorpicker.text
                 colorpicker.Label.TextColor3 = window.theme.itemscolor
@@ -1262,34 +1362,46 @@ function library:CreateWindow(name, size, hidebutton)
                 local clr = Color3.new(math.clamp(colorpicker.value.R / 1.7, 0, 1), math.clamp(colorpicker.value.G / 1.7, 0, 1), math.clamp(colorpicker.value.B / 1.7, 0, 1))
                 colorpicker.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, colorpicker.value), ColorSequenceKeypoint.new(1.00, clr) })
 
+                colorpicker.BlackOutline2 = Instance.new("Frame", colorpicker.Main)
+                colorpicker.BlackOutline2.Name = "blackline"
+                colorpicker.BlackOutline2.ZIndex = 4
+                colorpicker.BlackOutline2.Size = colorpicker.Main.Size + UDim2.fromOffset(6, 6)
+                colorpicker.BlackOutline2.BorderSizePixel = 0
+                colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
+                colorpicker.BlackOutline2.Position = UDim2.fromOffset(-3, -3)
+                
                 colorpicker.Outline = Instance.new("Frame", colorpicker.Main)
-                colorpicker.Outline.Name = "outline"
-                colorpicker.Outline.ZIndex = 5
-                colorpicker.Outline.Size = colorpicker.Main.Size + UDim2.fromOffset(2, 2)
+                colorpicker.Outline.Name = "blackline"
+                colorpicker.Outline.ZIndex = 4
+                colorpicker.Outline.Size = colorpicker.Main.Size + UDim2.fromOffset(4, 4)
                 colorpicker.Outline.BorderSizePixel = 0
                 colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
-                colorpicker.Outline.Position = UDim2.fromOffset(-1, -1)
+                colorpicker.Outline.Position = UDim2.fromOffset(-2, -2)
 
                 colorpicker.BlackOutline = Instance.new("Frame", colorpicker.Main)
                 colorpicker.BlackOutline.Name = "blackline"
                 colorpicker.BlackOutline.ZIndex = 4
-                colorpicker.BlackOutline.Size = colorpicker.Main.Size + UDim2.fromOffset(4, 4)
+                colorpicker.BlackOutline.Size = colorpicker.Main.Size + UDim2.fromOffset(2, 2)
                 colorpicker.BlackOutline.BorderSizePixel = 0
                 colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
-                colorpicker.BlackOutline.Position = UDim2.fromOffset(-2, -2)
+                colorpicker.BlackOutline.Position = UDim2.fromOffset(-1, -1)
 
-                colorpicker.BlackOutline.MouseEnter:Connect(function()
+                colorpicker.BlackOutline2.MouseEnter:Connect(function()
                     colorpicker.Outline.BackgroundColor3 = window.theme.accentcolor
                     colorpicker.BlackOutline.BackgroundColor3 = window.theme.accentcolor
+                    colorpicker.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
                     colorpicker.Outline.BackgroundTransparency = 0.4
                     colorpicker.BlackOutline.BackgroundTransparency = 0.5
+                    colorpicker.BlackOutline2.BackgroundTransparency = 0.7
                 end)
-                colorpicker.BlackOutline.MouseLeave:Connect(function()
+                colorpicker.BlackOutline2.MouseLeave:Connect(function()
                     if not window.OpenedColorPickers[colorpicker.MainPicker] then
                         colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
                         colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
+                        colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
                         colorpicker.Outline.BackgroundTransparency = 0
                         colorpicker.BlackOutline.BackgroundTransparency = 0
+                        colorpicker.BlackOutline2.BackgroundTransparency = 0
                     end
                 end)
 
@@ -1304,22 +1416,29 @@ function library:CreateWindow(name, size, hidebutton)
                 colorpicker.MainPicker.Rotation = 0.000000000000001
                 colorpicker.MainPicker.Position = UDim2.fromOffset(-colorpicker.MainPicker.AbsoluteSize.X + colorpicker.Main.AbsoluteSize.X, 15)
 
-                colorpicker.Outline2 = Instance.new("TextButton", colorpicker.MainPicker)
-                colorpicker.Outline2.AutoButtonColor = false
-                colorpicker.Outline2.Name = "outline"
-                colorpicker.Outline2.ZIndex = 99
-                colorpicker.Outline2.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(2, 2)
+                colorpicker.BlackOutline3 = Instance.new("Frame", colorpicker.MainPicker)
+                colorpicker.BlackOutline3.Name = "blackline"
+                colorpicker.BlackOutline3.ZIndex = 98
+                colorpicker.BlackOutline3.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(6, 6)
+                colorpicker.BlackOutline3.BorderSizePixel = 0
+                colorpicker.BlackOutline3.BackgroundColor3 = window.theme.outlinecolor2
+                colorpicker.BlackOutline3.Position = UDim2.fromOffset(-3, -3)
+                
+                colorpicker.Outline2 = Instance.new("Frame", colorpicker.MainPicker)
+                colorpicker.Outline2.Name = "blackline"
+                colorpicker.Outline2.ZIndex = 98
+                colorpicker.Outline2.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(4, 4)
                 colorpicker.Outline2.BorderSizePixel = 0
                 colorpicker.Outline2.BackgroundColor3 = window.theme.outlinecolor
-                colorpicker.Outline2.Position = UDim2.fromOffset(-1, -1)
+                colorpicker.Outline2.Position = UDim2.fromOffset(-2, -2)
 
-                colorpicker.BlackOutline2 = Instance.new("Frame", colorpicker.MainPicker)
-                colorpicker.BlackOutline2.Name = "blackline"
-                colorpicker.BlackOutline2.ZIndex = 98
-                colorpicker.BlackOutline2.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(4, 4)
-                colorpicker.BlackOutline2.BorderSizePixel = 0
-                colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
-                colorpicker.BlackOutline2.Position = UDim2.fromOffset(-2, -2)
+                colorpicker.BlackOutline3 = Instance.new("Frame", colorpicker.MainPicker)
+                colorpicker.BlackOutline3.Name = "blackline"
+                colorpicker.BlackOutline3.ZIndex = 98
+                colorpicker.BlackOutline3.Size = colorpicker.MainPicker.Size + UDim2.fromOffset(2, 2)
+                colorpicker.BlackOutline3.BorderSizePixel = 0
+                colorpicker.BlackOutline3.BackgroundColor3 = window.theme.outlinecolor2
+                colorpicker.BlackOutline3.Position = UDim2.fromOffset(-1, -1)
 
                 colorpicker.hue = Instance.new("ImageLabel", colorpicker.MainPicker)
                 colorpicker.hue.ZIndex = 101
@@ -1437,20 +1556,24 @@ function library:CreateWindow(name, size, hidebutton)
                         if window.OpenedColorPickers[colorpicker.MainPicker] then
                             colorpicker.Outline.BackgroundColor3 = window.theme.accentcolor
                             colorpicker.BlackOutline.BackgroundColor3 = window.theme.accentcolor
+                            colorpicker.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
                             colorpicker.Outline.BackgroundTransparency = 0.4
                             colorpicker.BlackOutline.BackgroundTransparency = 0.5
+                            colorpicker.BlackOutline2.BackgroundTransparency = 0.7
                         else
                             colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
                             colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
+                            colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
                             colorpicker.Outline.BackgroundTransparency = 0
                             colorpicker.BlackOutline.BackgroundTransparency = 0
+                            colorpicker.BlackOutline2.BackgroundTransparency = 0
                         end
                     end
                 end
 
                 colorpicker.Main.InputBegan:Connect(inputBegan)
                 colorpicker.Outline.InputBegan:Connect(inputBegan)
-                colorpicker.BlackOutline.InputBegan:Connect(inputBegan)
+                colorpicker.BlackOutline2.InputBegan:Connect(inputBegan)
 
                 sector:FixSize()
                 return colorpicker
@@ -1469,7 +1592,7 @@ function library:CreateWindow(name, size, hidebutton)
                 keybind.Main = Instance.new("TextLabel", sector.Items)
                 keybind.Main.BackgroundTransparency = 1
                 keybind.Main.Size = UDim2.fromOffset(156, 10)
-                keybind.Main.ZIndex = 2
+                keybind.Main.ZIndex = 4
                 keybind.Main.Font = window.theme.font
                 keybind.Main.Text = keybind.text
                 keybind.Main.TextColor3 = window.theme.itemscolor
@@ -1481,12 +1604,10 @@ function library:CreateWindow(name, size, hidebutton)
                 keybind.Bind.Name = "keybind"
                 keybind.Bind.BackgroundTransparency = 1
                 keybind.Bind.BorderColor3 = window.theme.outlinecolor
-                keybind.Bind.ZIndex = 2
+                keybind.Bind.ZIndex = 5
                 keybind.Bind.BorderSizePixel = 0
-                keybind.Bind.Position = UDim2.fromOffset(sector.Main.Size.X.Offset - 50, 0)
-                keybind.Bind.Size = UDim2.fromOffset(37, 10)
+                keybind.Bind.Position = UDim2.fromOffset(sector.Main.Size.X.Offset - 10, 0)
                 keybind.Bind.Font = window.theme.font
-                keybind.Bind.Text = keybind.default == "None" and "[None]" or "[" .. keybind.default.Name .. "]"
                 keybind.Bind.TextColor3 = Color3.fromRGB(136, 136, 136)
                 keybind.Bind.TextSize = 14
                 keybind.Bind.TextXAlignment = Enum.TextXAlignment.Right
@@ -1496,9 +1617,16 @@ function library:CreateWindow(name, size, hidebutton)
 
                 function keybind:Set(value)
                     keybind.value = value
-                    keybind.Bind.Text = "[" .. value.Name .. "]"
+                    keybind.Bind.Text = "[" .. (value.Name or value) .. "]"
+
+                    local size = textservice:GetTextSize(keybind.Bind.Text, keybind.Bind.TextSize, keybind.Bind.Font, Vector2.new(2000, 2000))
+                    keybind.Bind.Size = UDim2.fromOffset(size.X, size.Y)
+                    keybind.Bind.Position = UDim2.fromOffset(sector.Main.Size.X.Offset - 10 - keybind.Bind.AbsoluteSize.X, 0)
+                    
                     pcall(keybind.newkeycallback, value)
                 end
+                keybind:Set(keybind.default and keybind.default or "None")
+
                 function keybind:Get()
                     return keybind.value
                 end
@@ -1507,13 +1635,10 @@ function library:CreateWindow(name, size, hidebutton)
                     if not gameProcessed then
                         if keybind.Bind.Text == "..." then
                             if input.UserInputType == Enum.UserInputType.Keyboard then
-                                keybind.Bind.Text = "[" .. input.KeyCode.Name .. "]"
-                                keybind.value = input.KeyCode
+                                keybind:Set(input.KeyCode)
                             else
-                                keybind.Bind.Text = "[None]"
-                                keybind.value = "None"
+                                keybind:Set("None")
                             end
-                            pcall(keybind.newkeycallback, keybind.value)
                         else
                             if keybind.value ~= "None" and input.KeyCode == keybind.value then
                                 pcall(keybind.callback)
@@ -1561,7 +1686,7 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.Main.BorderSizePixel = 0
                 dropdown.Main.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 16)
                 dropdown.Main.Position = UDim2.fromOffset(0, 17)
-                dropdown.Main.ZIndex = 4
+                dropdown.Main.ZIndex = 5
                 dropdown.Main.AutoButtonColor = false
                 dropdown.Main.Font = window.theme.font
                 dropdown.Main.Text = ""
@@ -1576,7 +1701,7 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.SelectedLabel = Instance.new("TextLabel", dropdown.Main)
                 dropdown.SelectedLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 dropdown.SelectedLabel.BackgroundTransparency = 1
-                dropdown.SelectedLabel.Position = UDim2.fromOffset(5, 1)
+                dropdown.SelectedLabel.Position = UDim2.fromOffset(5, 2)
                 dropdown.SelectedLabel.Size = UDim2.fromOffset(130, 13)
                 dropdown.SelectedLabel.Font = window.theme.font
                 dropdown.SelectedLabel.Text = dropdown.text
@@ -1598,21 +1723,29 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.Nav.ImageRectOffset = Vector2.new(524, 764)
                 dropdown.Nav.ImageRectSize = Vector2.new(36, 36)
 
+                dropdown.BlackOutline2 = Instance.new("Frame", dropdown.Main)
+                dropdown.BlackOutline2.Name = "blackline"
+                dropdown.BlackOutline2.ZIndex = 4
+                dropdown.BlackOutline2.Size = dropdown.Main.Size + UDim2.fromOffset(6, 6)
+                dropdown.BlackOutline2.BorderSizePixel = 0
+                dropdown.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
+                dropdown.BlackOutline2.Position = UDim2.fromOffset(-3, -3)
+                
                 dropdown.Outline = Instance.new("Frame", dropdown.Main)
                 dropdown.Outline.Name = "blackline"
-                dropdown.Outline.ZIndex = 3
-                dropdown.Outline.Size = dropdown.Main.Size + UDim2.fromOffset(2, 2)
+                dropdown.Outline.ZIndex = 4
+                dropdown.Outline.Size = dropdown.Main.Size + UDim2.fromOffset(4, 4)
                 dropdown.Outline.BorderSizePixel = 0
                 dropdown.Outline.BackgroundColor3 = window.theme.outlinecolor
-                dropdown.Outline.Position = UDim2.fromOffset(-1, -1)
+                dropdown.Outline.Position = UDim2.fromOffset(-2, -2)
 
                 dropdown.BlackOutline = Instance.new("Frame", dropdown.Main)
                 dropdown.BlackOutline.Name = "blackline"
-                dropdown.BlackOutline.ZIndex = 2
-                dropdown.BlackOutline.Size = dropdown.Main.Size + UDim2.fromOffset(4, 4)
+                dropdown.BlackOutline.ZIndex = 4
+                dropdown.BlackOutline.Size = dropdown.Main.Size + UDim2.fromOffset(2, 2)
                 dropdown.BlackOutline.BorderSizePixel = 0
                 dropdown.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
-                dropdown.BlackOutline.Position = UDim2.fromOffset(-2, -2)
+                dropdown.BlackOutline.Position = UDim2.fromOffset(-1, -1)
 
                 dropdown.ItemsFrame = Instance.new("ScrollingFrame", dropdown.Main)
                 dropdown.ItemsFrame.Name = "itemsframe"
@@ -1635,22 +1768,31 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.ListPadding.PaddingLeft = UDim.new(0, 2)
                 dropdown.ListPadding.PaddingRight = UDim.new(0, 2)
 
+                dropdown.BlackOutline2Items = Instance.new("Frame", dropdown.Main)
+                dropdown.BlackOutline2Items.Name = "blackline"
+                dropdown.BlackOutline2Items.ZIndex = 4
+                dropdown.BlackOutline2Items.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(6, 6)
+                dropdown.BlackOutline2Items.BorderSizePixel = 0
+                dropdown.BlackOutline2Items.BackgroundColor3 = window.theme.outlinecolor2
+                dropdown.BlackOutline2Items.Position = dropdown.ItemsFrame.Position + UDim2.fromOffset(-3, -3)
+                dropdown.BlackOutline2Items.Visible = false
+                
                 dropdown.OutlineItems = Instance.new("Frame", dropdown.Main)
                 dropdown.OutlineItems.Name = "blackline"
-                dropdown.OutlineItems.ZIndex = 5
-                dropdown.OutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(2, 2)
+                dropdown.OutlineItems.ZIndex = 4
+                dropdown.OutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(4, 4)
                 dropdown.OutlineItems.BorderSizePixel = 0
                 dropdown.OutlineItems.BackgroundColor3 = window.theme.outlinecolor
-                dropdown.OutlineItems.Position = dropdown.ItemsFrame.Position + UDim2.fromOffset(-1, -1)
+                dropdown.OutlineItems.Position = dropdown.ItemsFrame.Position + UDim2.fromOffset(-2, -2)
                 dropdown.OutlineItems.Visible = false
 
                 dropdown.BlackOutlineItems = Instance.new("Frame", dropdown.Main)
                 dropdown.BlackOutlineItems.Name = "blackline"
                 dropdown.BlackOutlineItems.ZIndex = 4
-                dropdown.BlackOutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(4, 4)
+                dropdown.BlackOutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(-2, -2)
                 dropdown.BlackOutlineItems.BorderSizePixel = 0
                 dropdown.BlackOutlineItems.BackgroundColor3 = window.theme.outlinecolor2
-                dropdown.BlackOutlineItems.Position = dropdown.ItemsFrame.Position + UDim2.fromOffset(-2, -2)
+                dropdown.BlackOutlineItems.Position = dropdown.ItemsFrame.Position + UDim2.fromOffset(-1, -1)
                 dropdown.BlackOutlineItems.Visible = false
 
                 dropdown.IgnoreBackButtons = Instance.new("TextButton", dropdown.Main)
@@ -1688,6 +1830,7 @@ function library:CreateWindow(name, size, hidebutton)
                         dropdown.ItemsFrame.Active = false
                         dropdown.OutlineItems.Visible = false
                         dropdown.BlackOutlineItems.Visible = false
+                        dropdown.BlackOutline2Items.Visible = false
                         dropdown.IgnoreBackButtons.Visible = false
                         dropdown.IgnoreBackButtons.Active = false
 
@@ -1712,8 +1855,9 @@ function library:CreateWindow(name, size, hidebutton)
                     dropdown.ItemsFrame.Size = UDim2.fromOffset(dropdown.Main.Size.X.Offset, math.clamp(#dropdown.items * Item.AbsoluteSize.Y, 20, 156) + 4)
                     dropdown.ItemsFrame.CanvasSize = UDim2.fromOffset(dropdown.ItemsFrame.AbsoluteSize.X, (#dropdown.items * Item.AbsoluteSize.Y) + 4)
 
-                    dropdown.OutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(2, 2)
-                    dropdown.BlackOutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(4, 4)
+                    dropdown.OutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(4, 4)
+                    dropdown.BlackOutlineItems.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(2, 2)
+                    dropdown.BlackOutline2Items.Size = dropdown.ItemsFrame.Size + UDim2.fromOffset(6, 6)
                     dropdown.IgnoreBackButtons.Size = dropdown.ItemsFrame.Size
                 end
 
@@ -1765,6 +1909,7 @@ function library:CreateWindow(name, size, hidebutton)
                         dropdown.IgnoreBackButtons.Active = true
                         dropdown.OutlineItems.Visible = true
                         dropdown.BlackOutlineItems.Visible = true
+                        dropdown.BlackOutline2Items.Visible = true
                     else
                         dropdown.ItemsFrame.ScrollingEnabled = false
                         tab.TabPage.ScrollingEnabled = true
@@ -1775,6 +1920,7 @@ function library:CreateWindow(name, size, hidebutton)
                         dropdown.IgnoreBackButtons.Active = false
                         dropdown.OutlineItems.Visible = false
                         dropdown.BlackOutlineItems.Visible = false
+                        dropdown.BlackOutline2Items.Visible = false
                     end
                 end
 
