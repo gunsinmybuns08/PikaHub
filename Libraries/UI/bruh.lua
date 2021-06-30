@@ -32,7 +32,8 @@ library.theme = {
     topcolor2 = Color3.fromRGB(30, 30, 30), -- Color3.fromRGB(12, 12, 12),
     buttoncolor = Color3.fromRGB(49, 49, 49),
     buttoncolor2 = Color3.fromRGB(39, 39, 39),
-    itemscolor = Color3.fromRGB(200, 200, 200)
+    itemscolor = Color3.fromRGB(170, 170, 170),
+    itemscolor2 = Color3.fromRGB(200, 200, 200)
 }
 
 function library:CreateWatermark(name)
@@ -180,6 +181,9 @@ function library:CreateWindow(name, size, hidebutton)
 
     window.Main = Instance.new("ScreenGui", coregui)
     window.Main.Name = name
+    if syn then
+        syn.protect_gui(window.Main)
+    end
 
     if getgenv().uilib then
         getgenv().uilib:Remove()
@@ -590,20 +594,10 @@ function library:CreateWindow(name, size, hidebutton)
                 button.Label.TextXAlignment = Enum.TextXAlignment.Left
 
                 button.BlackOutline2.MouseEnter:Connect(function()
-                    button.Outline.BackgroundColor3 = window.theme.accentcolor
-                    button.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                     button.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
-                    button.Outline.BackgroundTransparency = 0.4
-                    button.BlackOutline.BackgroundTransparency = 0.5
-                    button.BlackOutline2.BackgroundTransparency = 0.7
                 end)
                 button.BlackOutline2.MouseLeave:Connect(function()
-                    button.Outline.BackgroundColor3 = window.theme.outlinecolor
-                    button.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                     button.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
-                    button.Outline.BackgroundTransparency = 0
-                    button.BlackOutline.BackgroundTransparency = 0
-                    button.BlackOutline2.BackgroundTransparency = 0
                 end)
 
                 sector:FixSize()
@@ -647,7 +641,7 @@ function library:CreateWindow(name, size, hidebutton)
                 toggle.Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 toggle.Main.BorderColor3 = window.theme.outlinecolor
                 toggle.Main.BorderSizePixel = 0
-                toggle.Main.Size = UDim2.fromOffset(10, 10)
+                toggle.Main.Size = UDim2.fromOffset(8, 8)
                 toggle.Main.AutoButtonColor = false
                 toggle.Main.ZIndex = 5
                 toggle.Main.Font = Enum.Font.SourceSans
@@ -727,6 +721,12 @@ function library:CreateWindow(name, size, hidebutton)
                 toggle.ListPadding.PaddingRight = UDim.new(0, 2)
 
                 function toggle:Set(value) 
+                    if value then
+                        toggle.Label.TextColor3 = window.theme.itemscolor2
+                    else
+                        toggle.Label.TextColor3 = window.theme.itemscolor
+                    end
+
                     toggle.value = value
                     toggle.CheckedFrame.Visible = value
                     pcall(toggle.callback, value) 
@@ -757,12 +757,14 @@ function library:CreateWindow(name, size, hidebutton)
                     keybind.Main.TextSize = 13
                     keybind.Main.TextXAlignment = Enum.TextXAlignment.Right
                     keybind.Main.MouseButton1Down:Connect(function()
-                        keybind.Main.Text = "..."
+                        keybind.Main.Text = "[...]"
+                        keybind.Main.TextColor3 = window.theme.accentcolor
                     end)
 
                     uis.InputBegan:Connect(function(input, gameProcessed)
                         if not gameProcessed then
-                            if keybind.Main.Text == "..." then
+                            if keybind.Main.Text == "[...]" then
+                                keybind.Main.TextColor3 = Color3.fromRGB(136, 136, 136)
                                 if input.UserInputType == Enum.UserInputType.Keyboard then
                                     keybind.Main.Text = "[" .. input.KeyCode.Name .. "]"
                                     keybind.value = input.KeyCode
@@ -825,28 +827,20 @@ function library:CreateWindow(name, size, hidebutton)
                     colorpicker.BlackOutline.Position = UDim2.fromOffset(-1, -1)
 
                     colorpicker.BlackOutline2.MouseEnter:Connect(function()
-                        colorpicker.Outline.BackgroundColor3 = window.theme.accentcolor
-                        colorpicker.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                         colorpicker.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
-                        colorpicker.Outline.BackgroundTransparency = 0.4
-                        colorpicker.BlackOutline.BackgroundTransparency = 0.5
-                        colorpicker.BlackOutline2.BackgroundTransparency = 0.7
                     end)
                     colorpicker.BlackOutline2.MouseLeave:Connect(function()
                         if not window.OpenedColorPickers[colorpicker.MainPicker] then
-                            colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
-                            colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                             colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
-                            colorpicker.Outline.BackgroundTransparency = 0
-                            colorpicker.BlackOutline.BackgroundTransparency = 0
-                            colorpicker.BlackOutline2.BackgroundTransparency = 0
                         end
                     end)
 
-                    colorpicker.MainPicker = Instance.new("Frame", colorpicker.Main)
+                    colorpicker.MainPicker = Instance.new("TextButton", colorpicker.Main)
                     colorpicker.MainPicker.Name = "picker"
                     colorpicker.MainPicker.ZIndex = 100
                     colorpicker.MainPicker.Visible = false
+                    colorpicker.MainPicker.AutoButtonColor = false
+                    colorpicker.MainPicker.Text = ""
                     window.OpenedColorPickers[colorpicker.MainPicker] = false
                     colorpicker.MainPicker.Size = UDim2.fromOffset(160, 178)
                     colorpicker.MainPicker.BorderSizePixel = 0
@@ -993,19 +987,9 @@ function library:CreateWindow(name, size, hidebutton)
                             colorpicker.MainPicker.Visible = not colorpicker.MainPicker.Visible
                             window.OpenedColorPickers[colorpicker.MainPicker] = colorpicker.MainPicker.Visible
                             if window.OpenedColorPickers[colorpicker.MainPicker] then
-                                colorpicker.Outline.BackgroundColor3 = window.theme.accentcolor
-                                colorpicker.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                                 colorpicker.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
-                                colorpicker.Outline.BackgroundTransparency = 0.4
-                                colorpicker.BlackOutline.BackgroundTransparency = 0.5
-                                colorpicker.BlackOutline2.BackgroundTransparency = 0.7
                             else
-                                colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
-                                colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                                 colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
-                                colorpicker.Outline.BackgroundTransparency = 0
-                                colorpicker.BlackOutline.BackgroundTransparency = 0
-                                colorpicker.BlackOutline2.BackgroundTransparency = 0
                             end
                         end
                     end
@@ -1027,20 +1011,10 @@ function library:CreateWindow(name, size, hidebutton)
                 end)
 
                 local MouseEnter = function()
-                    toggle.Outline.BackgroundColor3 = window.theme.accentcolor
-                    toggle.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                     toggle.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
-                    toggle.Outline.BackgroundTransparency = 0.4
-                    toggle.BlackOutline.BackgroundTransparency = 0.5
-                    toggle.BlackOutline2.BackgroundTransparency = 0.7
                 end
                 local MouseLeave = function()
-                    toggle.Outline.BackgroundColor3 = window.theme.outlinecolor
-                    toggle.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                     toggle.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
-                    toggle.Outline.BackgroundTransparency = 0
-                    toggle.BlackOutline.BackgroundTransparency = 0
-                    toggle.BlackOutline2.BackgroundTransparency = 0
                 end
 
                 toggle.Label.MouseEnter:Connect(MouseEnter)
@@ -1130,20 +1104,10 @@ function library:CreateWindow(name, size, hidebutton)
                 textbox.BlackOutline.Position = UDim2.fromOffset(-1, -1)
 
                 textbox.BlackOutline2.MouseEnter:Connect(function()
-                    textbox.Outline.BackgroundColor3 = window.theme.accentcolor
-                    textbox.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                     textbox.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
-                    textbox.Outline.BackgroundTransparency = 0.4
-                    textbox.BlackOutline.BackgroundTransparency = 0.5
-                    textbox.BlackOutline2.BackgroundTransparency = 0.7
                 end)
                 textbox.BlackOutline2.MouseLeave:Connect(function()
-                    textbox.Outline.BackgroundColor3 = window.theme.outlinecolor
-                    textbox.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                     textbox.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
-                    textbox.Outline.BackgroundTransparency = 0
-                    textbox.BlackOutline.BackgroundTransparency = 0
-                    textbox.BlackOutline2.BackgroundTransparency = 0
                 end)
 
                 sector:FixSize()
@@ -1244,20 +1208,10 @@ function library:CreateWindow(name, size, hidebutton)
                 slider.Gradient2.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, window.theme.accentcolor), ColorSequenceKeypoint.new(1.00, window.theme.accentcolor2) })
 
                 slider.BlackOutline2.MouseEnter:Connect(function()
-                    slider.Outline.BackgroundColor3 = window.theme.accentcolor
-                    slider.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                     slider.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
-                    slider.Outline.BackgroundTransparency = 0.4
-                    slider.BlackOutline.BackgroundTransparency = 0.5
-                    slider.BlackOutline2.BackgroundTransparency = 0.7
                 end)
                 slider.BlackOutline2.MouseLeave:Connect(function()
-                    slider.Outline.BackgroundColor3 = window.theme.outlinecolor
-                    slider.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                     slider.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
-                    slider.Outline.BackgroundTransparency = 0
-                    slider.BlackOutline.BackgroundTransparency = 0
-                    slider.BlackOutline2.BackgroundTransparency = 0
                 end)
 
 
@@ -1387,28 +1341,20 @@ function library:CreateWindow(name, size, hidebutton)
                 colorpicker.BlackOutline.Position = UDim2.fromOffset(-1, -1)
 
                 colorpicker.BlackOutline2.MouseEnter:Connect(function()
-                    colorpicker.Outline.BackgroundColor3 = window.theme.accentcolor
-                    colorpicker.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                     colorpicker.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
-                    colorpicker.Outline.BackgroundTransparency = 0.4
-                    colorpicker.BlackOutline.BackgroundTransparency = 0.5
-                    colorpicker.BlackOutline2.BackgroundTransparency = 0.7
                 end)
                 colorpicker.BlackOutline2.MouseLeave:Connect(function()
                     if not window.OpenedColorPickers[colorpicker.MainPicker] then
-                        colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
-                        colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                         colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
-                        colorpicker.Outline.BackgroundTransparency = 0
-                        colorpicker.BlackOutline.BackgroundTransparency = 0
-                        colorpicker.BlackOutline2.BackgroundTransparency = 0
                     end
                 end)
 
-                colorpicker.MainPicker = Instance.new("Frame", colorpicker.Main)
+                colorpicker.MainPicker = Instance.new("TextButton", colorpicker.Main)
                 colorpicker.MainPicker.Name = "picker"
                 colorpicker.MainPicker.ZIndex = 100
                 colorpicker.MainPicker.Visible = false
+                colorpicker.MainPicker.AutoButtonColor = false
+                colorpicker.MainPicker.Text = ""
                 window.OpenedColorPickers[colorpicker.MainPicker] = false
                 colorpicker.MainPicker.Size = UDim2.fromOffset(160, 178)
                 colorpicker.MainPicker.BorderSizePixel = 0
@@ -1554,19 +1500,9 @@ function library:CreateWindow(name, size, hidebutton)
                         colorpicker.MainPicker.Visible = not colorpicker.MainPicker.Visible
                         window.OpenedColorPickers[colorpicker.MainPicker] = colorpicker.MainPicker.Visible
                         if window.OpenedColorPickers[colorpicker.MainPicker] then
-                            colorpicker.Outline.BackgroundColor3 = window.theme.accentcolor
-                            colorpicker.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                             colorpicker.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
-                            colorpicker.Outline.BackgroundTransparency = 0.4
-                            colorpicker.BlackOutline.BackgroundTransparency = 0.5
-                            colorpicker.BlackOutline2.BackgroundTransparency = 0.7
                         else
-                            colorpicker.Outline.BackgroundColor3 = window.theme.outlinecolor
-                            colorpicker.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                             colorpicker.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
-                            colorpicker.Outline.BackgroundTransparency = 0
-                            colorpicker.BlackOutline.BackgroundTransparency = 0
-                            colorpicker.BlackOutline2.BackgroundTransparency = 0
                         end
                     end
                 end
@@ -1612,7 +1548,8 @@ function library:CreateWindow(name, size, hidebutton)
                 keybind.Bind.TextSize = 14
                 keybind.Bind.TextXAlignment = Enum.TextXAlignment.Right
                 keybind.Bind.MouseButton1Down:Connect(function()
-                    keybind.Bind.Text = "..."
+                    keybind.Bind.Text = "[...]"
+                    keybind.Main.TextColor3 = window.theme.accentcolor
                 end)
 
                 function keybind:Set(value)
@@ -1633,7 +1570,8 @@ function library:CreateWindow(name, size, hidebutton)
 
                 uis.InputBegan:Connect(function(input, gameProcessed)
                     if not gameProcessed then
-                        if keybind.Bind.Text == "..." then
+                        if keybind.Bind.Text == "[...]" then
+                            keybind.Main.TextColor3 = Color3.fromRGB(136, 136, 136)
                             if input.UserInputType == Enum.UserInputType.Keyboard then
                                 keybind:Set(input.KeyCode)
                             else
@@ -1929,20 +1867,10 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.Nav.MouseButton1Down:Connect(MouseButton1Down)
 
                 dropdown.BlackOutline2.MouseEnter:Connect(function()
-                    dropdown.Outline.BackgroundColor3 = window.theme.accentcolor
-                    dropdown.BlackOutline.BackgroundColor3 = window.theme.accentcolor
                     dropdown.BlackOutline2.BackgroundColor3 = window.theme.accentcolor
-                    dropdown.Outline.BackgroundTransparency = 0.4
-                    dropdown.BlackOutline.BackgroundTransparency = 0.5
-                    dropdown.BlackOutline2.BackgroundTransparency = 0.7
                 end)
                 dropdown.BlackOutline2.MouseLeave:Connect(function()
-                    dropdown.Outline.BackgroundColor3 = window.theme.outlinecolor
-                    dropdown.BlackOutline.BackgroundColor3 = window.theme.outlinecolor2
                     dropdown.BlackOutline2.BackgroundColor3 = window.theme.outlinecolor2
-                    dropdown.Outline.BackgroundTransparency = 0
-                    dropdown.BlackOutline.BackgroundTransparency = 0
-                    dropdown.BlackOutline2.BackgroundTransparency = 0
                 end)
 
                 sector:FixSize()
@@ -2077,13 +2005,22 @@ function library:CreateWindow(name, size, hidebutton)
 
     return window
 end
+
+
 --[[
 local window = library:CreateWindow("pika hub", Vector2.new(492, 598), Enum.KeyCode.RightShift)
 local tab = window:CreateTab("Test")
+
 local sector = tab:CreateSector("Test")
 local dropdown = sector:AddDropdown("Test", {"Test", "Test2"}, "Test", function() end)
 
-local sector = tab:CreateSector("Test")
-local dropdown = sector:AddToggle("Test", false, function() end)
-]]
+local sector2 = tab:CreateSector("Test")
+local toggle = sector2:AddToggle("Test", false, function() end)
+local toggle2 = sector2:AddToggle("Test", false, function() end)
+toggle2:AddKeybind()
+toggle2:AddColorpicker(Color3.new(), function() end)
+local button = sector2:AddButton("Test", function() end)
+local slider = sector2:AddSlider("Test", 0, 10, 100, 1, function() end)
+]]--
+
 return library
