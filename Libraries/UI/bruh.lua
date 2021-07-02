@@ -705,7 +705,7 @@ function library:CreateWindow(name, size, hidebutton)
                 toggle.Items.ZIndex = 4
                 toggle.Items.Size = UDim2.fromOffset(60, toggle.BlackOutline.AbsoluteSize.Y)
                 toggle.Items.BorderSizePixel = 0
-                toggle.Items.BackgroundTransparency = 0
+                toggle.Items.BackgroundTransparency = 1
                 toggle.Items.BackgroundColor3 = Color3.new(0, 0, 0)
                 toggle.Items.Position = UDim2.fromOffset(sector.Main.Size.X.Offset - 71, 0)
 
