@@ -218,13 +218,11 @@ function library:CreateWindow(name, size, hidebutton)
         end
     end
 
-    window.Frame = Instance.new("TextButton", window.Main)
+    window.Frame = Instance.new("Frame", window.Main)
     window.Frame.Name = "main"
     window.Frame.Position = UDim2.fromScale(0.5, 0.5)
     window.Frame.BorderSizePixel = 0
     window.Frame.Size = window.size
-    window.Frame.Text = ""
-    window.Frame.AutoButtonColor = false
     window.Frame.BackgroundColor3 = window.theme.backgroundcolor
     window.Frame.AnchorPoint = Vector2.new(0.5, 0.5)
 
@@ -308,7 +306,7 @@ function library:CreateWindow(name, size, hidebutton)
     window.BlackLine.Position = UDim2.fromOffset(0, window.TopBar.AbsoluteSize.Y)
 
     if window.theme.background then
-        window.BackgroundImage = Instance.new("ImageButton", window.Frame)
+        window.BackgroundImage = Instance.new("ImageLabel", window.Frame)
         window.BackgroundImage.Name = "navigation"
         window.BackgroundImage.BackgroundTransparency = 1
         window.BackgroundImage.LayoutOrder = 10
@@ -488,20 +486,20 @@ function library:CreateWindow(name, size, hidebutton)
             sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 13, window.theme.font, Vector2.new(200,300)).X + 10, 0, sector.Main.Size.X.Offset), size.Y)
             sector.Label.BackgroundTransparency = 1
             sector.Label.BorderSizePixel = 0
-            sector.Label.ZIndex = 5
+            sector.Label.ZIndex = 6
             sector.Label.Text = sector.name
             sector.Label.TextColor3 = Color3.new(1,1,2552/255)
             sector.Label.TextStrokeTransparency = 1
             sector.Label.Font = window.theme.font
             sector.Label.TextSize = 13
 
-            sector.LabelBackFrame = Instance.new("Frame", sector.Label)
+            sector.LabelBackFrame = Instance.new("Frame", sector.Main)
             sector.LabelBackFrame.Name = "labelframe"
-            sector.LabelBackFrame.ZIndex = 4
+            sector.LabelBackFrame.ZIndex = 5
             sector.LabelBackFrame.Size = UDim2.fromOffset(sector.Label.Size.X.Offset, 10)
             sector.LabelBackFrame.BorderSizePixel = 0
             sector.LabelBackFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-            sector.LabelBackFrame.Position = UDim2.fromOffset(0, 6)
+            sector.LabelBackFrame.Position = UDim2.fromOffset(sector.Label.Position.X.Offset, sector.BlackOutline2.Position.Y.Offset)
 
             sector.Items = Instance.new("Frame", sector.Main) 
             sector.Items.Name = "items"
@@ -677,8 +675,9 @@ function library:CreateWindow(name, size, hidebutton)
                 toggle.Gradient.Rotation = (22.5 * 13)
                 toggle.Gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0.00, Color3.fromRGB(30, 30, 30)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(45, 45, 45)) })
 
-                toggle.Label = Instance.new("TextLabel", toggle.Main)
+                toggle.Label = Instance.new("TextButton", toggle.Main)
                 toggle.Label.Name = "Label"
+                toggle.Label.AutoButtonColor = false
                 toggle.Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 toggle.Label.BackgroundTransparency = 1
                 toggle.Label.Position = UDim2.fromOffset(toggle.Main.AbsoluteSize.X + 10, -2)
@@ -706,9 +705,9 @@ function library:CreateWindow(name, size, hidebutton)
                 toggle.Items.ZIndex = 4
                 toggle.Items.Size = UDim2.fromOffset(60, toggle.BlackOutline.AbsoluteSize.Y)
                 toggle.Items.BorderSizePixel = 0
-                toggle.Items.BackgroundTransparency = 1
+                toggle.Items.BackgroundTransparency = 0
                 toggle.Items.BackgroundColor3 = Color3.new(0, 0, 0)
-                toggle.Items.Position = UDim2.fromOffset(sector.Main.Size.X.Offset - 71, -2)
+                toggle.Items.Position = UDim2.fromOffset(sector.Main.Size.X.Offset - 71, 0)
 
                 toggle.ListLayout = Instance.new("UIListLayout", toggle.Items)
                 toggle.ListLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -717,7 +716,7 @@ function library:CreateWindow(name, size, hidebutton)
                 toggle.ListLayout.Padding = UDim.new(0, 6)
 
                 toggle.ListPadding = Instance.new("UIPadding", toggle.Items)
-                toggle.ListPadding.PaddingTop = UDim.new(0, 2)
+                toggle.ListPadding.PaddingTop = UDim.new(0, 0)
                 toggle.ListPadding.PaddingRight = UDim.new(0, 2)
 
                 function toggle:Set(value) 
@@ -2006,7 +2005,6 @@ function library:CreateWindow(name, size, hidebutton)
     return window
 end
 
-
 --[[
 local window = library:CreateWindow("pika hub", Vector2.new(492, 598), Enum.KeyCode.RightShift)
 local tab = window:CreateTab("Test")
@@ -2022,5 +2020,4 @@ toggle2:AddColorpicker(Color3.new(), function() end)
 local button = sector2:AddButton("Test", function() end)
 local slider = sector2:AddSlider("Test", 0, 10, 100, 1, function() end)
 ]]--
-
 return library
