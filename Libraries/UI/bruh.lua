@@ -354,6 +354,7 @@ function library:CreateWindow(name, size, hidebutton)
         tab.Left.Size = UDim2.fromOffset(window.size.X.Offset / 2, window.size.Y.Offset - (window.TopBar.AbsoluteSize.Y + 1))
         tab.Left.BackgroundTransparency = 1
         tab.Left.Active = false
+        tab.Left.Visible = false
         tab.Left.ScrollBarThickness = 0
         tab.Left.ScrollingDirection = "Y"
         tab.Left.Position = window.BlackLine.Position + UDim2.fromOffset(0, 1)
@@ -373,6 +374,7 @@ function library:CreateWindow(name, size, hidebutton)
         tab.Right.ScrollBarThickness = 0
         tab.Right.ScrollingDirection = "Y"
         tab.Right.Active = false
+        tab.Right.Visible = false
         tab.Right.BorderSizePixel = 0
         tab.Right.Size = UDim2.fromOffset(window.size.X.Offset / 2, window.size.Y.Offset - (window.TopBar.AbsoluteSize.Y + 1))
         tab.Right.BackgroundTransparency = 1
