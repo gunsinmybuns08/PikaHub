@@ -398,7 +398,8 @@ function library:CreateWindow(name, size, hidebutton)
             for i,v in pairs(window.Tabs) do
                 if v ~= tab then
                     v.TabButton.TextColor3 = Color3.fromRGB(230, 230, 230)
-                    v.TabPage.Visible = false
+                    v.Left.Visible = false
+                    v.Right.Visible = false
                 end
             end
 
@@ -2000,22 +2001,5 @@ function library:CreateWindow(name, size, hidebutton)
 
     return window
 end
-
---[[
-local window = library:CreateWindow("pika hub", Vector2.new(492, 598), Enum.KeyCode.RightShift)
-local tab = window:CreateTab("Test")
-
-local sector = tab:CreateSector("Test", 'left')
-local dropdown = sector:AddDropdown("Test", {"Test", "Test2"}, "Test", function() end)
-local button = sector:AddButton("Test", function() end)
-
-local sector2 = tab:CreateSector("Test", 'right')
-local toggle = sector2:AddToggle("Test", false, function() end)
-local toggle2 = sector2:AddToggle("Test", false, function() end)
-toggle2:AddKeybind()
-toggle2:AddColorpicker(Color3.new(), function() end)
-local button = sector2:AddButton("Test", function() end)
-local slider = sector2:AddSlider("Test", 0, 1, 10, 1, function() end)
-]]--
 
 return library
