@@ -348,22 +348,15 @@ function library:CreateWindow(name, size, hidebutton)
         tab.TabButton.Name = tab.name
         tab.TabButton.TextSize = window.theme.fontsize
 
-        tab.TabPage = Instance.new("ScrollingFrame", window.Frame)
-        tab.TabPage.Name = "Tab"
-        tab.TabPage.ScrollBarThickness = 0
-        tab.TabPage.Visible = false
-        tab.TabPage.ScrollingDirection = "Y"
-		tab.TabPage.Position = window.BlackLine.Position + UDim2.fromOffset(0, 1)
-		tab.TabPage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - (window.TopBar.AbsoluteSize.Y + 1))
-        tab.TabPage.BackgroundTransparency = 1
-
-        tab.Left = Instance.new("Frame", tab.TabPage) 
+        tab.Left = Instance.new("ScrollingFrame", window.Frame) 
         tab.Left.Name = "leftside"
         tab.Left.BorderSizePixel = 0
-        tab.Left.Size = UDim2.fromOffset(window.size.X.Offset / 2, window.size.Y.Offset)
+        tab.Left.Size = UDim2.fromOffset(window.size.X.Offset / 2, window.size.Y.Offset - (window.TopBar.AbsoluteSize.Y + 1))
         tab.Left.BackgroundTransparency = 1
         tab.Left.Active = false
-        tab.Left.Position = UDim2.fromOffset(0, 0)
+        tab.Left.ScrollBarThickness = 0
+        tab.Left.ScrollingDirection = "Y"
+        tab.Left.Position = window.BlackLine.Position + UDim2.fromOffset(0, 1)
 
         tab.LeftListLayout = Instance.new("UIListLayout", tab.Left)
         tab.LeftListLayout.FillDirection = Enum.FillDirection.Vertical
@@ -375,13 +368,15 @@ function library:CreateWindow(name, size, hidebutton)
         tab.LeftListPadding.PaddingLeft = UDim.new(0, 12)
         tab.LeftListPadding.PaddingRight = UDim.new(0, 12)
 
-        tab.Right = Instance.new("Frame", tab.TabPage) 
+        tab.Right = Instance.new("ScrollingFrame", window.Frame) 
         tab.Right.Name = "rightside"
+        tab.Right.ScrollBarThickness = 0
+        tab.Right.ScrollingDirection = "Y"
         tab.Right.Active = false
         tab.Right.BorderSizePixel = 0
-        tab.Right.Size = UDim2.fromOffset(window.size.X.Offset / 2, window.size.Y.Offset)
+        tab.Right.Size = UDim2.fromOffset(window.size.X.Offset / 2, window.size.Y.Offset - (window.TopBar.AbsoluteSize.Y + 1))
         tab.Right.BackgroundTransparency = 1
-        tab.Right.Position = UDim2.fromOffset(window.size.X.Offset / 2, 0)
+        tab.Right.Position = tab.Left.Position + UDim2.fromOffset(tab.Left.AbsoluteSize.X, 0)
 
         tab.RightListLayout = Instance.new("UIListLayout", tab.Right)
         tab.RightListLayout.FillDirection = Enum.FillDirection.Vertical
@@ -408,7 +403,8 @@ function library:CreateWindow(name, size, hidebutton)
             end
 
             tab.TabButton.TextColor3 = window.theme.accentcolor
-            tab.TabPage.Visible = true
+            tab.Right.Visible = true
+            tab.Left.Visible = true
             window.Line:TweenSizeAndPosition(UDim2.fromOffset(size.X + 15, 1), UDim2.new(0, (tab.TabButton.AbsolutePosition.X - window.Frame.AbsolutePosition.X), 0, 0) + (window.BlackLine.Position - UDim2.fromOffset(0, 1)), Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.1)
             wait(0.2)
             block = false
@@ -530,9 +526,9 @@ function library:CreateWindow(name, size, hidebutton)
                 for i,v in pairs(tab.SectorsRight) do
                     sizeright = sizeright + v.Main.AbsoluteSize.Y
                 end
-                local extra = sizeleft > sizeright and (#tab.SectorsLeft - 1) * tab.LeftListPadding.PaddingTop.Offset or (#tab.SectorsRight - 1) * tab.RightListPadding.PaddingTop.Offset
-                local size = math.round(sizeleft > sizeright and sizeleft or sizeright) + extra + 20
-                tab.TabPage.CanvasSize = UDim2.fromOffset(tab.TabPage.AbsoluteSize.X, size)
+
+                tab.Left.CanvasSize = UDim2.fromOffset(tab.Left.AbsoluteSize.X, sizeleft + ((#tab.SectorsLeft - 1) * tab.LeftListPadding.PaddingTop.Offset) + 20)
+                tab.Right.CanvasSize = UDim2.fromOffset(tab.Right.AbsoluteSize.X, sizeright + ((#tab.SectorsRight - 1) * tab.RightListPadding.PaddingTop.Offset) + 20)
             end
 
             function sector:AddButton(text, callback)
@@ -1839,7 +1835,7 @@ function library:CreateWindow(name, size, hidebutton)
                 local MouseButton1Down = function()
                     if dropdown.Nav.Rotation == 180 then
                         dropdown.ItemsFrame.ScrollingEnabled = true
-                        tab.TabPage.ScrollingEnabled = false
+                        sector.Main.Parent.ScrollingEnabled = false
                         tweenservice:Create(dropdown.Nav, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Rotation = 0 }):Play()
                         dropdown.ItemsFrame.Visible = true
                         dropdown.ItemsFrame.Active = true
@@ -1850,7 +1846,7 @@ function library:CreateWindow(name, size, hidebutton)
                         dropdown.BlackOutline2Items.Visible = true
                     else
                         dropdown.ItemsFrame.ScrollingEnabled = false
-                        tab.TabPage.ScrollingEnabled = true
+                        sector.Main.Parent.ScrollingEnabled = true
                         tweenservice:Create(dropdown.Nav, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { Rotation = 180 }):Play()
                         dropdown.ItemsFrame.Visible = false
                         dropdown.ItemsFrame.Active = false
@@ -2009,15 +2005,17 @@ end
 local window = library:CreateWindow("pika hub", Vector2.new(492, 598), Enum.KeyCode.RightShift)
 local tab = window:CreateTab("Test")
 
-local sector = tab:CreateSector("Test")
+local sector = tab:CreateSector("Test", 'left')
 local dropdown = sector:AddDropdown("Test", {"Test", "Test2"}, "Test", function() end)
+local button = sector:AddButton("Test", function() end)
 
-local sector2 = tab:CreateSector("Test")
+local sector2 = tab:CreateSector("Test", 'right')
 local toggle = sector2:AddToggle("Test", false, function() end)
 local toggle2 = sector2:AddToggle("Test", false, function() end)
 toggle2:AddKeybind()
 toggle2:AddColorpicker(Color3.new(), function() end)
 local button = sector2:AddButton("Test", function() end)
-local slider = sector2:AddSlider("Test", 0, 10, 100, 1, function() end)
+local slider = sector2:AddSlider("Test", 0, 1, 10, 1, function() end)
 ]]--
+
 return library
