@@ -93,7 +93,7 @@ function library:CreateWatermark(name, position)
     watermark.label.Visible = watermark.Visible
     watermark.label.Text = watermark.text
     watermark.label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    watermark.label.TextSize = 15.000
+    watermark.label.TextSize = 15
     watermark.label.TextStrokeTransparency = 0.000
     watermark.label.TextXAlignment = Enum.TextXAlignment.Left
     watermark.label.Size = UDim2.new(0, watermark.label.TextBounds.X+10, 0, 25)
@@ -553,7 +553,7 @@ function library:CreateWindow(name, size, hidebutton)
                 sector.BlackOutline2.BackgroundColor3 = theme.outlinecolor2
             end)
 
-            local size = textservice:GetTextSize(sector.name, 13, window.theme.font, Vector2.new(2000, 2000))
+            local size = textservice:GetTextSize(sector.name, 15, window.theme.font, Vector2.new(2000, 2000))
             sector.Label = Instance.new("TextLabel", sector.Main)
             sector.Label.AnchorPoint = Vector2.new(0,0.5)
             sector.Label.Position = UDim2.fromOffset(12, -1)
@@ -565,10 +565,10 @@ function library:CreateWindow(name, size, hidebutton)
             sector.Label.TextColor3 = Color3.new(1,1,2552/255)
             sector.Label.TextStrokeTransparency = 1
             sector.Label.Font = window.theme.font
-            sector.Label.TextSize = 13
+            sector.Label.TextSize = 15
             updateevent.Event:Connect(function(theme)
-                local size = textservice:GetTextSize(sector.name, 13, theme.font, Vector2.new(2000, 2000))
-                sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 13, theme.font, Vector2.new(200,300)).X + 10, 0, sector.Main.Size.X.Offset), size.Y)
+                local size = textservice:GetTextSize(sector.name, 15, theme.font, Vector2.new(2000, 2000))
+                sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 15, theme.font, Vector2.new(200,300)).X + 10, 0, sector.Main.Size.X.Offset), size.Y)
                 sector.Label.Font = theme.font
             end)
 
@@ -678,7 +678,7 @@ function library:CreateWindow(name, size, hidebutton)
                 button.Label.Font = window.theme.font
                 button.Label.Text = " " .. button.text
                 button.Label.TextColor3 = window.theme.itemscolor
-                button.Label.TextSize = 13
+                button.Label.TextSize = 15
                 button.Label.TextStrokeTransparency = 1
                 button.Label.TextXAlignment = Enum.TextXAlignment.Left
                 updateevent.Event:Connect(function(theme)
@@ -709,7 +709,7 @@ function library:CreateWindow(name, size, hidebutton)
                 label.Main.Font = window.theme.font
                 label.Main.Text = text
                 label.Main.TextColor3 = window.theme.itemscolor
-                label.Main.TextSize = 13
+                label.Main.TextSize = 15
                 label.Main.TextStrokeTransparency = 1
                 label.Main.TextXAlignment = Enum.TextXAlignment.Left
                 updateevent.Event:Connect(function(theme)
@@ -744,7 +744,7 @@ function library:CreateWindow(name, size, hidebutton)
                 toggle.Main.Font = Enum.Font.SourceSans
                 toggle.Main.Text = ""
                 toggle.Main.TextColor3 = Color3.fromRGB(0, 0, 0)
-                toggle.Main.TextSize = 14
+                toggle.Main.TextSize = 15
                 updateevent.Event:Connect(function(theme)
                     toggle.Main.BorderColor3 = theme.outlinecolor
                 end)
@@ -797,7 +797,7 @@ function library:CreateWindow(name, size, hidebutton)
                 toggle.Label.ZIndex = 5
                 toggle.Label.Text = toggle.text
                 toggle.Label.TextColor3 = window.theme.itemscolor
-                toggle.Label.TextSize = 13
+                toggle.Label.TextSize = 15
                 toggle.Label.TextStrokeTransparency = 1
                 toggle.Label.TextXAlignment = Enum.TextXAlignment.Left
                 updateevent.Event:Connect(function(theme)
@@ -860,7 +860,7 @@ function library:CreateWindow(name, size, hidebutton)
                     keybind.value = keybind.default
 
                     local text = keybind.default == "None" and "[None]" or "[" .. keybind.default.Name .. "]"
-                    local size = textservice:GetTextSize(text, 13, window.theme.font, Vector2.new(2000, 2000))
+                    local size = textservice:GetTextSize(text, 15, window.theme.font, Vector2.new(2000, 2000))
 
                     keybind.Main = Instance.new("TextButton", toggle.Items)
                     keybind.Main.Name = "keybind"
@@ -871,7 +871,7 @@ function library:CreateWindow(name, size, hidebutton)
                     keybind.Main.Text = text
                     keybind.Main.Font = window.theme.font
                     keybind.Main.TextColor3 = Color3.fromRGB(136, 136, 136)
-                    keybind.Main.TextSize = 13
+                    keybind.Main.TextSize = 15
                     keybind.Main.TextXAlignment = Enum.TextXAlignment.Right
                     keybind.Main.MouseButton1Down:Connect(function()
                         keybind.Main.Text = "[...]"
@@ -980,7 +980,7 @@ function library:CreateWindow(name, size, hidebutton)
                     colorpicker.MainPicker.AutoButtonColor = false
                     colorpicker.MainPicker.Text = ""
                     window.OpenedColorPickers[colorpicker.MainPicker] = false
-                    colorpicker.MainPicker.Size = UDim2.fromOffset(160, 178)
+                    colorpicker.MainPicker.Size = UDim2.fromOffset(180, 196)
                     colorpicker.MainPicker.BorderSizePixel = 0
                     colorpicker.MainPicker.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
                     colorpicker.MainPicker.Rotation = 0.000000000000001
@@ -1021,8 +1021,8 @@ function library:CreateWindow(name, size, hidebutton)
 
                     colorpicker.hue = Instance.new("ImageLabel", colorpicker.MainPicker)
                     colorpicker.hue.ZIndex = 101
-                    colorpicker.hue.Position = UDim2.new(0,5,0,5)
-                    colorpicker.hue.Size = UDim2.new(0,150,0,150)
+                    colorpicker.hue.Position = UDim2.new(0,3,0,3)
+                    colorpicker.hue.Size = UDim2.new(0,172,0,172)
                     colorpicker.hue.Image = "rbxassetid://4155801252"
                     colorpicker.hue.ScaleType = Enum.ScaleType.Stretch
                     colorpicker.hue.BackgroundColor3 = Color3.new(1,0,0)
@@ -1041,8 +1041,8 @@ function library:CreateWindow(name, size, hidebutton)
 
                     colorpicker.selector = Instance.new("TextLabel", colorpicker.MainPicker)
                     colorpicker.selector.ZIndex = 100
-                    colorpicker.selector.Position = UDim2.new(0,5,0,163)
-                    colorpicker.selector.Size = UDim2.new(0,150,0,10)
+                    colorpicker.selector.Position = UDim2.new(0,3,0,181)
+                    colorpicker.selector.Size = UDim2.new(0,173,0,10)
                     colorpicker.selector.BackgroundColor3 = Color3.fromRGB(255,255,255)
                     colorpicker.selector.BorderColor3 = window.theme.outlinecolor2
                     colorpicker.selector.Text = ""
@@ -1051,7 +1051,15 @@ function library:CreateWindow(name, size, hidebutton)
                     end)
         
                     colorpicker.gradient = Instance.new("UIGradient", colorpicker.selector)
-                    colorpicker.gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.new(1,0,0)), ColorSequenceKeypoint.new(0.25,Color3.new(1,0,1)), ColorSequenceKeypoint.new(0.5,Color3.new(0,1,1)), ColorSequenceKeypoint.new(0.75,Color3.new(1,1,0)), ColorSequenceKeypoint.new(1,Color3.new(1,0,0))})
+                    colorpicker.gradient.Color = ColorSequence.new({ 
+                        ColorSequenceKeypoint.new(0, Color3.new(1,0,0)), 
+                        ColorSequenceKeypoint.new(0.17, Color3.new(1,0,1)), 
+                        ColorSequenceKeypoint.new(0.33,Color3.new(0,0,1)), 
+                        ColorSequenceKeypoint.new(0.5,Color3.new(0,1,1)), 
+                        ColorSequenceKeypoint.new(0.67, Color3.new(0,1,0)), 
+                        ColorSequenceKeypoint.new(0.83, Color3.new(1,1,0)), 
+                        ColorSequenceKeypoint.new(1, Color3.new(1,0,0))
+                    })
 
                     colorpicker.pointer = Instance.new("Frame", colorpicker.selector)
                     colorpicker.pointer.ZIndex = 101
@@ -1070,7 +1078,7 @@ function library:CreateWindow(name, size, hidebutton)
                     function colorpicker:RefreshHue()
                         local x = (mouse.X - colorpicker.hue.AbsolutePosition.X) / colorpicker.hue.AbsoluteSize.X
                         local y = (mouse.Y - colorpicker.hue.AbsolutePosition.Y) / colorpicker.hue.AbsoluteSize.Y
-                        colorpicker.hueselectorpointer:TweenPosition(UDim2.new(math.clamp(x * colorpicker.hue.AbsoluteSize.X, 0.5, 0.945 * colorpicker.hue.AbsoluteSize.X) / colorpicker.hue.AbsoluteSize.X, 0, math.clamp(y * colorpicker.hue.AbsoluteSize.Y, 0.5, 0.855 * colorpicker.hue.AbsoluteSize.Y) / colorpicker.hue.AbsoluteSize.Y, 0), Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.05)
+                        colorpicker.hueselectorpointer:TweenPosition(UDim2.new(math.clamp(x * colorpicker.hue.AbsoluteSize.X, 0.5, 0.952 * colorpicker.hue.AbsoluteSize.X) / colorpicker.hue.AbsoluteSize.X, 0, math.clamp(y * colorpicker.hue.AbsoluteSize.Y, 0.5, 0.885 * colorpicker.hue.AbsoluteSize.Y) / colorpicker.hue.AbsoluteSize.Y, 0), Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.05)
                         colorpicker:Set(Color3.fromHSV(colorpicker.color, math.clamp(x * colorpicker.hue.AbsoluteSize.X, 0.5, 1 * colorpicker.hue.AbsoluteSize.X) / colorpicker.hue.AbsoluteSize.X, 1 - (math.clamp(y * colorpicker.hue.AbsoluteSize.Y, 0.5, 1 * colorpicker.hue.AbsoluteSize.Y) / colorpicker.hue.AbsoluteSize.Y)))
                     end
 
@@ -1184,7 +1192,7 @@ function library:CreateWindow(name, size, hidebutton)
                     slider.InputLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
                     slider.InputLabel.Position = slider.Main.Position
                     slider.InputLabel.Selectable = false
-                    slider.InputLabel.TextSize = 14
+                    slider.InputLabel.TextSize = 15
                     slider.InputLabel.ZIndex = 9
                     slider.InputLabel.TextStrokeTransparency = 1
                     slider.InputLabel.TextXAlignment = Enum.TextXAlignment.Center
@@ -1365,7 +1373,7 @@ function library:CreateWindow(name, size, hidebutton)
                 textbox.Main.ZIndex = 5
                 textbox.Main.TextScaled = true
                 textbox.Main.Size = textbox.Holder.Size
-                textbox.Main.TextSize = 13
+                textbox.Main.TextSize = 15
                 textbox.Main.TextColor3 = Color3.fromRGB(255, 255, 255)
                 textbox.Main.BorderSizePixel = 0
                 textbox.Main.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -1460,7 +1468,7 @@ function library:CreateWindow(name, size, hidebutton)
                 slider.Label.Text = slider.text .. ":"
                 slider.Label.TextColor3 = window.theme.itemscolor
                 slider.Label.Position = UDim2.fromOffset(0, 0)
-                slider.Label.TextSize = 13
+                slider.Label.TextSize = 15
                 slider.Label.ZIndex = 4
                 slider.Label.TextStrokeTransparency = 1
                 slider.Label.TextXAlignment = Enum.TextXAlignment.Left
@@ -1478,7 +1486,7 @@ function library:CreateWindow(name, size, hidebutton)
                 slider.InputLabel.Text = "0"
                 slider.InputLabel.TextColor3 = window.theme.itemscolor
                 slider.InputLabel.Position = UDim2.fromOffset(size.X + 3, -3)
-                slider.InputLabel.TextSize = 13
+                slider.InputLabel.TextSize = 15
                 slider.InputLabel.ZIndex = 4
                 slider.InputLabel.TextStrokeTransparency = 1
                 slider.InputLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -1642,7 +1650,7 @@ function library:CreateWindow(name, size, hidebutton)
                 colorpicker.Label.Font = window.theme.font
                 colorpicker.Label.Text = colorpicker.text
                 colorpicker.Label.TextColor3 = window.theme.itemscolor
-                colorpicker.Label.TextSize = 13
+                colorpicker.Label.TextSize = 15
                 colorpicker.Label.TextStrokeTransparency = 1
                 colorpicker.Label.TextXAlignment = Enum.TextXAlignment.Left
                 updateevent.Event:Connect(function(theme)
@@ -1712,7 +1720,7 @@ function library:CreateWindow(name, size, hidebutton)
                 colorpicker.MainPicker.AutoButtonColor = false
                 colorpicker.MainPicker.Text = ""
                 window.OpenedColorPickers[colorpicker.MainPicker] = false
-                colorpicker.MainPicker.Size = UDim2.fromOffset(160, 178)
+                colorpicker.MainPicker.Size = UDim2.fromOffset(180, 196)
                 colorpicker.MainPicker.BorderSizePixel = 0
                 colorpicker.MainPicker.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
                 colorpicker.MainPicker.Rotation = 0.000000000000001
@@ -1753,8 +1761,8 @@ function library:CreateWindow(name, size, hidebutton)
 
                 colorpicker.hue = Instance.new("ImageLabel", colorpicker.MainPicker)
                 colorpicker.hue.ZIndex = 101
-                colorpicker.hue.Position = UDim2.new(0,5,0,5)
-                colorpicker.hue.Size = UDim2.new(0,150,0,150)
+                colorpicker.hue.Position = UDim2.new(0,3,0,3)
+                colorpicker.hue.Size = UDim2.new(0,172,0,172)
                 colorpicker.hue.Image = "rbxassetid://4155801252"
                 colorpicker.hue.ScaleType = Enum.ScaleType.Stretch
                 colorpicker.hue.BackgroundColor3 = Color3.new(1,0,0)
@@ -1773,8 +1781,8 @@ function library:CreateWindow(name, size, hidebutton)
 
                 colorpicker.selector = Instance.new("TextLabel", colorpicker.MainPicker)
                 colorpicker.selector.ZIndex = 100
-                colorpicker.selector.Position = UDim2.new(0,5,0,163)
-                colorpicker.selector.Size = UDim2.new(0,150,0,10)
+                colorpicker.selector.Position = UDim2.new(0,3,0,181)
+                colorpicker.selector.Size = UDim2.new(0,173,0,10)
                 colorpicker.selector.BackgroundColor3 = Color3.fromRGB(255,255,255)
                 colorpicker.selector.BorderColor3 = window.theme.outlinecolor2
                 colorpicker.selector.Text = ""
@@ -1783,7 +1791,15 @@ function library:CreateWindow(name, size, hidebutton)
                 end)
     
                 colorpicker.gradient = Instance.new("UIGradient", colorpicker.selector)
-                colorpicker.gradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.new(1,0,0)), ColorSequenceKeypoint.new(0.25,Color3.new(1,0,1)), ColorSequenceKeypoint.new(0.5,Color3.new(0,1,1)), ColorSequenceKeypoint.new(0.75,Color3.new(1,1,0)), ColorSequenceKeypoint.new(1,Color3.new(1,0,0))})
+                colorpicker.gradient.Color = ColorSequence.new({ 
+                    ColorSequenceKeypoint.new(0, Color3.new(1,0,0)), 
+                    ColorSequenceKeypoint.new(0.17, Color3.new(1,0,1)), 
+                    ColorSequenceKeypoint.new(0.33,Color3.new(0,0,1)), 
+                    ColorSequenceKeypoint.new(0.5,Color3.new(0,1,1)), 
+                    ColorSequenceKeypoint.new(0.67, Color3.new(0,1,0)), 
+                    ColorSequenceKeypoint.new(0.83, Color3.new(1,1,0)), 
+                    ColorSequenceKeypoint.new(1, Color3.new(1,0,0))
+                })
 
                 colorpicker.pointer = Instance.new("Frame", colorpicker.selector)
                 colorpicker.pointer.ZIndex = 101
@@ -1802,7 +1818,7 @@ function library:CreateWindow(name, size, hidebutton)
                 function colorpicker:RefreshHue()
                     local x = (mouse.X - colorpicker.hue.AbsolutePosition.X) / colorpicker.hue.AbsoluteSize.X
                     local y = (mouse.Y - colorpicker.hue.AbsolutePosition.Y) / colorpicker.hue.AbsoluteSize.Y
-                    colorpicker.hueselectorpointer:TweenPosition(UDim2.new(math.clamp(x * colorpicker.hue.AbsoluteSize.X, 0.5, 0.945 * colorpicker.hue.AbsoluteSize.X) / colorpicker.hue.AbsoluteSize.X, 0, math.clamp(y * colorpicker.hue.AbsoluteSize.Y, 0.5, 0.855 * colorpicker.hue.AbsoluteSize.Y) / colorpicker.hue.AbsoluteSize.Y, 0), Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.05)
+                    colorpicker.hueselectorpointer:TweenPosition(UDim2.new(math.clamp(x * colorpicker.hue.AbsoluteSize.X, 0.5, 0.952 * colorpicker.hue.AbsoluteSize.X) / colorpicker.hue.AbsoluteSize.X, 0, math.clamp(y * colorpicker.hue.AbsoluteSize.Y, 0.5, 0.885 * colorpicker.hue.AbsoluteSize.Y) / colorpicker.hue.AbsoluteSize.Y, 0), Enum.EasingDirection.In, Enum.EasingStyle.Sine, 0.05)
                     colorpicker:Set(Color3.fromHSV(colorpicker.color, math.clamp(x * colorpicker.hue.AbsoluteSize.X, 0.5, 1 * colorpicker.hue.AbsoluteSize.X) / colorpicker.hue.AbsoluteSize.X, 1 - (math.clamp(y * colorpicker.hue.AbsoluteSize.Y, 0.5, 1 * colorpicker.hue.AbsoluteSize.Y) / colorpicker.hue.AbsoluteSize.Y)))
                 end
 
@@ -1903,7 +1919,7 @@ function library:CreateWindow(name, size, hidebutton)
                 keybind.Main.Font = window.theme.font
                 keybind.Main.Text = keybind.text
                 keybind.Main.TextColor3 = window.theme.itemscolor
-                keybind.Main.TextSize = 13
+                keybind.Main.TextSize = 15
                 keybind.Main.TextStrokeTransparency = 1
                 keybind.Main.TextXAlignment = Enum.TextXAlignment.Left
                 updateevent.Event:Connect(function(theme)
@@ -1920,7 +1936,7 @@ function library:CreateWindow(name, size, hidebutton)
                 keybind.Bind.Position = UDim2.fromOffset(sector.Main.Size.X.Offset - 10, 0)
                 keybind.Bind.Font = window.theme.font
                 keybind.Bind.TextColor3 = Color3.fromRGB(136, 136, 136)
-                keybind.Bind.TextSize = 14
+                keybind.Bind.TextSize = 15
                 keybind.Bind.TextXAlignment = Enum.TextXAlignment.Right
                 keybind.Bind.MouseButton1Down:Connect(function()
                     keybind.Bind.Text = "[...]"
@@ -1994,7 +2010,7 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.Label.Text = dropdown.text
                 dropdown.Label.ZIndex = 4
                 dropdown.Label.TextColor3 = window.theme.itemscolor
-                dropdown.Label.TextSize = 13
+                dropdown.Label.TextSize = 15
                 dropdown.Label.TextStrokeTransparency = 1
                 dropdown.Label.TextXAlignment = Enum.TextXAlignment.Left
                 updateevent.Event:Connect(function(theme)
@@ -2013,7 +2029,7 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.Main.Font = window.theme.font
                 dropdown.Main.Text = ""
                 dropdown.Main.TextColor3 = Color3.fromRGB(255, 255, 255)
-                dropdown.Main.TextSize = 14
+                dropdown.Main.TextSize = 15
                 dropdown.Main.TextXAlignment = Enum.TextXAlignment.Left
                 updateevent.Event:Connect(function(theme)
                     dropdown.Main.Font = theme.font
@@ -2032,7 +2048,7 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.SelectedLabel.Text = dropdown.text
                 dropdown.SelectedLabel.ZIndex = 5
                 dropdown.SelectedLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-                dropdown.SelectedLabel.TextSize = 13
+                dropdown.SelectedLabel.TextSize = 15
                 dropdown.SelectedLabel.TextStrokeTransparency = 1
                 dropdown.SelectedLabel.TextXAlignment = Enum.TextXAlignment.Left
                 updateevent.Event:Connect(function(theme)
@@ -2162,7 +2178,6 @@ function library:CreateWindow(name, size, hidebutton)
                 end
 
                 function dropdown:updateText(text)
-                    print(text)
                     if #text >= 27 then
                         text = text:sub(1, 25) .. ".."
                     end
@@ -2198,7 +2213,7 @@ function library:CreateWindow(name, size, hidebutton)
                     Item.Name = v
                     Item.AutoButtonColor = false
                     Item.Font = window.theme.font
-                    Item.TextSize = 13
+                    Item.TextSize = 15
                     Item.TextXAlignment = Enum.TextXAlignment.Left
                     Item.TextStrokeTransparency = 1
                     dropdown.ItemsFrame.CanvasSize = dropdown.ItemsFrame.CanvasSize + UDim2.fromOffset(0, Item.AbsoluteSize.Y)
