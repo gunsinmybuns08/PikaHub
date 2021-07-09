@@ -2270,11 +2270,11 @@ function library:CreateWindow(name, size, hidebutton)
                 function dropdown:Set(value)
                     if type(value) == "table" then
                         dropdown.values = value
-                        updateText(table.concat(dropdown.values, ", "))
-                        pcall(dropdown.callback, dropdown.values)
+                        updateText(table.concat(value, ", "))
+                        pcall(dropdown.callback, value)
                     else
                         updateText(value)
-                        dropdown.values = { value }
+                        dropdown.values[1] = value
                         pcall(dropdown.callback, value)
                     end
                 end
