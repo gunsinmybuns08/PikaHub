@@ -2168,6 +2168,22 @@ function library:CreateWindow(name, size, hidebutton)
                     dropdown.SelectedLabel.Text = text
                 end
 
+                function dropdown:Set(value)
+                    if type(value) == "table" then
+                        dropdown.values = value
+                        updateText(table.concat(value, ", "))
+                        pcall(dropdown.callback, value)
+                    else
+                        updateText(value)
+                        dropdown.values = { value }
+                        pcall(dropdown.callback, value)
+                    end
+                end
+
+                function dropdown:Get()
+                    return dropdown.multichoice and dropdown.values or dropdown.values[1]
+                end
+
                 dropdown.items = { }
                 function dropdown:Add(v)
                     local Item = Instance.new("TextButton", dropdown.ItemsFrame)
@@ -2194,11 +2210,10 @@ function library:CreateWindow(name, size, hidebutton)
                                         table.remove(dropdown.values, i2)
                                     end
                                 end
-                                updateText(table.concat(dropdown.values, ", "))
+                                dropdown:Set(dropdown.values)
                             else
                                 table.insert(dropdown.values, v)
-                                updateText(table.concat(dropdown.values, ", "))
-                                pcall(dropdown.callback, dropdown.values)
+                                dropdown:Set(dropdown.values)
                             end
 
                             return
@@ -2213,10 +2228,7 @@ function library:CreateWindow(name, size, hidebutton)
                             dropdown.IgnoreBackButtons.Active = false
                         end
 
-                        dropdown.values[1] = v
-                        updateText(v)
-                        pcall(dropdown.callback, v)
-
+                        dropdown:Set(v)
                         return
                     end)
 
@@ -2267,21 +2279,8 @@ function library:CreateWindow(name, size, hidebutton)
                     dropdown:Add(v)
                 end
 
-                function dropdown:Set(value)
-                    if type(value) == "table" then
-                        dropdown.values = value
-                        updateText(table.concat(value, ", "))
-                        pcall(dropdown.callback, value)
-                    else
-                        updateText(value)
-                        dropdown.values[1] = value
-                        pcall(dropdown.callback, value)
-                    end
-                end
-                dropdown:Set(dropdown.default)
-
-                function dropdown:Get()
-                    return dropdown.multichoice and dropdown.values or dropdown.values[1]
+                if dropdown.default then
+                    dropdown:Set(dropdown.default)
                 end
 
                 local MouseButton1Down = function()
