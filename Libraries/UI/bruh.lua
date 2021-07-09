@@ -2413,24 +2413,4 @@ function library:CreateWindow(name, size, hidebutton)
     return window
 end
 
---[[
-local window = library:CreateWindow("pika hub", Vector2.new(500, 600), Enum.KeyCode.RightShift)
-local tab = window:CreateTab("Test")
-local tab2 = window:CreateTab("Test2")
-local sector = tab:CreateSector("Test3", "left")
-local toggle = sector:AddToggle("test", false, function() end)
-toggle:AddSlider(0, 10, 1, 1, function() end)
-local button = sector:AddButton("test", function() end)
-local keybind = sector:AddKeybind("test", Enum.KeyCode.RightShift, function(val)
-    window.hidebutton = val
-end)
-local dropdown = sector:AddDropdown("test", {"test", "test2"}, "test", function() end)
-local slider = sector:AddSlider("test", 0, 10, 1, 1, function() end)
-toggle:AddKeybind()
-wait(5)
-library.theme.accentcolor = Color3.fromRGB(150, 200, 0)
-library.theme.accentcolor2 = Color3.new(math.clamp(library.theme.accentcolor.R - 0.4, 0, 1), math.clamp(library.theme.accentcolor.G - 0.4, 0, 1), math.clamp(library.theme.accentcolor.B - 0.4, 0, 1))
-window:UpdateTheme()
-]]--
-
 return library
