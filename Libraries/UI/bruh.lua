@@ -349,17 +349,18 @@ function library:CreateWindow(name, size, hidebutton)
     end)
 
     window.BackgroundImage = Instance.new("ImageLabel", window.Frame)
-    window.BackgroundImage.Name = "navigation"
-    window.BackgroundImage.BackgroundTransparency = 1
-    window.BackgroundImage.LayoutOrder = 10
-    window.BackgroundImage.Visible = window.theme.background ~= nil and window.theme.background ~= ""
+    window.BackgroundImage.Name = "background"
+    window.BackgroundImage.BackgroundTransparency = 0
     window.BackgroundImage.ScaleType = Enum.ScaleType.Stretch
     window.BackgroundImage.Position = window.BlackLine.Position + UDim2.fromOffset(0, 1)
     window.BackgroundImage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - window.TopBar.AbsoluteSize.Y - 1)
     window.BackgroundImage.Image = window.theme.background or ""
+    window.BackgroundImage.ImageTransparency = window.BackgroundImage.Image ~= "" and 0 or 1
+    window.BackgroundImage.BackgroundColor3 = window.theme.backgroundcolor
     updateevent.Event:Connect(function(theme)
-        window.BackgroundImage.Visible = theme.background ~= nil and theme.background ~= ""
         window.BackgroundImage.Image = theme.background or ""
+        window.BackgroundImage.ImageTransparency = window.BackgroundImage.Image ~= "" and 0 or 1
+        window.BackgroundImage.BackgroundColor3 = theme.backgroundcolor
     end)
 
     window.Line = Instance.new("Frame", window.Frame)
