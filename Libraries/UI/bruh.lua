@@ -557,7 +557,7 @@ function library:CreateWindow(name, size, hidebutton)
             sector.Label = Instance.new("TextLabel", sector.Main)
             sector.Label.AnchorPoint = Vector2.new(0,0.5)
             sector.Label.Position = UDim2.fromOffset(12, -1)
-            sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 13, window.theme.font, Vector2.new(200,300)).X + 13, 0, sector.Main.Size.X.Offset), size.Y)
+            sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 15, window.theme.font, Vector2.new(200,300)).X + 13, 0, sector.Main.Size.X.Offset), size.Y)
             sector.Label.BackgroundTransparency = 1
             sector.Label.BorderSizePixel = 0
             sector.Label.ZIndex = 6
@@ -2467,18 +2467,5 @@ function library:CreateWindow(name, size, hidebutton)
 
     return window
 end
---[[
-local window = library:CreateWindow("pikaware", Vector2.new(492, 598), Enum.KeyCode.RightShift)
-local tab = window:CreateTab('test')
-local sector = tab:CreateSector("test", 'left')
-local toggle = sector:AddToggle("Open / Close", false, function() end)
-local toggle = sector:AddToggle("Open / Close", false, function() end)
-local toggle = sector:AddToggle("Open / Close", false, function() end)
-local toggle = sector:AddToggle("Open / Close", false, function() end)
-local toggle = sector:AddToggle("Open / Close", false, function() end)
-local toggle = sector:AddToggle("Open / Close", false, function() end)
-local toggle = sector:AddToggle("Open / Close", false, function() end)
-toggle:AddKeybind()
-local colorpicker = sector:AddColorpicker("test", Color3.new(1, 1, 1), function() end)
-]]--
+
 return library
