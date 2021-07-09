@@ -831,11 +831,7 @@ function library:CreateWindow(name, size, hidebutton)
                 toggle.ListLayout.FillDirection = Enum.FillDirection.Horizontal
                 toggle.ListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
                 toggle.ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-                toggle.ListLayout.Padding = UDim.new(0, 6)
-
-                toggle.ListPadding = Instance.new("UIPadding", toggle.Items)
-                toggle.ListPadding.PaddingTop = UDim.new(0, 0)
-                toggle.ListPadding.PaddingRight = UDim.new(0, 2)
+                toggle.ListLayout.Padding = UDim.new(0.04, 6)
 
                 function toggle:Set(value) 
                     if value then
