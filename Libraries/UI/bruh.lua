@@ -2152,7 +2152,7 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.IgnoreBackButtons.Visible = false
                 dropdown.IgnoreBackButtons.AutoButtonColor = false
 
-                function isSelected(item)
+                function dropdown:isSelected(item)
                     for i, v in pairs(dropdown.values) do
                         if v == item then
                             return true
@@ -2161,9 +2161,10 @@ function library:CreateWindow(name, size, hidebutton)
                     return false
                 end
 
-                function updateText(text)
+                function dropdown:updateText(text)
+                    print(text)
                     if #text >= 27 then
-                        text = string.sub(text, 1, 25) .. ".."
+                        text = text:sub(1, 25) .. ".."
                     end
                     dropdown.SelectedLabel.Text = text
                 end
@@ -2171,10 +2172,10 @@ function library:CreateWindow(name, size, hidebutton)
                 function dropdown:Set(value)
                     if type(value) == "table" then
                         dropdown.values = value
-                        updateText(table.concat(value, ", "))
+                        dropdown:updateText(table.concat(value, ", "))
                         pcall(dropdown.callback, value)
                     else
-                        updateText(value)
+                        dropdown:updateText(value)
                         dropdown.values = { value }
                         pcall(dropdown.callback, value)
                     end
@@ -2204,7 +2205,7 @@ function library:CreateWindow(name, size, hidebutton)
 
                     Item.MouseButton1Down:Connect(function()
                         if dropdown.multichoice then
-                            if isSelected(v) then
+                            if dropdown:isSelected(v) then
                                 for i2, v2 in pairs(dropdown.values) do
                                     if v2 == v then
                                         table.remove(dropdown.values, i2)
@@ -2233,7 +2234,7 @@ function library:CreateWindow(name, size, hidebutton)
                     end)
 
                     runservice.RenderStepped:Connect(function()
-                        if dropdown.multichoice and isSelected(v) or dropdown.values[1] == v then
+                        if dropdown.multichoice and dropdown:isSelected(v) or dropdown.values[1] == v then
                             Item.BackgroundColor3 = Color3.fromRGB(64, 64, 64)
                             Item.TextColor3 = window.theme.accentcolor
                             Item.Text = " " .. v
