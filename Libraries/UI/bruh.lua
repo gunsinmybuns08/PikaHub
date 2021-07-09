@@ -1968,14 +1968,15 @@ function library:CreateWindow(name, size, hidebutton)
                 return keybind
             end
 
-            function sector:AddDropdown(text, items, default, callback)
+            function sector:AddDropdown(text, items, default, multichoice, callback)
                 local dropdown = { }
 
                 dropdown.text = text or ""
                 dropdown.defaultitems = items or { }
                 dropdown.default = default
                 dropdown.callback = callback or function() end
-                dropdown.value = dropdown.default
+                dropdown.multichoice = multichoice or false
+                dropdown.values = { }
 
                 dropdown.MainBack = Instance.new("Frame", sector.Items)
                 dropdown.MainBack.Name = "backlabel"
@@ -2061,7 +2062,6 @@ function library:CreateWindow(name, size, hidebutton)
                     dropdown.BlackOutline2.BackgroundColor3 = theme.outlinecolor2
                 end)
 
-                
                 dropdown.Outline = Instance.new("Frame", dropdown.Main)
                 dropdown.Outline.Name = "blackline"
                 dropdown.Outline.ZIndex = 4
@@ -2152,6 +2152,15 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.IgnoreBackButtons.Visible = false
                 dropdown.IgnoreBackButtons.AutoButtonColor = false
 
+                function isSelected(item)
+                    for i, v in pairs(dropdown.values) do
+                        if v == item then
+                            return true
+                        end
+                    end
+                    return false
+                end
+
                 dropdown.items = { }
                 function dropdown:Add(v)
                     local Item = Instance.new("TextButton", dropdown.ItemsFrame)
@@ -2171,22 +2180,41 @@ function library:CreateWindow(name, size, hidebutton)
                     dropdown.ItemsFrame.CanvasSize = dropdown.ItemsFrame.CanvasSize + UDim2.fromOffset(0, Item.AbsoluteSize.Y)
 
                     Item.MouseButton1Down:Connect(function()
-                        dropdown.Nav.Rotation = 180
-                        dropdown.ItemsFrame.Visible = false
-                        dropdown.ItemsFrame.Active = false
-                        dropdown.OutlineItems.Visible = false
-                        dropdown.BlackOutlineItems.Visible = false
-                        dropdown.BlackOutline2Items.Visible = false
-                        dropdown.IgnoreBackButtons.Visible = false
-                        dropdown.IgnoreBackButtons.Active = false
+                        if dropdown.multichoice then
+                            if isSelected(v) then
+                                for i2, v2 in pairs(dropdown.values) do
+                                    if v2 == v then
+                                        table.remove(dropdown.values, i2)
+                                    end
+                                end
+                                dropdown.SelectedLabel.Text = table.concat(dropdown.values, ", ")
+                            else
+                                table.insert(dropdown.values, v)
+                                dropdown.SelectedLabel.Text = table.concat(dropdown.values, ", ")
+                                pcall(dropdown.callback, dropdown.values)
+                            end
 
+                            return
+                        else
+                            dropdown.Nav.Rotation = 180
+                            dropdown.ItemsFrame.Visible = false
+                            dropdown.ItemsFrame.Active = false
+                            dropdown.OutlineItems.Visible = false
+                            dropdown.BlackOutlineItems.Visible = false
+                            dropdown.BlackOutline2Items.Visible = false
+                            dropdown.IgnoreBackButtons.Visible = false
+                            dropdown.IgnoreBackButtons.Active = false
+                        end
+
+                        dropdown.values[1] = v
                         dropdown.SelectedLabel.Text = v
-                        dropdown.value = v
                         pcall(dropdown.callback, v)
+
+                        return
                     end)
 
                     runservice.RenderStepped:Connect(function()
-                        if dropdown.value == v then
+                        if dropdown.multichoice and isSelected(v) or dropdown.values[1] == v then
                             Item.BackgroundColor3 = Color3.fromRGB(64, 64, 64)
                             Item.TextColor3 = window.theme.accentcolor
                             Item.Text = " " .. v
@@ -2233,16 +2261,20 @@ function library:CreateWindow(name, size, hidebutton)
                 end
 
                 function dropdown:Set(value)
-                    dropdown.SelectedLabel.Text = value
-                    dropdown.value = value
-                    pcall(dropdown.callback, value)
+                    if type(value) == "table" then
+                        dropdown.values = value
+                        dropdown.SelectedLabel.Text = table.concat(dropdown.values, ", ")
+                        pcall(dropdown.callback, dropdown.values)
+                    else
+                        dropdown.SelectedLabel.Text = value
+                        dropdown.values = { value }
+                        pcall(dropdown.callback, value)
+                    end
                 end
-                function dropdown:Get()
-                    return dropdown.value
-                end
+                dropdown:Set(dropdown.default)
 
-                if dropdown.default then
-                    dropdown:Set(dropdown.default)
+                function dropdown:Get()
+                    return dropdown.multichoice and dropdown.values or dropdown.values[1]
                 end
 
                 local MouseButton1Down = function()
