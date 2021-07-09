@@ -2161,6 +2161,13 @@ function library:CreateWindow(name, size, hidebutton)
                     return false
                 end
 
+                function updateText(text)
+                    if #text >= 27 then
+                        text = string.sub(text, 1, 25) .. ".."
+                    end
+                    dropdown.SelectedLabel.Text = text
+                end
+
                 dropdown.items = { }
                 function dropdown:Add(v)
                     local Item = Instance.new("TextButton", dropdown.ItemsFrame)
@@ -2187,10 +2194,10 @@ function library:CreateWindow(name, size, hidebutton)
                                         table.remove(dropdown.values, i2)
                                     end
                                 end
-                                dropdown.SelectedLabel.Text = table.concat(dropdown.values, ", ")
+                                updateText(table.concat(dropdown.values, ", "))
                             else
                                 table.insert(dropdown.values, v)
-                                dropdown.SelectedLabel.Text = table.concat(dropdown.values, ", ")
+                                updateText(table.concat(dropdown.values, ", "))
                                 pcall(dropdown.callback, dropdown.values)
                             end
 
@@ -2207,7 +2214,7 @@ function library:CreateWindow(name, size, hidebutton)
                         end
 
                         dropdown.values[1] = v
-                        dropdown.SelectedLabel.Text = v
+                        updateText(v)
                         pcall(dropdown.callback, v)
 
                         return
@@ -2263,10 +2270,10 @@ function library:CreateWindow(name, size, hidebutton)
                 function dropdown:Set(value)
                     if type(value) == "table" then
                         dropdown.values = value
-                        dropdown.SelectedLabel.Text = table.concat(dropdown.values, ", ")
+                        updateText(table.concat(dropdown.values, ", "))
                         pcall(dropdown.callback, dropdown.values)
                     else
-                        dropdown.SelectedLabel.Text = value
+                        updateText(value)
                         dropdown.values = { value }
                         pcall(dropdown.callback, value)
                     end
