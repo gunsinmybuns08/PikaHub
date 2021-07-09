@@ -591,10 +591,10 @@ function library:CreateWindow(name, size, hidebutton)
             sector.ListLayout = Instance.new("UIListLayout", sector.Items)
             sector.ListLayout.FillDirection = Enum.FillDirection.Vertical
             sector.ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-            sector.ListLayout.Padding = UDim.new(0, 10)
+            sector.ListLayout.Padding = UDim.new(0, 12)
 
             sector.ListPadding = Instance.new("UIPadding", sector.Items)
-            sector.ListPadding.PaddingTop = UDim.new(0, 10)
+            sector.ListPadding.PaddingTop = UDim.new(0, 12)
             sector.ListPadding.PaddingLeft = UDim.new(0, 6)
             sector.ListPadding.PaddingRight = UDim.new(0, 6)
 
