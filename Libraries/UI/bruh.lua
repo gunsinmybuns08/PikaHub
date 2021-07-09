@@ -867,7 +867,7 @@ function library:CreateWindow(name, size, hidebutton)
                     keybind.Main.BackgroundTransparency = 1
                     keybind.Main.BorderSizePixel = 0
                     keybind.Main.ZIndex = 5
-                    keybind.Main.Size = UDim2.fromOffset(size.X + 2, size.Y)
+                    keybind.Main.Size = UDim2.fromOffset(size.X + 2, size.Y - 7)
                     keybind.Main.Text = text
                     keybind.Main.Font = window.theme.font
                     keybind.Main.TextColor3 = Color3.fromRGB(136, 136, 136)
@@ -2467,15 +2467,5 @@ function library:CreateWindow(name, size, hidebutton)
 
     return window
 end
---[[
-local window = library:CreateWindow("pikaware", Vector2.new(492, 598), Enum.KeyCode.RightShift)
-local tab = window:CreateTab('test')
-local sector = tab:CreateSector("test", 'left')
-local toggle = sector:AddToggle("Open / Close", false, function() end)
-local toggle = sector:AddToggle("Open / Close", false, function() end)
-local toggle = sector:AddToggle("Open / Close", false, function() end)
-local toggle = sector:AddToggle("Open / Close", false, function() end)
-local toggle = sector:AddToggle("Open / Close", false, function() end)
-local colorpicker = sector:AddColorpicker("test", Color3.new(1, 1, 1), function() end)
-]]--
+
 return library
