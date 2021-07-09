@@ -557,7 +557,7 @@ function library:CreateWindow(name, size, hidebutton)
             sector.Label = Instance.new("TextLabel", sector.Main)
             sector.Label.AnchorPoint = Vector2.new(0,0.5)
             sector.Label.Position = UDim2.fromOffset(12, -1)
-            sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 13, window.theme.font, Vector2.new(200,300)).X + 10, 0, sector.Main.Size.X.Offset), size.Y)
+            sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 13, window.theme.font, Vector2.new(200,300)).X + 13, 0, sector.Main.Size.X.Offset), size.Y)
             sector.Label.BackgroundTransparency = 1
             sector.Label.BorderSizePixel = 0
             sector.Label.ZIndex = 6
@@ -568,7 +568,7 @@ function library:CreateWindow(name, size, hidebutton)
             sector.Label.TextSize = 15
             updateevent.Event:Connect(function(theme)
                 local size = textservice:GetTextSize(sector.name, 15, theme.font, Vector2.new(2000, 2000))
-                sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 15, theme.font, Vector2.new(200,300)).X + 10, 0, sector.Main.Size.X.Offset), size.Y)
+                sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 15, theme.font, Vector2.new(200,300)).X + 13, 0, sector.Main.Size.X.Offset), size.Y)
                 sector.Label.Font = theme.font
             end)
 
@@ -591,17 +591,17 @@ function library:CreateWindow(name, size, hidebutton)
             sector.ListLayout = Instance.new("UIListLayout", sector.Items)
             sector.ListLayout.FillDirection = Enum.FillDirection.Vertical
             sector.ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-            sector.ListLayout.Padding = UDim.new(0, 12)
+            sector.ListLayout.Padding = UDim.new(0, 15)
 
             sector.ListPadding = Instance.new("UIPadding", sector.Items)
-            sector.ListPadding.PaddingTop = UDim.new(0, 12)
+            sector.ListPadding.PaddingTop = UDim.new(0, 15)
             sector.ListPadding.PaddingLeft = UDim.new(0, 6)
             sector.ListPadding.PaddingRight = UDim.new(0, 6)
 
             table.insert(sector.side:lower() == "left" and tab.SectorsLeft or tab.SectorsRight, sector)
 
             function sector:FixSize()
-                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 18)
+                sector.Main.Size = UDim2.fromOffset(window.size.X.Offset / 2 - 17, sector.ListLayout.AbsoluteContentSize.Y + 23)
                 local sizeleft, sizeright = 0, 0
                 for i,v in pairs(tab.SectorsLeft) do
                     sizeleft = sizeleft + v.Main.AbsoluteSize.Y
@@ -2467,5 +2467,15 @@ function library:CreateWindow(name, size, hidebutton)
 
     return window
 end
-
+--[[
+local window = library:CreateWindow("pikaware", Vector2.new(492, 598), Enum.KeyCode.RightShift)
+local tab = window:CreateTab('test')
+local sector = tab:CreateSector("test", 'left')
+local toggle = sector:AddToggle("Open / Close", false, function() end)
+local toggle = sector:AddToggle("Open / Close", false, function() end)
+local toggle = sector:AddToggle("Open / Close", false, function() end)
+local toggle = sector:AddToggle("Open / Close", false, function() end)
+local toggle = sector:AddToggle("Open / Close", false, function() end)
+local colorpicker = sector:AddColorpicker("test", Color3.new(1, 1, 1), function() end)
+]]--
 return library
