@@ -591,10 +591,10 @@ function library:CreateWindow(name, size, hidebutton)
             sector.ListLayout = Instance.new("UIListLayout", sector.Items)
             sector.ListLayout.FillDirection = Enum.FillDirection.Vertical
             sector.ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-            sector.ListLayout.Padding = UDim.new(0, 13)
+            sector.ListLayout.Padding = UDim.new(0, 12)
 
             sector.ListPadding = Instance.new("UIPadding", sector.Items)
-            sector.ListPadding.PaddingTop = UDim.new(0, 13)
+            sector.ListPadding.PaddingTop = UDim.new(0, 12)
             sector.ListPadding.PaddingLeft = UDim.new(0, 6)
             sector.ListPadding.PaddingRight = UDim.new(0, 6)
 
@@ -2467,5 +2467,12 @@ function library:CreateWindow(name, size, hidebutton)
 
     return window
 end
-
+--[[
+local window = library:CreateWindow("pikaware", Vector2.new(492, 598), Enum.KeyCode.RightShift)
+local tab = window:CreateTab('test')
+local sector = tab:CreateSector("test", 'left')
+local toggle = sector:AddToggle("Open / Close", false, function() end)
+toggle:AddKeybind()
+local colorpicker = sector:AddColorpicker("test", Color3.new(1, 1, 1), function() end)
+]]--
 return library
