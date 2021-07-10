@@ -318,7 +318,7 @@ function library:CreateWindow(name, size, hidebutton)
 
     window.Line2 = Instance.new("Frame", window.TopBar)
     window.Line2.Name = "line"
-    window.Line2.Position = UDim2.fromOffset(0, window.TopBar.AbsoluteSize.Y / 2)
+    window.Line2.Position = UDim2.fromOffset(0, window.TopBar.AbsoluteSize.Y / 2.1)
     window.Line2.Size = UDim2.fromOffset(window.size.X.Offset, 1)
     window.Line2.BorderSizePixel = 0
     window.Line2.BackgroundColor3 = window.theme.accentcolor
@@ -392,6 +392,7 @@ function library:CreateWindow(name, size, hidebutton)
         tab.TabButton.Text = tab.name
         tab.TabButton.AutoButtonColor = false
         tab.TabButton.Font = window.theme.font
+        tab.TabButton.TextYAlignment = Enum.TextYAlignment.Top
         tab.TabButton.BackgroundTransparency = 1
         tab.TabButton.BorderSizePixel = 0
         tab.TabButton.Size = UDim2.fromOffset(size.X + 15, window.TabList.AbsoluteSize.Y - 1)
