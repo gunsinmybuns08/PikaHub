@@ -2362,6 +2362,60 @@ function library:CreateWindow(name, size, hidebutton)
                 return dropdown
             end
 
+            function sector:AddSeperator(text)
+                local seperator = { }
+                seperator.text = text or ""
+
+                seperator.main = Instance.new("Frame", sector.Items)
+                seperator.main.Name = "Main"
+                seperator.main.ZIndex = 7
+                seperator.main.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 10)
+                seperator.main.BorderSizePixel = 0
+                seperator.main.BackgroundTransparency = 1
+
+                seperator.line = Instance.new("Frame", seperator.main)
+                seperator.line.Name = "Line"
+                seperator.line.ZIndex = 9
+                seperator.line.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+                seperator.line.BorderSizePixel = 0
+                seperator.line.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 26, 1)
+                seperator.line.Position = UDim2.fromOffset(7, 5)
+
+                seperator.outline = Instance.new("Frame", seperator.line)
+                seperator.outline.Name = "Outline"
+                seperator.outline.ZIndex = 8
+                seperator.outline.BorderSizePixel = 0
+                seperator.outline.BackgroundColor3 = library.theme.outlinecolor2
+                seperator.outline.Position = UDim2.fromOffset(-1, -1)
+                seperator.outline.Size = seperator.line.Size - UDim2.fromOffset(-2, -2)
+
+                seperator.label = Instance.new("TextLabel", seperator.main)
+                seperator.label.Name = "Label"
+                seperator.label.BackgroundTransparency = 1
+                seperator.label.Size = seperator.main.Size
+                seperator.label.Font = window.theme.font
+                seperator.label.ZIndex = 11
+                seperator.label.Text = seperator.text
+                seperator.label.TextColor3 = Color3.fromRGB(255, 255, 255)
+                seperator.label.TextSize = library.theme.fontsize
+                seperator.label.TextStrokeTransparency = 1
+                seperator.label.TextXAlignment = Enum.TextXAlignment.Center
+
+                local textSize = textservice:GetTextSize(seperator.label.Text, seperator.label.TextSize, seperator.label.Font, Vector2.new(2000, 2000))
+                local textStart = seperator.main.AbsoluteSize.X / 2 - (textSize.X / 2)
+
+                sector.LabelBackFrame = Instance.new("Frame", seperator.main)
+                sector.LabelBackFrame.Name = "LabelBack"
+                sector.LabelBackFrame.ZIndex = 10
+                sector.LabelBackFrame.Size = UDim2.fromOffset(textSize.X + 12, 10)
+                sector.LabelBackFrame.BorderSizePixel = 0
+                sector.LabelBackFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+                sector.LabelBackFrame.Position = UDim2.new(0, textStart - 6, 0, 0)
+
+                sector:FixSize()
+                return seperator
+            end
+
             return sector
         end
 
