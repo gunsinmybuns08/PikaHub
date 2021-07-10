@@ -15,7 +15,7 @@ local mouse = player:GetMouse()
 local camera = game.Workspace.CurrentCamera
 
 library.theme = {
-    fontsize = 15,
+    fontsize = 18,
     font = Enum.Font.Code,
     background = "rbxassetid://6880496154",
     backgroundcolor = Color3.fromRGB(20, 20, 20),
@@ -32,8 +32,8 @@ library.theme = {
     topcolor2 = Color3.fromRGB(30, 30, 30), -- Color3.fromRGB(12, 12, 12),
     buttoncolor = Color3.fromRGB(49, 49, 49),
     buttoncolor2 = Color3.fromRGB(39, 39, 39),
-    itemscolor = Color3.fromRGB(170, 170, 170),
-    itemscolor2 = Color3.fromRGB(200, 200, 200)
+    itemscolor = Color3.fromRGB(200, 200, 200),
+    itemscolor2 = Color3.fromRGB(210, 210, 210)
 }
 
 function library:CreateWatermark(name, position)
@@ -306,7 +306,7 @@ function library:CreateWindow(name, size, hidebutton)
     window.NameLabel.TextXAlignment = Enum.TextXAlignment.Left
     window.NameLabel.Font = window.theme.font
     window.NameLabel.Name = "title"
-    window.NameLabel.Position = UDim2.fromOffset(6, 0)
+    window.NameLabel.Position = UDim2.fromOffset(4, -2)
     window.NameLabel.BackgroundTransparency = 1
     window.NameLabel.Size = UDim2.fromOffset(194, window.TopBar.AbsoluteSize.Y / 2 - 2)
     window.NameLabel.TextSize = window.theme.fontsize
@@ -627,7 +627,6 @@ function library:CreateWindow(name, size, hidebutton)
                 button.Main.ZIndex = 5
                 button.Main.Size = UDim2.fromOffset(sector.Main.Size.X.Offset - 12, 14)
                 button.Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                button.Main.MouseButton1Down:Connect(button.callback)
 
                 button.Gradient = Instance.new("UIGradient", button.Main)
                 button.Gradient.Rotation = 90
@@ -674,13 +673,14 @@ function library:CreateWindow(name, size, hidebutton)
                 button.Label.BackgroundTransparency = 1
                 button.Label.Position = UDim2.new(0, -1, 0, 0)
                 button.Label.ZIndex = 5
-                button.Label.AutomaticSize = Enum.AutomaticSize.XY
+                button.Label.Size = button.Main.Size
                 button.Label.Font = window.theme.font
-                button.Label.Text = " " .. button.text
-                button.Label.TextColor3 = window.theme.itemscolor
+                button.Label.Text = button.text
+                button.Label.TextColor3 = window.theme.itemscolor2
                 button.Label.TextSize = 15
                 button.Label.TextStrokeTransparency = 1
-                button.Label.TextXAlignment = Enum.TextXAlignment.Left
+                button.Label.TextXAlignment = Enum.TextXAlignment.Center
+                button.Main.MouseButton1Down:Connect(button.callback)
                 updateevent.Event:Connect(function(theme)
                     button.Label.Font = theme.font
                     button.Label.TextColor3 = theme.itemscolor
