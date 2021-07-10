@@ -2385,9 +2385,12 @@ function library:CreateWindow(name, size, hidebutton)
                 seperator.outline.Name = "Outline"
                 seperator.outline.ZIndex = 8
                 seperator.outline.BorderSizePixel = 0
-                seperator.outline.BackgroundColor3 = library.theme.outlinecolor2
+                seperator.outline.BackgroundColor3 = window.theme.outlinecolor2
                 seperator.outline.Position = UDim2.fromOffset(-1, -1)
                 seperator.outline.Size = seperator.line.Size - UDim2.fromOffset(-2, -2)
+                updateevent.Event:Connect(function(theme)
+                    seperator.outline.BackgroundColor3 = theme.outlinecolor2
+                end)
 
                 seperator.label = Instance.new("TextLabel", seperator.main)
                 seperator.label.Name = "Label"
@@ -2397,11 +2400,15 @@ function library:CreateWindow(name, size, hidebutton)
                 seperator.label.ZIndex = 11
                 seperator.label.Text = seperator.text
                 seperator.label.TextColor3 = Color3.fromRGB(255, 255, 255)
-                seperator.label.TextSize = library.theme.fontsize
+                seperator.label.TextSize = window.theme.fontsize
                 seperator.label.TextStrokeTransparency = 1
                 seperator.label.TextXAlignment = Enum.TextXAlignment.Center
+                updateevent.Event:Connect(function(theme)
+                    seperator.label.Font = theme.font
+                    seperator.label.TextSize = theme.fontsize
+                end)
 
-                local textSize = textservice:GetTextSize(seperator.label.Text, seperator.label.TextSize, seperator.label.Font, Vector2.new(2000, 2000))
+                local textSize = textservice:GetTextSize(seperator.text, window.theme.fontsize, window.theme.font, Vector2.new(2000, 2000))
                 local textStart = seperator.main.AbsoluteSize.X / 2 - (textSize.X / 2)
 
                 sector.LabelBackFrame = Instance.new("Frame", seperator.main)
@@ -2411,6 +2418,13 @@ function library:CreateWindow(name, size, hidebutton)
                 sector.LabelBackFrame.BorderSizePixel = 0
                 sector.LabelBackFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
                 sector.LabelBackFrame.Position = UDim2.new(0, textStart - 6, 0, 0)
+                updateevent.Event:Connect(function(theme)
+                    textSize = textservice:GetTextSize(seperator.text, theme.fontsize, theme.font, Vector2.new(2000, 2000))
+                    textStart = seperator.main.AbsoluteSize.X / 2 - (textSize.X / 2)
+
+                    sector.LabelBackFrame.Size = UDim2.fromOffset(textSize.X + 12, 10)
+                    sector.LabelBackFrame.Position = UDim2.new(0, textStart - 6, 0, 0)
+                end)
 
                 sector:FixSize()
                 return seperator
