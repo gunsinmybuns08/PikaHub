@@ -883,12 +883,21 @@ function library:CreateWindow(name, size, hidebutton)
                         end
                     end)
 
+                    local shorter_keycodes = {
+                        ["LeftShift"] = "LSHIFT",
+                        ["RightShift"] = "RSHIFT",
+                        ["LeftControl"] = "LCTRL",
+                        ["RightControl"] = "RCTRL",
+                        ["LeftAlt"] = "LALT",
+                        ["RightAlt"] = "RALT"
+                    }
+
                     uis.InputBegan:Connect(function(input, gameProcessed)
                         if not gameProcessed then
                             if keybind.Main.Text == "[...]" then
                                 keybind.Main.TextColor3 = Color3.fromRGB(136, 136, 136)
                                 if input.UserInputType == Enum.UserInputType.Keyboard then
-                                    keybind.Main.Text = "[" .. input.KeyCode.Name .. "]"
+                                    keybind.Main.Text = "[" .. shorter_keycodes[input.KeyCode.Name] or input.KeyCode.Name .. "]"
                                     keybind.value = input.KeyCode
                                 else
                                     keybind.Main.Text = "[None]"
@@ -1941,16 +1950,25 @@ function library:CreateWindow(name, size, hidebutton)
                 keybind.Bind.TextXAlignment = Enum.TextXAlignment.Right
                 keybind.Bind.MouseButton1Down:Connect(function()
                     keybind.Bind.Text = "[...]"
-                    keybind.Main.TextColor3 = window.theme.accentcolor
+                    keybind.Bind.TextColor3 = window.theme.accentcolor
                 end)
                 updateevent.Event:Connect(function(theme)
                     keybind.Bind.BorderColor3 = theme.outlinecolor
                     keybind.Bind.Font = theme.font
                 end)
 
+                local shorter_keycodes = {
+                    ["LeftShift"] = "LSHIFT",
+                    ["RightShift"] = "RSHIFT",
+                    ["LeftControl"] = "LCTRL",
+                    ["RightControl"] = "RCTRL",
+                    ["LeftAlt"] = "LALT",
+                    ["RightAlt"] = "RALT"
+                }
+
                 function keybind:Set(value)
                     keybind.value = value
-                    keybind.Bind.Text = "[" .. (value.Name or value) .. "]"
+                    keybind.Bind.Text = "[" .. (shorter_keycodes[value.Name or value] or (value.Name or value)) .. "]"
 
                     local size = textservice:GetTextSize(keybind.Bind.Text, keybind.Bind.TextSize, keybind.Bind.Font, Vector2.new(2000, 2000))
                     keybind.Bind.Size = UDim2.fromOffset(size.X, size.Y)
@@ -1967,7 +1985,7 @@ function library:CreateWindow(name, size, hidebutton)
                 uis.InputBegan:Connect(function(input, gameProcessed)
                     if not gameProcessed then
                         if keybind.Bind.Text == "[...]" then
-                            keybind.Main.TextColor3 = Color3.fromRGB(136, 136, 136)
+                            keybind.Bind.TextColor3 = Color3.fromRGB(136, 136, 136)
                             if input.UserInputType == Enum.UserInputType.Keyboard then
                                 keybind:Set(input.KeyCode)
                             else
