@@ -392,7 +392,7 @@ function library:CreateWindow(name, size, hidebutton)
         tab.TabButton.Text = tab.name
         tab.TabButton.AutoButtonColor = false
         tab.TabButton.Font = window.theme.font
-        tab.TabButton.TextYAlignment = Enum.TextYAlignment.Top
+        tab.TabButton.TextYAlignment = Enum.TextYAlignment.Center
         tab.TabButton.BackgroundTransparency = 1
         tab.TabButton.BorderSizePixel = 0
         tab.TabButton.Size = UDim2.fromOffset(size.X + 15, window.TabList.AbsoluteSize.Y - 1)
@@ -856,7 +856,16 @@ function library:CreateWindow(name, size, hidebutton)
                     keybind.default = default or "None"
                     keybind.value = keybind.default
 
-                    local text = keybind.default == "None" and "[None]" or "[" .. keybind.default.Name .. "]"
+                    local shorter_keycodes = {
+                        ["LeftShift"] = "LSHIFT",
+                        ["RightShift"] = "RSHIFT",
+                        ["LeftControl"] = "LCTRL",
+                        ["RightControl"] = "RCTRL",
+                        ["LeftAlt"] = "LALT",
+                        ["RightAlt"] = "RALT"
+                    }
+
+                    local text = keybind.default == "None" and "[None]" or "[" .. (shorter_keycodes[keybind.default.Name] or keybind.default.Name) .. "]"
                     local size = textservice:GetTextSize(text, 15, window.theme.font, Vector2.new(2000, 2000))
 
                     keybind.Main = Instance.new("TextButton", toggle.Items)
@@ -883,21 +892,12 @@ function library:CreateWindow(name, size, hidebutton)
                         end
                     end)
 
-                    local shorter_keycodes = {
-                        ["LeftShift"] = "LSHIFT",
-                        ["RightShift"] = "RSHIFT",
-                        ["LeftControl"] = "LCTRL",
-                        ["RightControl"] = "RCTRL",
-                        ["LeftAlt"] = "LALT",
-                        ["RightAlt"] = "RALT"
-                    }
-
                     uis.InputBegan:Connect(function(input, gameProcessed)
                         if not gameProcessed then
                             if keybind.Main.Text == "[...]" then
                                 keybind.Main.TextColor3 = Color3.fromRGB(136, 136, 136)
                                 if input.UserInputType == Enum.UserInputType.Keyboard then
-                                    keybind.Main.Text = "[" .. shorter_keycodes[input.KeyCode.Name] or input.KeyCode.Name .. "]"
+                                    keybind.Main.Text = "[" .. (shorter_keycodes[input.KeyCode.Name] or input.KeyCode.Name) .. "]"
                                     keybind.value = input.KeyCode
                                 else
                                     keybind.Main.Text = "[None]"
