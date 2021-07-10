@@ -393,7 +393,7 @@ function library:CreateWindow(name, size, hidebutton)
         tab.TabButton.Text = tab.name
         tab.TabButton.AutoButtonColor = false
         tab.TabButton.Font = window.theme.font
-        tab.TabButton.TextYAlignment = Enum.TextYAlignment.Top
+        tab.TabButton.TextYAlignment = Enum.TextYAlignment.Center
         tab.TabButton.BackgroundTransparency = 1
         tab.TabButton.BorderSizePixel = 0
         tab.TabButton.Size = UDim2.fromOffset(size.X + 15, window.TabList.AbsoluteSize.Y - 1)
