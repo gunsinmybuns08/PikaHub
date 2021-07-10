@@ -351,6 +351,7 @@ function library:CreateWindow(name, size, hidebutton)
     window.BackgroundImage = Instance.new("ImageLabel", window.Frame)
     window.BackgroundImage.Name = "background"
     window.BackgroundImage.BackgroundTransparency = 0
+    window.BackgroundImage.BorderSizePixel = 0
     window.BackgroundImage.ScaleType = Enum.ScaleType.Stretch
     window.BackgroundImage.Position = window.BlackLine.Position + UDim2.fromOffset(0, 1)
     window.BackgroundImage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - window.TopBar.AbsoluteSize.Y - 1)
