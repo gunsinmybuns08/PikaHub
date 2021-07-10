@@ -17,7 +17,8 @@ local camera = game.Workspace.CurrentCamera
 library.theme = {
     fontsize = 18,
     font = Enum.Font.Code,
-    background = "rbxassetid://6880496154",
+    background = "rbxassetid://5553946656",
+    tilesize = 90,
     backgroundcolor = Color3.fromRGB(20, 20, 20),
     tabstextcolor = Color3.fromRGB(230, 230, 230),
     bordercolor = Color3.fromRGB(60, 60, 60),
@@ -350,18 +351,20 @@ function library:CreateWindow(name, size, hidebutton)
 
     window.BackgroundImage = Instance.new("ImageLabel", window.Frame)
     window.BackgroundImage.Name = "background"
-    window.BackgroundImage.BackgroundTransparency = 0
     window.BackgroundImage.BorderSizePixel = 0
-    window.BackgroundImage.ScaleType = Enum.ScaleType.Stretch
+    window.BackgroundImage.ScaleType = Enum.ScaleType.Tile
     window.BackgroundImage.Position = window.BlackLine.Position + UDim2.fromOffset(0, 1)
     window.BackgroundImage.Size = UDim2.fromOffset(window.size.X.Offset, window.size.Y.Offset - window.TopBar.AbsoluteSize.Y - 1)
     window.BackgroundImage.Image = window.theme.background or ""
     window.BackgroundImage.ImageTransparency = window.BackgroundImage.Image ~= "" and 0 or 1
+    window.BackgroundImage.ImageColor3 = Color3.new() 
     window.BackgroundImage.BackgroundColor3 = window.theme.backgroundcolor
+    window.BackgroundImage.TileSize = UDim2.new(0, window.theme.tilesize, 0, window.theme.tilesize)
     updateevent.Event:Connect(function(theme)
         window.BackgroundImage.Image = theme.background or ""
         window.BackgroundImage.ImageTransparency = window.BackgroundImage.Image ~= "" and 0 or 1
         window.BackgroundImage.BackgroundColor3 = theme.backgroundcolor
+        window.BackgroundImage.TileSize = UDim2.new(0, theme.tilesize, 0, theme.tilesize)
     end)
 
     window.Line = Instance.new("Frame", window.Frame)
@@ -2083,7 +2086,7 @@ function library:CreateWindow(name, size, hidebutton)
                 dropdown.Nav.Rotation = 180
                 dropdown.Nav.ZIndex = 5
                 dropdown.Nav.Size = UDim2.fromOffset(13, 9)
-                dropdown.Nav.Image = "rbxassetid://3926305904"
+                dropdown.Nav.Image = "rbxassetid://4918373417"
                 dropdown.Nav.ImageRectOffset = Vector2.new(524, 764)
                 dropdown.Nav.ImageRectSize = Vector2.new(36, 36)
 
