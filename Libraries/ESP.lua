@@ -422,7 +422,7 @@ function library:CreateWindow(csize, cpos)
 
 	window.title = self:create("TextLabel", {
 		Size = UDim2.new(1,0,0,18),
-		Position = UDim2.new(0,20,0,2),
+		Position = UDim2.new(0,10,0,2),
 		BackgroundTransparency = 1,
 		Name = "TitleLabel",
 		Text = ctitle, -- tostring(" "..ctitle) or tostring(" "..self.settings.title),
