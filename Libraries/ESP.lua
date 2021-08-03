@@ -520,7 +520,7 @@ function library:CreateWindow(csize, cpos)
 		local function createNewRow()
 			tab.row = library:create("Frame", {
 				Position = UDim2.new(0,csize.X/2 * #tab.rows - (#tab.rows * 10),0,0),
-				Size = UDim2.new(0,csize.X/2 - 10,1,0),
+				Size = UDim2.new(0,csize.X/2 - 8,1,0),
 				BackgroundTransparency = 1,
 				Parent = tab.main
 			})
