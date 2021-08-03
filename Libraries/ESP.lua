@@ -526,7 +526,7 @@ function library:CreateWindow(csize, cpos)
 			})
 
 			tab.layout = library:create("UIListLayout", {
-				Padding = UDim.new(0,8),
+				Padding = UDim.new(0,9),
 				Parent = tab.row
 			})
 			
